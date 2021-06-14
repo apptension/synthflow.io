@@ -1,0 +1,16 @@
+
+[user]
+	name = EmilTheSadCat
+	email = emilitwiniec@gmail.com
+[pull]
+	rebase = false
+[commit]
+	gpgSign = false
+[gui]
+	pruneduringfetch = true
+[smartgit "submodule"]
+	fetchalways = true
+	update = true
+	initializenew = true
+[push]
+	recurseSubmodules = check
