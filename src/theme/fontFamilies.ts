@@ -1,2 +1,1 @@
-export const FONT_PRIMARY = "'Poppins', sans-serif";
-export const FONT_SECONDARY = "'Raleway Dots', cursive";
+export const FONT_PRIMARY = "'Averia Libre', cursive";

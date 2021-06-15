@@ -1,10 +1,11 @@
-import { Container, Title, ShowControlsButton } from "./header.style"
+import { Container, ShowControlsButton, Logo } from "./header.style"
 import { SlidersIcon } from "../../images/icons";
+import LogoSrc from "../../images/logo.svg";
 
 export const Header = () => {
 	return (
 		<Container>
-			<Title>WaveFlow</Title>
+			<Logo src={LogoSrc} />
 			<ShowControlsButton>
 				<SlidersIcon />
 			</ShowControlsButton>
