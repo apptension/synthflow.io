@@ -1,5 +1,7 @@
 import { FunctionComponent, SVGProps } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
+
+import { ReactComponent as SlidersImg } from "./sliders.svg";
 
 export type IconComponentProps = {
 	color?: string;
@@ -14,5 +16,7 @@ const makeIcon = (ImgComponent: FunctionComponent<SVGProps<SVGSVGElement> & { ti
     path {
       fill: ${({ color }) => color};
     }
-  `;
+	`;
 };
+
+export const SlidersIcon = makeIcon(SlidersImg);
