@@ -2,6 +2,9 @@ import { FunctionComponent, SVGProps } from "react";
 import styled, { css } from "styled-components/macro";
 
 import { ReactComponent as SlidersImg } from "./sliders.svg";
+import { ReactComponent as SinImg } from "./sin.svg";
+import { ReactComponent as SquareImg } from "./square.svg";
+import { ReactComponent as Triangle } from "./triangle.svg";
 
 export type IconComponentProps = {
 	color?: string;
@@ -24,3 +27,6 @@ const makeIcon = (ImgComponent: FunctionComponent<SVGProps<SVGSVGElement> & { ti
 };
 
 export const SlidersIcon = makeIcon(SlidersImg);
+export const SinWaveIcon = makeIcon(SinImg);
+export const SquareWaveIcon = makeIcon(SquareImg);
+export const TriangleWaveIcon = makeIcon(Triangle);

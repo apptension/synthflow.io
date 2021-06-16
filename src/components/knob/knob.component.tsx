@@ -1,45 +1,61 @@
 import { useCallback, useEffect, useState } from "react";
-import { Container, Svg, SvgBackgroundCircle, SvgCircle, Input, Label } from "./knob.style";
+import { Container, Svg, SvgBackgroundCircle, SvgCircle, Input } from "./knob.style";
 import { CIRCUMFERENCE, RADIUS } from "./knob.constants";
+import { Label } from "../../theme/shared.style";
 
 type KnobProps = {
 	max?: number;
 	min?: number;
 	defaultValue?: number;
 	label: string;
+	onChange: (value: number) => void;
+	step?: number;
 }
 
-export const Knob = ({ max = 100, min = 0, label, defaultValue = min }: KnobProps) => {
+export const Knob = ({ max = 100, min = 0, label, defaultValue = min, onChange, step = 1 }: KnobProps) => {
 	const [value, setValue] = useState(defaultValue);
 	const [strokeOffset, setStrokeOffset] = useState(CIRCUMFERENCE);
 	const [isDragging, setIsDragging] = useState(false);
-	const [dragOffset, setDragOffset] = useState(0);
+	const [dragOffset, setDragOffset] = useState<number>(0);
 	const [dragInitialOffset, setDragInitialOffset] = useState<number>(0);
+
+	useEffect(() => {
+		handleChange(defaultValue);
+		// should run only on mount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const handleChange = useCallback((value: number) => {
 		if (value > max || value < min) return;
 		setValue(value);
+		onChange(value);
 
 		const offset = CIRCUMFERENCE - ((value - min) * 100) / (max - min) / 100 * CIRCUMFERENCE;
 		setStrokeOffset(offset);
-	}, [setValue, setStrokeOffset, max, min]);
+	}, [onChange, setValue, setStrokeOffset, max, min]);
 
 	const onDrag = useCallback((event: MouseEvent) => {
 		if (!isDragging) return;
+
 		const diff = dragOffset - (event.clientX - dragInitialOffset);
 		setDragOffset(event.clientX - dragInitialOffset)
-		handleChange(value + diff * -1);
-	}, [isDragging, dragInitialOffset, dragOffset, handleChange, value])
+
+		const limitValue = (value: number) => {
+			if (value < 0) {
+				return -step
+			} else {
+				return step;
+			}
+		}
+
+		handleChange(value + limitValue(diff) * -1);
+	}, [isDragging, dragInitialOffset, dragOffset, handleChange, value, step])
 
 	const handleDragChange = (event: MouseEvent | any, value: boolean) => {
 		document.body.style.cursor = value ? "ew-resize" : "default";
 
 		setIsDragging((state) => {
-			if (!state) {
-				setDragInitialOffset(event.clientX);
-			} else {
-				setDragInitialOffset(0);
-			}
+			!state ? setDragInitialOffset(event.clientX) : setDragInitialOffset(0);
 			return value;
 		});
 	}
@@ -67,6 +83,7 @@ export const Knob = ({ max = 100, min = 0, label, defaultValue = min }: KnobProp
 				value={value}
 				name={label}
 				type="number"
+				step={step}
 				min={min}
 				max={max}
 				onChange={(event) => {

@@ -1,0 +1,1 @@
+export { WaveTypeSelect } from './waveTypeSelect.component';

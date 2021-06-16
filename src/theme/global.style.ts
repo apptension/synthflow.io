@@ -1,11 +1,18 @@
 import { createGlobalStyle } from "styled-components/macro";
 import reset from "styled-reset";
 import normalize from "styled-normalize";
-import { FontFamily } from "./index";
+import { Color, FontFamily } from "./index";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset};
   ${normalize};
+
+  ::selection {
+    background: ${Color.HIGHLIGHT} /* WebKit/Blink Browsers */
+  }
+  ::-moz-selection {
+    background: ${Color.HIGHLIGHT} /* Gecko Browsers */
+  }
 
   * {
     font-family: ${FontFamily.FONT_PRIMARY};

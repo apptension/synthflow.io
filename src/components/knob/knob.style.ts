@@ -47,14 +47,3 @@ export const Input = styled.input`
   -moz-appearance: textfield;
 }
 `;
-
-export const Label = styled.label`
-  user-select: none;
-	pointer-events: none;
-  width: 7rem;
-  text-align: right;
-  font-family: ${FontFamily.FONT_PRIMARY};
-  color: ${ThemeColor.WHITE};
-  font-size: 1.7rem;
-  margin-right: 1.1rem;
-`;
