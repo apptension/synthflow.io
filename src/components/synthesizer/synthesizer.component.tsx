@@ -1,10 +1,21 @@
 import { Knob } from "../knob"
 import { Container } from "./synthesizer.style"
 import { WaveTypeSelect } from "../waveTypeSelect";
+import { Checkbox } from "../checkbox";
 
 export const Synthesizer = () => {
 	return (
 		<Container>
+			<Checkbox
+				isChecked={true}
+				label="Reverb"
+				onChange={() => undefined}
+			/>
+			<Checkbox
+				isChecked={false}
+				label="Distortion"
+				onChange={() => undefined}
+			/>
 			<WaveTypeSelect label="Wave form" onChange={(value) => console.log(value)} />
 			<Knob label="Attack" onChange={() => undefined} defaultValue={100} />
 			<Knob label="Release" max={200} onChange={() => undefined} step={2} defaultValue={140} />
