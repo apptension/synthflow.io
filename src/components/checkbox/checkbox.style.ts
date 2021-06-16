@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { Color } from "../../theme";
+import { Color, Transitions } from "../../theme";
 
 export const Container = styled.div`
   user-select: none;
@@ -21,7 +21,8 @@ export const Indicator = styled.span`
   border: .3rem solid ${Color.WHITE};
   opacity: .5;
   position: relative;
-  transition: transform 80ms cubic-bezier(.21, .58, .5, .86);
+  transition: transform 80ms;
+  ${Transitions.Snappy};
   transform-origin: center;
 
   ::before {

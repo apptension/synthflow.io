@@ -1,11 +1,23 @@
-import styled from "styled-components/macro";
+import styled, { css } from "styled-components/macro";
+import { Transitions } from '../../theme/';
 
-export const Container = styled.div`
+type ContainerProps = {
+	hasFullWidth: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   width: 60%;
-	height: calc(100vh - 9.7rem);
+  height: calc(100vh - 9.7rem);
   display: flex;
   justify-content: center;
   align-items: center;
+	
+	transition: width 300ms;
+  ${Transitions.Snappy};
+
+  ${({ hasFullWidth }) => hasFullWidth && css`
+    width: 100%;
+  `}
 `;
 
 export const MorphMock = styled.img``;

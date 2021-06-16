@@ -3,10 +3,14 @@ import { Container } from "./synthesizer.style"
 import { WaveTypeSelect } from "../waveTypeSelect";
 import { Checkbox } from "../checkbox";
 import { ControlsSection } from "../controlsSection";
+import { useContext } from "react";
+import { AppSettingsProvider } from "../../providers";
 
 export const Synthesizer = () => {
+	const { showControls } = useContext(AppSettingsProvider.Context);
+
 	return (
-		<Container>
+		<Container isVisible={showControls}>
 			<ControlsSection title="Oscillator 1">
 				<Checkbox
 					isChecked={true}

@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import Color from "color";
-import { Color as ThemeColor } from "../../theme";
+import { Color as ThemeColor, Transitions } from "../../theme";
 
 export const SelectorContainer = styled.div`
   display: flex;
@@ -47,7 +47,8 @@ type IndicatorProps = {
 }
 
 export const Indicator = styled.div<IndicatorProps>`
-  transition: transform 300ms cubic-bezier(.21, .58, .5, .86);
+  transition: transform 300ms;
+  ${Transitions.Snappy};
   position: absolute;
   background-color: ${Color(ThemeColor.BLACK).alpha(0.3).toString()};
   border-radius: 4px;
