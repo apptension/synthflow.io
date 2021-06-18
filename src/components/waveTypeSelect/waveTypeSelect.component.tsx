@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { v4 as uuidV4 } from 'uuid';
 import { Container, Indicator, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
 import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../images/icons";
@@ -8,15 +8,16 @@ import { WaveTypes } from "./waveTypeSelect.types";
 const mappedIcons = {
 	[WaveTypes.SIN]: <SinWaveIcon size={3} />,
 	[WaveTypes.SQUARE]: <SquareWaveIcon size={3} />,
-	[WaveTypes.TRIANGLE]: <TriangleWaveIcon size={3} />
+	[WaveTypes.SAWTOOTH]: <TriangleWaveIcon size={3} />
 }
 
 type WaveTypeSelectProps = {
+	value: WaveTypes;
 	onChange: (value: WaveTypes) => void;
 	label: string;
 }
 
-export const WaveTypeSelect = ({ onChange, label }: WaveTypeSelectProps) => {
+export const WaveTypeSelect = ({ onChange, label, value }: WaveTypeSelectProps) => {
 	const [positionIndex, setPositionIndex] = useState(0);
 
 	const id = useMemo(() => {
@@ -25,6 +26,12 @@ export const WaveTypeSelect = ({ onChange, label }: WaveTypeSelectProps) => {
 		// should run only on mount
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	useEffect(() => {
+		const currentWaveIndex = Object.values(WaveTypes).findIndex((val) => val === value);
+		setPositionIndex(currentWaveIndex);
+
+	}, [value])
 
 	return (
 		<Container>
@@ -41,7 +48,6 @@ export const WaveTypeSelect = ({ onChange, label }: WaveTypeSelectProps) => {
 								type="radio"
 								checked={positionIndex === index}
 								onChange={() => {
-								setPositionIndex(index);
 								onChange(type);
 							}} />
 							<Label htmlFor={`${id}-${type}`}>{mappedIcons[type]}</Label>

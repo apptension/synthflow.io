@@ -17,7 +17,6 @@ export const Knob = ({ max = 100, min = 0, label, defaultValue = min, onChange, 
 	const [strokeOffset, setStrokeOffset] = useState(CIRCUMFERENCE);
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragOffset, setDragOffset] = useState<number>(0);
-	const [dragInitialOffset, setDragInitialOffset] = useState<number>(0);
 
 	useEffect(() => {
 		handleChange(defaultValue);
@@ -37,27 +36,17 @@ export const Knob = ({ max = 100, min = 0, label, defaultValue = min, onChange, 
 	const onDrag = useCallback((event: MouseEvent) => {
 		if (!isDragging) return;
 
-		const diff = dragOffset - (event.clientX - dragInitialOffset);
-		setDragOffset(event.clientX - dragInitialOffset)
+		const diff = dragOffset - (event.clientX);
+		setDragOffset(event.clientX)
 
-		const limitValue = (value: number) => {
-			if (value < 0) {
-				return -step
-			} else {
-				return step;
-			}
-		}
-
-		handleChange(value + limitValue(diff) * -1);
-	}, [isDragging, dragInitialOffset, dragOffset, handleChange, value, step])
+		handleChange(value + diff * -1);
+	}, [isDragging, dragOffset, handleChange, value])
 
 	const handleDragChange = (event: MouseEvent | any, value: boolean) => {
 		document.body.style.cursor = value ? "ew-resize" : "default";
 
-		setIsDragging((state) => {
-			!state ? setDragInitialOffset(event.clientX) : setDragInitialOffset(0);
-			return value;
-		});
+		setDragOffset(0);
+		setIsDragging(value);
 	}
 
 	useEffect(() => {

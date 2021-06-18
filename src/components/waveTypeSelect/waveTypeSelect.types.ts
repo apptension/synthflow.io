@@ -1,5 +1,5 @@
 export enum WaveTypes {
-	SIN = "SIN",
-	SQUARE = "SQUARE",
-	TRIANGLE = "TRIANGLE"
+	SIN = "sine6",
+	SQUARE = "square",
+	SAWTOOTH = "sawtooth"
 }
