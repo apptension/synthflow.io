@@ -21,5 +21,5 @@ export const useEnvelope = (triggerTime: number) => {
 		}
 	}, [triggerTime]);
 
-	return { envelope: envelope.current };
+	return envelope.current;
 }

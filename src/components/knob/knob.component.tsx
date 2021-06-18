@@ -79,7 +79,8 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				min={min}
 				max={max}
 				onChange={(event) => {
-					handleChange(isNaN(event.target.valueAsNumber) ? min : value)
+					const value = event.target.valueAsNumber;
+					handleChange(isNaN(value) ? min : value)
 				}
 				}
 			/>

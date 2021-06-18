@@ -11,7 +11,7 @@ type EnvelopeProps = {
 }
 
 export const Envelope = ({ register, triggerTime }: EnvelopeProps) => {
-	const { envelope } = useEnvelope(triggerTime)
+	const envelope = useEnvelope(triggerTime)
 	const [isRegistered, setRegistered] = useState(false);
 	const [attack, setAttack] = useState<NormalRange>(0);
 	const [release, setRelease] = useState<NormalRange>(0);
