@@ -3,6 +3,7 @@ import { ControlsSection } from "../../../controlsSection";
 import { AmplitudeEnvelope } from "tone";
 import { useEnvelope } from "./useEnvelope.hooks";
 import { useEffect, useState } from "react";
+import { NormalRange } from "tone/build/esm/core/type/Units";
 
 type EnvelopeProps = {
 	register: (component: AmplitudeEnvelope) => void;
@@ -12,6 +13,10 @@ type EnvelopeProps = {
 export const Envelope = ({ register, triggerTime }: EnvelopeProps) => {
 	const { envelope } = useEnvelope(triggerTime)
 	const [isRegistered, setRegistered] = useState(false);
+	const [attack, setAttack] = useState<NormalRange>(0);
+	const [release, setRelease] = useState<NormalRange>(0);
+	const [sustain, setSustain] = useState<NormalRange>(0);
+	const [decay, setDecay] = useState<NormalRange>(0);
 
 	useEffect(() => {
 		if (!envelope || isRegistered) return;
@@ -20,24 +25,24 @@ export const Envelope = ({ register, triggerTime }: EnvelopeProps) => {
 		setRegistered(true);
 	}, [envelope, isRegistered, setRegistered, register])
 
+	useEffect(() => {
+		envelope?.set({
+			attack,
+			release,
+			sustain,
+			decay
+		})
+
+		// should run on config values change
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [attack, release, sustain, decay]);
+
 	return (
 		<ControlsSection title="Envelope">
-			<Knob label="Attack" max={100} onChange={(value) => {
-				if (!envelope) return;
-				envelope.set({ attack: value / 100 })
-			}} defaultValue={10} />
-			<Knob label="Release" max={100} onChange={(value) => {
-				if (!envelope) return;
-				envelope.set({ release: value / 100 })
-			}} />
-			<Knob label="Sustain" max={100} onChange={(value) => {
-				if (!envelope) return;
-				envelope.set({ sustain: value / 100 })
-			}} />
-			<Knob label="Decay" max={100} onChange={(value) => {
-				if (!envelope) return;
-				envelope.set({ decay: value / 100 })
-			}} />
+			<Knob label="Attack" onChange={setAttack} value={attack} />
+			<Knob label="Release" onChange={setRelease} value={release} />
+			<Knob label="Sustain" onChange={setSustain} value={sustain} />
+			<Knob label="Decay" onChange={setDecay} value={decay} />
 		</ControlsSection>
 	)
 }

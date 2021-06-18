@@ -39,11 +39,11 @@ export const Oscillator = ({ register, triggerTime }: OscillatorProps) => {
 		<>
 			<ControlsSection title="Oscillator 1">
 				<WaveTypeSelect label="Wave form" onChange={setOscWave1} value={oscWave1} />
-				<Knob label="Freq" max={2000} onChange={setSpread1} defaultValue={0} step={40} />
+				<Knob label="Freq" max={2000} onChange={setSpread1} value={spread1} step={40} normalRange={false}/>
 			</ControlsSection>
 			<ControlsSection title="Oscillator 2">
 				<WaveTypeSelect label="Wave form" value={oscWave2} onChange={setOscWave2} />
-				<Knob label="Freq" max={2000} onChange={setSpread2} defaultValue={0} step={40} />
+				<Knob label="Freq" max={2000} onChange={setSpread2} value={spread2} step={40} normalRange={false}/>
 			</ControlsSection>
 		</>
 	)
