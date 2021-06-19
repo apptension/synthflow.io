@@ -1,7 +1,7 @@
 import { Knob } from "../../../knob";
 import { ControlsSection } from "../../../controlsSection";
 import { AmplitudeEnvelope } from "tone";
-import { useEnvelope } from "./useEnvelope.hooks";
+import { useEnvelope } from "./envelope.hooks";
 import { useEffect, useState } from "react";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 

@@ -1,30 +1,40 @@
 import { useContext, useEffect, useState } from "react";
 import {
 	AmplitudeEnvelope,
-	Compressor, connect, Destination, Filter as FilterType, Loop, start,
+	Compressor,
+	connect,
+	Destination,
+	Filter as FilterType,
+	Gain,
+	Loop,
+	start,
 	Transport,
 } from "tone";
 import { Container } from "./synthesizer.style"
 import { AppSettingsProvider } from "../../providers";
 import { Envelope, Filter, Oscillator } from "./components";
+import { Noise } from "./components/noise";
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
 	const [oscillators, registerOscillators] = useState<Compressor>();
 	const [envelope, registerEnvelope] = useState<AmplitudeEnvelope>();
 	const [filter, registerFilter] = useState<FilterType>();
+	const [noise, registerNoise] = useState<Gain>();
 	const [isConnected, setIsConnected] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [triggerTime, setTriggerTime] = useState(0);
 
 	useEffect(() => {
 		if (isConnected) return;
-		if (oscillators && envelope && filter) {
+		if (oscillators && envelope && filter && noise) {
 			connect(oscillators, envelope);
+			connect(noise, envelope);
 			connect(envelope, filter);
 			connect(filter, Destination);
-			console.info("-> Tone connected")
+
 			setIsConnected(true);
+			console.info("-> Tone connected")
 		}
 	}, [
 		isConnected,
@@ -32,6 +42,7 @@ export const Synthesizer = () => {
 		filter,
 		envelope,
 		oscillators,
+		noise
 	]);
 
 	useEffect(() => {
@@ -66,6 +77,7 @@ export const Synthesizer = () => {
 			<Oscillator register={registerOscillators} triggerTime={triggerTime} />
 			<Envelope register={registerEnvelope} triggerTime={triggerTime} />
 			<Filter register={registerFilter} />
+			<Noise register={registerNoise} />
 		</Container>
 	)
 }

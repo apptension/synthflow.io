@@ -1,5 +1,5 @@
 import { Filter as FilterClass } from "tone";
-import { useFilter } from "./useFilter";
+import { useFilter } from "./filter.hooks";
 import { useEffect, useState } from "react";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
@@ -11,7 +11,7 @@ type FilterProps = {
 export const Filter = ({ register }: FilterProps) => {
 	const filter = useFilter();
 	const [isRegistered, setRegistered] = useState(false);
-	const [frequency, setFrequency] = useState(0);
+	const [frequency, setFrequency] = useState(4000);
 
 	useEffect(() => {
 		if (!filter || isRegistered) return;
