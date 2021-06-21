@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AmplitudeEnvelope } from "tone";
+import { TransportProvider } from "../../../../providers";
 
-export const useEnvelope = (triggerTime: number) => {
+export const useEnvelope = () => {
 	const envelope = useRef<AmplitudeEnvelope>();
+	const { triggerTime } = useContext(TransportProvider.Context);
 
 	useEffect(() => {
 		envelope.current = new AmplitudeEnvelope({

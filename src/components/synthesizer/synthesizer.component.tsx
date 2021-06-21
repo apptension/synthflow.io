@@ -6,9 +6,6 @@ import {
 	Destination,
 	Filter as FilterType, Freeverb,
 	Gain,
-	Loop,
-	start,
-	Transport,
 	Chebyshev as ChebyshevType
 } from "tone";
 import { Container } from "./synthesizer.style"
@@ -17,6 +14,7 @@ import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
 import { Reverb } from "./components/reverb";
 import { Chebyshev } from "./components/chebyshev";
+import { TransportControls } from "./components/transportControls"
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
@@ -27,8 +25,6 @@ export const Synthesizer = () => {
 	const [noise, registerNoise] = useState<Gain>();
 	const [reverb, registerReverb] = useState<Freeverb>();
 	const [isConnected, setIsConnected] = useState(false);
-	const [isPlaying, setIsPlaying] = useState(false);
-	const [triggerTime, setTriggerTime] = useState(0);
 
 	useEffect(() => {
 		if (isConnected) return;
@@ -54,37 +50,12 @@ export const Synthesizer = () => {
 		noise
 	]);
 
-	useEffect(() => {
-		if (isPlaying) {
-			const loop = new Loop(time => {
-				setTriggerTime(time);
-			}, "8n");
-
-			loop.start(0);
-
-			return () => {
-				loop.dispose();
-			}
-		}
-	}, [isPlaying]);
-
-	const handlePlay = () => {
-		if (!isPlaying) {
-			start().then(() => {
-				Transport.start();
-			});
-			setIsPlaying(true);
-		} else {
-			Transport.stop();
-			setIsPlaying(false)
-		}
-	}
 
 	return (
 		<Container isVisible={showControls}>
-			<button onClick={handlePlay}>Play</button>
-			<Oscillator register={registerOscillators} triggerTime={triggerTime} />
-			<Envelope register={registerEnvelope} triggerTime={triggerTime} />
+			<TransportControls />
+			<Oscillator register={registerOscillators} />
+			<Envelope register={registerEnvelope} />
 			<Filter register={registerFilter} />
 			<Noise register={registerNoise} />
 			<Reverb register={registerReverb} />

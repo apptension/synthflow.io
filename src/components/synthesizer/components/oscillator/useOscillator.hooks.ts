@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Compressor, FatOscillator, Signal, ToneOscillatorType, Frequency } from "tone";
+import { TransportProvider } from "../../../../providers";
 
 type OscillatorHookProps = {
-	triggerTime: number,
 	frequency: number,
 	baseNote: string,
 	oscWave1: ToneOscillatorType,
@@ -18,8 +18,9 @@ export const useOscillator = ({
 	oscWave2,
 	detune1,
 	detune2,
-	triggerTime
 }: OscillatorHookProps) => {
+	const { triggerTime } = useContext(TransportProvider.Context);
+
 	const oscillator1 = useRef<FatOscillator>();
 	const oscillator2 = useRef<FatOscillator>();
 	const compressor = useRef<Compressor>();

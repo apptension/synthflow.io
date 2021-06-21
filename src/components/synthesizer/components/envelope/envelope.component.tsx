@@ -7,12 +7,8 @@ import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
 
-type EnvelopeProps = RegisteredComponent<AmplitudeEnvelope> & {
-	triggerTime: number;
-}
-
-export const Envelope = ({ register, triggerTime }: EnvelopeProps) => {
-	const envelope = useEnvelope(triggerTime);
+export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) => {
+	const envelope = useEnvelope();
 	useRegister(register, envelope);
 
 	const [attack, setAttack] = useState<NormalRange>(0);

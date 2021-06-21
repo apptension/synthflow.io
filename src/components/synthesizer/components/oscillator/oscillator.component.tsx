@@ -8,11 +8,7 @@ import { Compressor } from "tone";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
 
-type OscillatorProps = RegisteredComponent<Compressor> & {
-	triggerTime: number;
-}
-
-export const Oscillator = ({ register, triggerTime }: OscillatorProps) => {
+export const Oscillator = ({ register }: RegisteredComponent<Compressor>) => {
 	const [detune1, setDetune1] = useState(0);
 	const [detune2, setDetune2] = useState(0);
 	const [oscWave1, setOscWave1] = useState<WaveTypes>(WaveTypes.SIN);
@@ -24,7 +20,6 @@ export const Oscillator = ({ register, triggerTime }: OscillatorProps) => {
 		oscWave2,
 		detune2,
 		detune1,
-		triggerTime
 	});
 
 	useRegister(register, oscillator1);
