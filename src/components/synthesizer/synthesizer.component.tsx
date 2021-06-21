@@ -9,16 +9,19 @@ import {
 	Loop,
 	start,
 	Transport,
+	Chebyshev as ChebyshevType
 } from "tone";
 import { Container } from "./synthesizer.style"
 import { AppSettingsProvider } from "../../providers";
 import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
 import { Reverb } from "./components/reverb";
+import { Chebyshev } from "./components/chebyshev";
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
 	const [oscillators, registerOscillators] = useState<Compressor>();
+	const [chebyshev, registerChebyshev] = useState<ChebyshevType>();
 	const [envelope, registerEnvelope] = useState<AmplitudeEnvelope>();
 	const [filter, registerFilter] = useState<FilterType>();
 	const [noise, registerNoise] = useState<Gain>();
@@ -29,10 +32,11 @@ export const Synthesizer = () => {
 
 	useEffect(() => {
 		if (isConnected) return;
-		if (oscillators && envelope && filter && noise && reverb) {
+		if (oscillators && envelope && filter && noise && reverb && chebyshev) {
 			connect(oscillators, envelope);
 			connect(noise, envelope);
-			connect(envelope, filter);
+			connect(envelope, chebyshev);
+			connect(chebyshev, filter);
 			connect(filter, reverb);
 			connect(reverb, Destination)
 
@@ -42,6 +46,7 @@ export const Synthesizer = () => {
 	}, [
 		isConnected,
 		setIsConnected,
+		chebyshev,
 		reverb,
 		filter,
 		envelope,
@@ -83,6 +88,7 @@ export const Synthesizer = () => {
 			<Filter register={registerFilter} />
 			<Noise register={registerNoise} />
 			<Reverb register={registerReverb} />
+			<Chebyshev register={registerChebyshev} />
 		</Container>
 	)
 }

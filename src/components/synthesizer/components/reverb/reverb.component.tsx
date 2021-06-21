@@ -4,19 +4,13 @@ import { useReverb } from "./reverb.hooks";
 import { useEffect, useState } from "react";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
+import { useRegister } from "../../synthesizer.hooks";
 
 export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 	const reverb = useReverb();
-	const [isRegistered, setRegistered] = useState(false);
+	useRegister(register, reverb);
+
 	const [room, setRoom] = useState(0.1);
-
-	useEffect(() => {
-		if (!reverb || isRegistered) return;
-
-		register(reverb);
-		setRegistered(true);
-	}, [isRegistered, register, reverb]);
-
 
 	useEffect(() => {
 		reverb?.set({

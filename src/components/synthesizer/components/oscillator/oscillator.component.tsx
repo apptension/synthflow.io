@@ -1,11 +1,12 @@
 import { ControlsSection } from "../../../controlsSection";
 import { WaveTypeSelect } from "../../../waveTypeSelect";
 import { Knob } from "../../../knob";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
 import { useOscillator } from "./useOscillator.hooks";
 import { Compressor } from "tone";
 import { RegisteredComponent } from "../../synthesizer.types";
+import { useRegister } from "../../synthesizer.hooks";
 
 type OscillatorProps = RegisteredComponent<Compressor> & {
 	triggerTime: number;
@@ -16,7 +17,6 @@ export const Oscillator = ({ register, triggerTime }: OscillatorProps) => {
 	const [detune2, setDetune2] = useState(0);
 	const [oscWave1, setOscWave1] = useState<WaveTypes>(WaveTypes.SIN);
 	const [oscWave2, setOscWave2] = useState<WaveTypes>(WaveTypes.SIN);
-	const [isRegistered, setIsRegistered] = useState(false);
 	const oscillator1 = useOscillator({
 		frequency: 0,
 		baseNote: "E2",
@@ -27,13 +27,7 @@ export const Oscillator = ({ register, triggerTime }: OscillatorProps) => {
 		triggerTime
 	});
 
-	useEffect(() => {
-		if (!oscillator1 || isRegistered) return;
-
-		console.info("-> registering oscillators ")
-		register(oscillator1);
-		setIsRegistered(true);
-	}, [oscillator1, setIsRegistered, isRegistered, register])
+	useRegister(register, oscillator1);
 
 	return (
 		<>

@@ -5,18 +5,13 @@ import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
+import { useRegister } from "../../synthesizer.hooks";
 
 export const Noise = ({ register }: RegisteredComponent<Gain>) => {
 	const noise = useNoise();
-	const [isRegistered, setRegistered] = useState(false);
-	const [gain, setGain] = useState<NormalRange>(0);
+	useRegister(register, noise);
 
-	useEffect(() => {
-		if (!noise || isRegistered) return;
-		console.info("-> registering noise");
-		register(noise);
-		setRegistered(true);
-	}, [isRegistered, noise, register])
+	const [gain, setGain] = useState<NormalRange>(0);
 
 	useEffect(() => {
 		noise?.set({

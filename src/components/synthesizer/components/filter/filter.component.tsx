@@ -4,18 +4,13 @@ import { useEffect, useState } from "react";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
 import { RegisteredComponent } from "../../synthesizer.types";
+import { useRegister } from "../../synthesizer.hooks";
 
 export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	const filter = useFilter();
-	const [isRegistered, setRegistered] = useState(false);
-	const [frequency, setFrequency] = useState(4000);
+	useRegister(register, filter);
 
-	useEffect(() => {
-		if (!filter || isRegistered) return;
-		console.info("-> registering filter");
-		register(filter);
-		setRegistered(true);
-	}, [filter, isRegistered, register]);
+	const [frequency, setFrequency] = useState(4000);
 
 	useEffect(() => {
 		filter?.set({ frequency })

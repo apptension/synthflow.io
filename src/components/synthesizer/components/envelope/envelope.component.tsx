@@ -5,25 +5,20 @@ import { useEnvelope } from "./envelope.hooks";
 import { useEffect, useState } from "react";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
+import { useRegister } from "../../synthesizer.hooks";
 
 type EnvelopeProps = RegisteredComponent<AmplitudeEnvelope> & {
 	triggerTime: number;
 }
 
 export const Envelope = ({ register, triggerTime }: EnvelopeProps) => {
-	const envelope = useEnvelope(triggerTime)
-	const [isRegistered, setRegistered] = useState(false);
+	const envelope = useEnvelope(triggerTime);
+	useRegister(register, envelope);
+
 	const [attack, setAttack] = useState<NormalRange>(0);
 	const [release, setRelease] = useState<NormalRange>(0);
 	const [sustain, setSustain] = useState<NormalRange>(0);
 	const [decay, setDecay] = useState<NormalRange>(0);
-
-	useEffect(() => {
-		if (!envelope || isRegistered) return;
-		console.info("-> registering envelope")
-		register(envelope);
-		setRegistered(true);
-	}, [envelope, isRegistered, setRegistered, register])
 
 	useEffect(() => {
 		envelope?.set({
