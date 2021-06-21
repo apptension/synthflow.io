@@ -6,6 +6,7 @@ type ContainerProps = {
 }
 export const Container = styled.div<ContainerProps>`
   position: absolute;
+	display: flex;
   right: 0;
   top: 10vh;
   margin-right: 10rem;
@@ -16,4 +17,8 @@ export const Container = styled.div<ContainerProps>`
     opacity: 0;
     pointer-events: none;
   `}
+`;
+
+export const ControlsPane = styled.div`
+	width: 30rem;
 `;

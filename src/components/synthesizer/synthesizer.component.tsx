@@ -8,7 +8,7 @@ import {
 	Gain,
 	Chebyshev as ChebyshevType
 } from "tone";
-import { Container } from "./synthesizer.style"
+import { Container, ControlsPane } from "./synthesizer.style"
 import { AppSettingsProvider } from "../../providers";
 import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
@@ -24,22 +24,25 @@ export const Synthesizer = () => {
 	const [filter, registerFilter] = useState<FilterType>();
 	const [noise, registerNoise] = useState<Gain>();
 	const [reverb, registerReverb] = useState<Freeverb>();
+	const [masterVolume, registerMasterVolume ] = useState<Gain>();
 	const [isConnected, setIsConnected] = useState(false);
 
 	useEffect(() => {
 		if (isConnected) return;
-		if (oscillators && envelope && filter && noise && reverb && chebyshev) {
+		if (oscillators && envelope && filter && noise && reverb && chebyshev && masterVolume) {
 			connect(oscillators, envelope);
 			connect(noise, envelope);
 			connect(envelope, chebyshev);
 			connect(chebyshev, filter);
 			connect(filter, reverb);
-			connect(reverb, Destination)
+			connect(reverb, masterVolume);
+			connect(masterVolume, Destination)
 
 			setIsConnected(true);
 			console.info("-> Tone connected")
 		}
 	}, [
+		masterVolume,
 		isConnected,
 		setIsConnected,
 		chebyshev,
@@ -50,16 +53,19 @@ export const Synthesizer = () => {
 		noise
 	]);
 
-
 	return (
 		<Container isVisible={showControls}>
-			<TransportControls />
-			<Oscillator register={registerOscillators} />
-			<Envelope register={registerEnvelope} />
-			<Filter register={registerFilter} />
-			<Noise register={registerNoise} />
-			<Reverb register={registerReverb} />
-			<Chebyshev register={registerChebyshev} />
+			<ControlsPane>
+				<Oscillator register={registerOscillators} />
+				<Envelope register={registerEnvelope} />
+			</ControlsPane>
+			<ControlsPane>
+				<TransportControls register={registerMasterVolume}/>
+				<Filter register={registerFilter} />
+				<Noise register={registerNoise} />
+				<Reverb register={registerReverb} />
+				<Chebyshev register={registerChebyshev} />
+			</ControlsPane>
 		</Container>
 	)
 }
