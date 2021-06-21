@@ -3,12 +3,9 @@ import { useFilter } from "./filter.hooks";
 import { useEffect, useState } from "react";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
+import { RegisteredComponent } from "../../synthesizer.types";
 
-type FilterProps = {
-	register: (component: FilterClass) => void;
-}
-
-export const Filter = ({ register }: FilterProps) => {
+export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	const filter = useFilter();
 	const [isRegistered, setRegistered] = useState(false);
 	const [frequency, setFrequency] = useState(4000);
@@ -26,7 +23,7 @@ export const Filter = ({ register }: FilterProps) => {
 
 	return (
 		<ControlsSection title="Filter">
-			<Knob label="Frequency" onChange={setFrequency} value={frequency} max={4000} step={40} normalRange={false} />
+			<Knob label="Frequency" onChange={setFrequency} value={frequency} max={20000} step={100} normalRange={false} />
 		</ControlsSection>
 	)
 }

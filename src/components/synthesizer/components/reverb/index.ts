@@ -1,0 +1,1 @@
+export { Reverb } from './reverb.component';

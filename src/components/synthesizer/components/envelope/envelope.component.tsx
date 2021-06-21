@@ -4,9 +4,9 @@ import { AmplitudeEnvelope } from "tone";
 import { useEnvelope } from "./envelope.hooks";
 import { useEffect, useState } from "react";
 import { NormalRange } from "tone/build/esm/core/type/Units";
+import { RegisteredComponent } from "../../synthesizer.types";
 
-type EnvelopeProps = {
-	register: (component: AmplitudeEnvelope) => void;
+type EnvelopeProps = RegisteredComponent<AmplitudeEnvelope> & {
 	triggerTime: number;
 }
 

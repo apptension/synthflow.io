@@ -7,7 +7,7 @@ type ContainerProps = {
 export const Container = styled.div<ContainerProps>`
   position: absolute;
   right: 0;
-  top: 30vh;
+  top: 10vh;
   margin-right: 10rem;
   transition: opacity 300ms;
   ${Transitions.Snappy};

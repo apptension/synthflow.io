@@ -7,8 +7,8 @@ type OscillatorHookProps = {
 	baseNote: string,
 	oscWave1: ToneOscillatorType,
 	oscWave2: ToneOscillatorType,
-	spread1: number,
-	spread2: number
+	detune1: number,
+	detune2: number
 }
 
 export const useOscillator = ({
@@ -16,8 +16,8 @@ export const useOscillator = ({
 	baseNote,
 	oscWave1,
 	oscWave2,
-	spread1,
-	spread2,
+	detune1,
+	detune2,
 	triggerTime
 }: OscillatorHookProps) => {
 	const oscillator1 = useRef<FatOscillator>();
@@ -26,8 +26,8 @@ export const useOscillator = ({
 	const signal = useRef<Signal<"frequency">>();
 
 	useEffect(() => {
-		oscillator1.current = new FatOscillator(0, 'sine', spread1).start();
-		oscillator2.current = new FatOscillator(0, 'sine', spread2).start();
+		oscillator1.current = new FatOscillator(0, 'sine', detune1).start();
+		oscillator2.current = new FatOscillator(0, 'sine', detune2).start();
 		compressor.current = new Compressor(-30, 3);
 
 		signal.current = new Signal<"frequency">({
@@ -52,22 +52,12 @@ export const useOscillator = ({
 	}, [frequency, triggerTime, signal])
 
 	useEffect(() => {
-		oscillator1.current?.set({ type: oscWave1 })
-	}, [oscWave1])
+		oscillator1.current?.set({ type: oscWave1, detune: detune1 })
+	}, [oscWave1, detune1])
 
 	useEffect(() => {
-		oscillator1.current?.set({ detune: spread1 })
-	}, [spread1])
-
-	useEffect(() => {
-		oscillator2.current?.set({ type: oscWave2 })
-	}, [oscWave2]);
-
-	useEffect(() => {
-		oscillator2.current?.set({ detune: spread2 })
-	}, [spread2]);
-
-
+		oscillator2.current?.set({ type: oscWave2, detune: detune2 })
+	}, [oscWave2, detune2]);
 
 	return compressor.current;
 }
