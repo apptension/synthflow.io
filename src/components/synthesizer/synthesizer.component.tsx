@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
 	AmplitudeEnvelope,
-	Compressor,
 	connect,
 	Destination,
 	Filter as FilterType, Freeverb,
@@ -15,33 +14,39 @@ import { Noise } from "./components/noise";
 import { Reverb } from "./components/reverb";
 import { Chebyshev } from "./components/chebyshev";
 import { TransportControls } from "./components/transportControls"
+import { Sequencer } from "../sequencer";
+import { useCompressor } from "./synthesizer.hooks";
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
-	const [oscillators, registerOscillators] = useState<Compressor>();
+	const [oscillators, registerOscillators] = useState<Gain>();
 	const [chebyshev, registerChebyshev] = useState<ChebyshevType>();
 	const [envelope, registerEnvelope] = useState<AmplitudeEnvelope>();
 	const [filter, registerFilter] = useState<FilterType>();
 	const [noise, registerNoise] = useState<Gain>();
 	const [reverb, registerReverb] = useState<Freeverb>();
-	const [masterVolume, registerMasterVolume ] = useState<Gain>();
+	const [masterVolume, registerMasterVolume] = useState<Gain>();
+	const compressor = useCompressor();
 	const [isConnected, setIsConnected] = useState(false);
+
 
 	useEffect(() => {
 		if (isConnected) return;
-		if (oscillators && envelope && filter && noise && reverb && chebyshev && masterVolume) {
+		if (oscillators && envelope && filter && noise && reverb && chebyshev && masterVolume && compressor) {
 			connect(oscillators, envelope);
 			connect(noise, envelope);
 			connect(envelope, chebyshev);
 			connect(chebyshev, filter);
 			connect(filter, reverb);
-			connect(reverb, masterVolume);
+			connect(reverb, compressor);
+			connect(compressor, masterVolume);
 			connect(masterVolume, Destination)
 
 			setIsConnected(true);
 			console.info("-> Tone connected")
 		}
 	}, [
+		compressor,
 		masterVolume,
 		isConnected,
 		setIsConnected,
@@ -60,12 +65,13 @@ export const Synthesizer = () => {
 				<Envelope register={registerEnvelope} />
 			</ControlsPane>
 			<ControlsPane>
-				<TransportControls register={registerMasterVolume}/>
+				<TransportControls register={registerMasterVolume} />
 				<Filter register={registerFilter} />
 				<Noise register={registerNoise} />
 				<Reverb register={registerReverb} />
 				<Chebyshev register={registerChebyshev} />
 			</ControlsPane>
+			<Sequencer />
 		</Container>
 	)
 }

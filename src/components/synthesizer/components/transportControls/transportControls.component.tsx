@@ -9,9 +9,11 @@ import { Gain } from "tone";
 import { useRegister } from "../../synthesizer.hooks";
 
 export const TransportControls = ({ register }: RegisteredComponent<Gain>) => {
-	const { toggleIsPlaying, isPlaying, bpm, setBpm } = useContext(TransportProvider.Context);
 	const masterVolume = useMasterVolume();
 	useRegister(register, masterVolume);
+
+	const { toggleIsPlaying, isPlaying, bpm, setBpm } = useContext(TransportProvider.Context);
+
 	const [volume, setVolume] = useState(1);
 
 	useEffect(() => {
@@ -25,8 +27,8 @@ export const TransportControls = ({ register }: RegisteredComponent<Gain>) => {
 
 	return (
 		<ControlsSection title="General">
-			<Checkbox isChecked={isPlaying} onChange={toggleIsPlaying} label="On/Off" />
-			<Knob label="BPM" onChange={setBpm} value={bpm} normalRange={false} max={250} min={30} />
+			<Checkbox label="On/Off" isChecked={isPlaying} onChange={toggleIsPlaying} />
+			<Knob label="BPM" onChange={setBpm} value={bpm} normalRange={false} max={350} min={30} />
 			<Knob label="Master volume" onChange={setVolume} value={volume} />
 		</ControlsSection>
 	)

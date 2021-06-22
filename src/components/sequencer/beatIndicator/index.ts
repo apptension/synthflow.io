@@ -1,0 +1,1 @@
+export { BeatIndicator } from "./beatIndicator.component";

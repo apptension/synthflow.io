@@ -1,28 +1,77 @@
 import { ControlsSection } from "../../../controlsSection";
 import { WaveTypeSelect } from "../../../waveTypeSelect";
 import { Knob } from "../../../knob";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
 import { useOscillator } from "./useOscillator.hooks";
-import { Compressor } from "tone";
+import { Gain } from "tone";
 import { RegisteredComponent } from "../../synthesizer.types";
-import { useRegister } from "../../synthesizer.hooks";
+import { useGain, useRegister } from "../../synthesizer.hooks";
+import { TransportProvider } from "../../../../providers";
+import { isNil } from "ramda";
 
-export const Oscillator = ({ register }: RegisteredComponent<Compressor>) => {
+export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	const [detune1, setDetune1] = useState(0);
 	const [detune2, setDetune2] = useState(0);
 	const [oscWave1, setOscWave1] = useState<WaveTypes>(WaveTypes.SIN);
 	const [oscWave2, setOscWave2] = useState<WaveTypes>(WaveTypes.SIN);
+	const [isConnected, setIsConnected] = useState(false);
+
+	const gain = useGain();
+
+	const { currentBeatNotes, triggerTime } = useContext(TransportProvider.Context);
+
 	const oscillator1 = useOscillator({
 		frequency: 0,
-		baseNote: "E2",
 		oscWave1,
 		oscWave2,
 		detune2,
 		detune1,
 	});
 
-	useRegister(register, oscillator1);
+	const oscillator2 = useOscillator({
+		frequency: 0,
+		oscWave1,
+		oscWave2,
+		detune2,
+		detune1,
+	});
+
+	const oscillator3 = useOscillator({
+		frequency: 0,
+		oscWave1,
+		oscWave2,
+		detune2,
+		detune1,
+	});
+
+	useEffect(() => {
+		if (isConnected || !gain || !oscillator1 || !oscillator2 || !oscillator3) return;
+
+		oscillator1.gain?.connect(gain);
+		oscillator2.gain?.connect(gain);
+		oscillator3.gain?.connect(gain);
+		setIsConnected(true);
+	}, [gain, isConnected, oscillator1, oscillator2, oscillator3])
+
+	useEffect(() => {
+		const voices = [oscillator1, oscillator2, oscillator3];
+
+		voices.forEach((voice, index) => {
+			const noteVoice = currentBeatNotes[index]
+			if (isNil(noteVoice)) {
+				voice?.gain?.gain.setValueAtTime(0, triggerTime)
+			} else {
+				voice?.gain?.gain.setValueAtTime(1, triggerTime)
+				voice.signal?.setValueAtTime(noteVoice + "2", triggerTime)
+			}
+		})
+
+		// should run on beat note change
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [currentBeatNotes, triggerTime])
+
+	useRegister(register, gain);
 
 	return (
 		<>

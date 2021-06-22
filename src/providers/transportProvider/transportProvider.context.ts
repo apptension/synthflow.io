@@ -6,5 +6,8 @@ export const TransportContext = createContext<TransportContextType>({
 	isPlaying: false,
 	toggleIsPlaying: () => undefined,
 	bpm: 90,
-	setBpm: () => undefined
+	setBpm: () => undefined,
+	currentBeat: 0,
+	currentBeatNotes: [null, null, null],
+	setCurrentBeatNotes: () => undefined
 })
