@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { FatOscillator, Signal, ToneOscillatorType, Gain } from "tone";
 
 type OscillatorHookProps = {
-	frequency: number,
 	oscWave1: ToneOscillatorType,
 	oscWave2: ToneOscillatorType,
 	detune1: number,
@@ -15,6 +14,7 @@ export const useOscillator = ({
 	detune1,
 	detune2,
 }: OscillatorHookProps) => {
+	// const { triggerTime } = useContext(TransportProvider.Context);
 
 	const oscillator1 = useRef<FatOscillator>();
 	const oscillator2 = useRef<FatOscillator>();
@@ -22,9 +22,14 @@ export const useOscillator = ({
 	const signal = useRef<Signal<"frequency">>();
 
 	useEffect(() => {
-		oscillator1.current = new FatOscillator(0, "sine", detune1).start();
-		oscillator2.current = new FatOscillator(0, "sine", detune2).start();
+		oscillator1.current = new FatOscillator(0, oscWave1, detune1).start();
+		oscillator2.current = new FatOscillator(0, oscWave2, detune2).start();
 		gain.current = new Gain(1);
+
+		signal.current = new Signal<"frequency">({
+			value: 'C1',
+			units: "frequency"
+		})
 
 		signal.current?.connect(oscillator1.current?.frequency);
 		signal.current?.connect(oscillator2.current?.frequency);
@@ -44,5 +49,5 @@ export const useOscillator = ({
 		oscillator2.current?.set({ type: oscWave2, detune: detune2 })
 	}, [oscWave2, detune2]);
 
-	return { gain: gain.current, signal: signal.current };
+	return { gain: gain.current, signal: signal.current};
 }

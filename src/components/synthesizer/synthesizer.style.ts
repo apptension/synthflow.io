@@ -6,7 +6,10 @@ type ContainerProps = {
 }
 export const Container = styled.div<ContainerProps>`
   position: absolute;
-	display: flex;
+	display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+	grid-template-areas: "synth-controls-left synth-controls-right" "sequencer sequencer";
   right: 0;
   top: 10vh;
   margin-right: 10rem;
@@ -19,6 +22,11 @@ export const Container = styled.div<ContainerProps>`
   `}
 `;
 
-export const ControlsPane = styled.div`
+export const ControlsPaneLeft = styled.div`
+	grid-area: synth-controls-left;
 	width: 30rem;
+`;
+
+export const ControlsPaneRight = styled(ControlsPaneLeft)`
+	grid-area: synth-controls-right;
 `;

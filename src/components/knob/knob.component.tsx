@@ -45,12 +45,12 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 		handleChange(value + normalizedDiff * -1);
 	}, [isDragging, dragOffset, handleChange, value, normalRange])
 
-	const handleDragChange = (event: MouseEvent | any, value: boolean) => {
+	const handleDragChange = useCallback((event: MouseEvent | any, value: boolean) => {
 		document.body.style.cursor = value ? "ew-resize" : "default";
 
 		setDragOffset(0);
 		setIsDragging(value);
-	}
+	}, [setDragOffset, setIsDragging])
 
 	useEffect(() => {
 		document.addEventListener("mouseup", (event) => handleDragChange(event, false), false);
@@ -60,7 +60,7 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 			document.removeEventListener("mouseup", (event) => handleDragChange(event, false), false);
 			document.removeEventListener("mousemove", onDrag, false);
 		}
-	}, [onDrag])
+	}, [handleDragChange, onDrag])
 
 	return (
 		<Container>

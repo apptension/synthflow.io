@@ -7,7 +7,7 @@ import {
 	Gain,
 	Chebyshev as ChebyshevType
 } from "tone";
-import { Container, ControlsPane } from "./synthesizer.style"
+import { Container, ControlsPaneLeft, ControlsPaneRight } from "./synthesizer.style"
 import { AppSettingsProvider } from "../../providers";
 import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
@@ -60,17 +60,17 @@ export const Synthesizer = () => {
 
 	return (
 		<Container isVisible={showControls}>
-			<ControlsPane>
+			<ControlsPaneLeft>
 				<Oscillator register={registerOscillators} />
 				<Envelope register={registerEnvelope} />
-			</ControlsPane>
-			<ControlsPane>
+			</ControlsPaneLeft>
+			<ControlsPaneRight>
 				<TransportControls register={registerMasterVolume} />
 				<Filter register={registerFilter} />
 				<Noise register={registerNoise} />
 				<Reverb register={registerReverb} />
 				<Chebyshev register={registerChebyshev} />
-			</ControlsPane>
+			</ControlsPaneRight>
 			<Sequencer />
 		</Container>
 	)

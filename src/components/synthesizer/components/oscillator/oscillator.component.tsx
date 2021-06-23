@@ -22,7 +22,6 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	const { currentBeatNotes, triggerTime } = useContext(TransportProvider.Context);
 
 	const oscillator1 = useOscillator({
-		frequency: 0,
 		oscWave1,
 		oscWave2,
 		detune2,
@@ -30,7 +29,6 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	});
 
 	const oscillator2 = useOscillator({
-		frequency: 0,
 		oscWave1,
 		oscWave2,
 		detune2,
@@ -38,7 +36,6 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	});
 
 	const oscillator3 = useOscillator({
-		frequency: 0,
 		oscWave1,
 		oscWave2,
 		detune2,
@@ -58,12 +55,13 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 		const voices = [oscillator1, oscillator2, oscillator3];
 
 		voices.forEach((voice, index) => {
-			const noteVoice = currentBeatNotes[index]
+			const noteVoice = currentBeatNotes[index];
+
 			if (isNil(noteVoice)) {
 				voice?.gain?.gain.setValueAtTime(0, triggerTime)
 			} else {
 				voice?.gain?.gain.setValueAtTime(1, triggerTime)
-				voice.signal?.setValueAtTime(noteVoice + "2", triggerTime)
+				voice.signal?.setValueAtTime(noteVoice , triggerTime)
 			}
 		})
 

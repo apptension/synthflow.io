@@ -16,5 +16,6 @@ export const ShowControlsButton = styled.button<ShowControlsButtonProps>`
 `;
 
 export const Logo = styled.img`
+	height: 3rem;
   margin: 1rem 0;
 `;

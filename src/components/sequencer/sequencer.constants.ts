@@ -1,16 +1,54 @@
 import { NoteType } from "./noteInput/noteInput.component";
 
-export const AVAILABLE_VOICES = 3;
+export const OCTAVES = [0, 1, 2, 3, 4, 5];
 
-const createEmptyNotesMatrix = () => {
-	let noteMatrix: Array<Array<NoteType | null>> = [];
-	for (let i = 0; i < 8; i++) {
-		let beat = [];
-		for (let j = 0; j < AVAILABLE_VOICES; j++) {
-			beat.push(null);
-		}
-		noteMatrix.push(beat);
+export const SEQUENCER_PATTERNS: Record<string,
+	{
+		label: string,
+		octaves: Array<string>,
+		pattern: Array<Array<NoteType | null>>
+	}> = {
+	CREEPY: {
+		label: "Creepy",
+		octaves: ["2", "1", "0"],
+		pattern: [
+			["F#", null, "B"],
+			[null, "F#", "A#"],
+			["D", null, "B"],
+			[null, "C#", "A#"],
+			[null, "G", "B"],
+			["D#", null, "A#"],
+			[null, "A#", "B"],
+			[null, "C#", "A#"]
+		]
+	},
+	COOL: {
+		label: "Cool",
+		octaves: ["0", "1", "2"],
+		pattern: [
+			["B", null, "B"],
+			[null, "A", null],
+			["E", null, "B"],
+			["F#", null, null],
+			["B", null, "B"],
+			[null, "F#", null],
+			[null, null, "F#"],
+			[null, "C#", null]
+		]
+	},
+	CUSTOM: {
+		label: "Custom",
+		octaves: ["0", "1", "2"],
+		pattern: [
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+			[null, null, null],
+		]
 	}
-	return noteMatrix;
 }
-export const EMPTY_NOTES_MATRIX = createEmptyNotesMatrix();
+

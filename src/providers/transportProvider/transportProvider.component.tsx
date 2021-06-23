@@ -2,7 +2,6 @@ import { TransportContext } from "./transportProvider.context"
 import { ReactNode, useEffect, useState } from "react";
 import { not } from "ramda";
 import { Loop, start, Transport } from "tone";
-import { NoteType } from "../../components/sequencer/noteInput/noteInput.component";
 
 type TransportProviderProps = {
 	children: ReactNode;
@@ -13,7 +12,7 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 	const [triggerTime, setTriggerTime] = useState(0);
 	const [currentBeat, setCurrentBeat] = useState(0);
 	const [bpm, setBpm] = useState(90);
-	const [currentBeatNotes, setCurrentBeatNotes] = useState<Array<NoteType | null>>([null, null, null])
+	const [currentBeatNotes, setCurrentBeatNotes] = useState<Array<string | null>>([null, null, null])
 
 	useEffect(() => {
 		if (isPlaying) {
