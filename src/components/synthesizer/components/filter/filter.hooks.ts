@@ -7,7 +7,7 @@ export const useFilter = () => {
 	useEffect(() => {
 		filter.current = new Filter({
 			frequency: 0,
-			rolloff: -12
+			rolloff: -24,
 		})
 	}, [])
 

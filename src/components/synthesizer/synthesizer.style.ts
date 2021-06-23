@@ -11,7 +11,7 @@ export const Container = styled.div<ContainerProps>`
   grid-template-rows: auto;
 	grid-template-areas: "synth-controls-left synth-controls-right" "sequencer sequencer";
   right: 0;
-  top: 10vh;
+  top: 6vh;
   margin-right: 10rem;
   transition: opacity 300ms;
   ${Transitions.Snappy};

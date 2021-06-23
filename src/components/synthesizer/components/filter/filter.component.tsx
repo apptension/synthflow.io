@@ -10,7 +10,7 @@ export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	const filter = useFilter();
 	useRegister(register, filter);
 
-	const [frequency, setFrequency] = useState(4000);
+	const [frequency, setFrequency] = useState(8000);
 
 	useEffect(() => {
 		filter?.set({ frequency })

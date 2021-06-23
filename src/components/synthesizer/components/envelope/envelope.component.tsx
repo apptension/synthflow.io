@@ -11,10 +11,10 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 	const envelope = useEnvelope();
 	useRegister(register, envelope);
 
-	const [attack, setAttack] = useState<NormalRange>(0);
-	const [release, setRelease] = useState<NormalRange>(0);
-	const [sustain, setSustain] = useState<NormalRange>(0);
-	const [decay, setDecay] = useState<NormalRange>(0);
+	const [attack, setAttack] = useState<NormalRange>(0.2);
+	const [release, setRelease] = useState<NormalRange>(0.1);
+	const [sustain, setSustain] = useState<NormalRange>(0.2);
+	const [decay, setDecay] = useState<NormalRange>(0.5);
 
 	useEffect(() => {
 		envelope?.set({
@@ -26,7 +26,7 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 
 		// should run on config values change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [attack, release, sustain, decay]);
+	}, [envelope, attack, release, sustain, decay]);
 
 	return (
 		<ControlsSection title="Envelope">

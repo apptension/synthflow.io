@@ -29,6 +29,7 @@ export const Input = styled.input`
   margin-left: 1.1rem;
   padding-right: 0.4rem;
   border-radius: 4px;
+  padding-bottom: 0;
   border: none;
   color: ${ThemeColor.WHITE};
   font-size: 1.6rem;
@@ -36,9 +37,8 @@ export const Input = styled.input`
   background-color: ${Color(ThemeColor.BLACK).alpha(0.2).toString()};
   text-align: right;
   outline: none;
-  width: 5rem;
-  height: 2rem;
-
+  width: 6rem;
+  height: 2.3rem;
 
   ::-webkit-inner-spin-button {
     display: none;

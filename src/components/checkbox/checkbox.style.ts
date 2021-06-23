@@ -31,8 +31,8 @@ export const Indicator = styled.span`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: .7rem;
-    height: .7rem;
+    width: .8rem;
+    height: .8rem;
     border-radius: 50%;
     background-color: ${Color.WHITE};
     opacity: 0;
