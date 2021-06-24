@@ -19,5 +19,3 @@ export const Container = styled.div<ContainerProps>`
     width: 100%;
   `}
 `;
-
-export const MorphMock = styled.img``;

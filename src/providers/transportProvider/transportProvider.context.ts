@@ -9,5 +9,9 @@ export const TransportContext = createContext<TransportContextType>({
 	setBpm: () => undefined,
 	currentBeat: 0,
 	currentBeatNotes: [null, null, null],
-	setCurrentBeatNotes: () => undefined
+	setCurrentBeatNotes: () => undefined,
+	envelopeRef: undefined,
+	setEnvelopeRef: () => undefined,
+	analyserRef: undefined,
+	meterRef: undefined,
 })

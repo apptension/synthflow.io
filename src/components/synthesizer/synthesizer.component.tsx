@@ -8,7 +8,7 @@ import {
 	Chebyshev as ChebyshevType
 } from "tone";
 import { Container, ControlsPaneLeft, ControlsPaneRight } from "./synthesizer.style"
-import { AppSettingsProvider } from "../../providers";
+import { AppSettingsProvider, TransportProvider } from "../../providers";
 import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
 import { Reverb } from "./components/reverb";
@@ -19,6 +19,7 @@ import { useCompressor } from "./synthesizer.hooks";
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
+	const { analyserRef: analyser, meterRef: meter } = useContext(TransportProvider.Context);
 	const [oscillators, registerOscillators] = useState<Gain>();
 	const [chebyshev, registerChebyshev] = useState<ChebyshevType>();
 	const [envelope, registerEnvelope] = useState<AmplitudeEnvelope>();
@@ -32,20 +33,35 @@ export const Synthesizer = () => {
 
 	useEffect(() => {
 		if (isConnected) return;
-		if (oscillators && envelope && filter && noise && reverb && chebyshev && masterVolume && compressor) {
-			connect(oscillators, envelope);
-			connect(noise, envelope);
-			connect(envelope, chebyshev);
-			connect(chebyshev, filter);
-			connect(filter, reverb);
-			connect(reverb, compressor);
-			connect(compressor, masterVolume);
-			connect(masterVolume, Destination)
+		if (!(
+			oscillators &&
+			envelope &&
+			filter &&
+			noise &&
+			reverb &&
+			chebyshev &&
+			masterVolume &&
+			compressor &&
+			analyser &&
+			meter
+		)) return;
 
-			setIsConnected(true);
-			console.info("-> Tone connected")
-		}
+		connect(oscillators, envelope);
+		connect(noise, envelope);
+		connect(envelope, chebyshev);
+		connect(chebyshev, filter);
+		connect(filter, reverb);
+		connect(reverb, compressor);
+		connect(compressor, masterVolume);
+		connect(masterVolume, analyser);
+		connect(masterVolume, meter);
+		connect(masterVolume, Destination)
+
+		setIsConnected(true);
+		console.info("-> Tone connected")
 	}, [
+		meter,
+		analyser,
 		compressor,
 		masterVolume,
 		isConnected,

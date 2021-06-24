@@ -4,7 +4,7 @@ import { TransportProvider } from "../../../../providers";
 
 export const useEnvelope = () => {
 	const envelope = useRef<AmplitudeEnvelope>();
-	const { triggerTime } = useContext(TransportProvider.Context);
+	const { triggerTime, setEnvelopeRef } = useContext(TransportProvider.Context);
 
 	useEffect(() => {
 		envelope.current = new AmplitudeEnvelope({
@@ -15,6 +15,11 @@ export const useEnvelope = () => {
 			attackCurve: "exponential",
 			decayCurve: "exponential"
 		})
+
+		setEnvelopeRef(envelope.current)
+
+		// should run only on mount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	useEffect(() => {
