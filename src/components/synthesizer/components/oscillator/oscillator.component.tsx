@@ -1,7 +1,7 @@
 import { ControlsSection } from "../../../controlsSection";
 import { WaveTypeSelect } from "../../../waveTypeSelect";
 import { Knob } from "../../../knob";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
 import { useOscillator } from "./useOscillator.hooks";
 import { Gain } from "tone";
@@ -61,7 +61,7 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 				voice?.gain?.gain.setValueAtTime(0, triggerTime)
 			} else {
 				voice?.gain?.gain.setValueAtTime(1, triggerTime)
-				voice.signal?.setValueAtTime(noteVoice , triggerTime)
+				voice.signal?.setValueAtTime(noteVoice, triggerTime)
 			}
 		})
 
@@ -71,7 +71,7 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 
 	useRegister(register, gain);
 
-	return (
+	return useMemo(() => (
 		<>
 			<ControlsSection title="Oscillator 1">
 				<WaveTypeSelect label="Wave form" onChange={setOscWave1} value={oscWave1} />
@@ -82,5 +82,5 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 				<Knob label="Detune" max={2000} onChange={setDetune2} value={detune2} step={40} normalRange={false} />
 			</ControlsSection>
 		</>
-	)
+	), [oscWave1, oscWave2, detune1, detune2])
 }

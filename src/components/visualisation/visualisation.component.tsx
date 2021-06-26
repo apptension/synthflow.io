@@ -1,5 +1,5 @@
 import { Container } from "./visualisation.style"
-import { useContext, useRef } from "react";
+import { useContext, useMemo, useRef } from "react";
 import { AppSettingsProvider } from "../../providers";
 import { useRenderer } from "./visualisation.hooks";
 
@@ -8,7 +8,7 @@ export const Visualisation = () => {
 	const mountRef = useRef<HTMLDivElement>(null);
 	useRenderer(mountRef);
 
-	return (
+	return useMemo(() => (
 		<Container hasFullWidth={!showControls} ref={mountRef} />
-	)
+	), [showControls])
 }

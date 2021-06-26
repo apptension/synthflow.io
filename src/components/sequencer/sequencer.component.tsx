@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { clone, isNil } from "ramda";
 import {
 	BeatContainer,
@@ -41,7 +41,7 @@ export const Sequencer = () => {
 		setOctaves(octaves)
 	}, [currentPreset])
 
-	return (
+	return useMemo(() => (
 		<Container>
 			<ControlsSection title="Sequencer">
 				<PresetsContainer>
@@ -60,7 +60,7 @@ export const Sequencer = () => {
 							<Label>Voice 3</Label>
 						</LabelsContainer>
 						<GridContainer>
-							<BeatIndicator currentBeat={currentBeat} />
+							<BeatIndicator />
 							<NotesGrid>
 								{notesMatrix.map((beat, beatIndex) =>
 									<BeatContainer key={`beat-${beatIndex}`}>
@@ -103,5 +103,5 @@ export const Sequencer = () => {
 				</Controls>
 			</ControlsSection>
 		</Container>
-	)
+	 ), [notesMatrix, octaves, currentPreset])
 }

@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   ::selection {
     background: ${Color.HIGHLIGHT} /* WebKit/Blink Browsers */
   }
+
   ::-moz-selection {
     background: ${Color.HIGHLIGHT} /* Gecko Browsers */
   }

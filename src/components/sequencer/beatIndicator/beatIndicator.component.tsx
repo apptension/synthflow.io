@@ -1,12 +1,12 @@
+import { useContext } from "react";
 import { Container, Indicator } from "./beatIndicator.style";
-
-type BeatIndicatorProps = {
-	currentBeat: number;
-}
+import { TransportProvider } from "../../../providers";
 
 const BEATS = Array.from(new Array(8), () => "");
 
-export const BeatIndicator = ({ currentBeat }: BeatIndicatorProps) => {
+export const BeatIndicator = () => {
+	const { currentBeat } = useContext(TransportProvider.Context);
+
 	return (
 		<Container>
 			{BEATS.map((beat, index) => (

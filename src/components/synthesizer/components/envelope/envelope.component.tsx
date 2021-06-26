@@ -2,7 +2,7 @@ import { Knob } from "../../../knob";
 import { ControlsSection } from "../../../controlsSection";
 import { AmplitudeEnvelope } from "tone";
 import { useEnvelope } from "./envelope.hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
@@ -28,12 +28,17 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [envelope, attack, release, sustain, decay]);
 
-	return (
-		<ControlsSection title="Envelope">
-			<Knob label="Attack" onChange={setAttack} value={attack} />
-			<Knob label="Release" onChange={setRelease} value={release} />
-			<Knob label="Sustain" onChange={setSustain} value={sustain} />
-			<Knob label="Decay" onChange={setDecay} value={decay} />
-		</ControlsSection>
-	)
+	return useMemo((() =>
+			(
+				<ControlsSection title="Envelope">
+					<Knob label="Attack" onChange={setAttack} value={attack} />
+					<Knob label="Release" onChange={setRelease} value={release} />
+					<Knob label="Sustain" onChange={setSustain} value={sustain} />
+					<Knob label="Decay" onChange={setDecay} value={decay} />
+				</ControlsSection>
+			)
+	), [attack,
+		release,
+		sustain,
+		decay])
 }

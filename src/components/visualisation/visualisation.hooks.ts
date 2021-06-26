@@ -1,20 +1,35 @@
 import { RefObject, useContext, useEffect, useRef } from "react";
 import * as Three from "three"
 import { AmplitudeEnvelope, Analyser, Meter } from "tone";
-import { clamp } from "ramda";
+import { complement, isNil } from "ramda";
 import { TransportProvider } from "../../providers";
-import { fragmentShader } from "./shaders";
+import { fragmentShader, vertexShader } from "./shaders";
+import gsap from "gsap";
+import { ConfigType } from "../../providers/transportProvider/transportProvider.types";
 
 export const useRenderer = (mount: RefObject<HTMLElement>) => {
-	const { isPlaying, envelopeRef, analyserRef, meterRef } = useContext(TransportProvider.Context);
+	const {
+		isPlaying,
+		bpm,
+		envelopeRef,
+		analyserRef,
+		meterRef,
+		config: synthConfig,
+		currentBeatNotes
+	} = useContext(TransportProvider.Context);
 
 	const analyser = useRef<Analyser>();
 	const meter = useRef<Meter>();
 	const envelope = useRef<AmplitudeEnvelope>();
 	const config = useRef<{
-		isPlaying: boolean;
-	}>({
-		isPlaying,
+		isPlaying: number;
+		bpm: number;
+		zoom: number;
+	} & ConfigType>({
+		isPlaying: Number(isPlaying),
+		bpm,
+		zoom: 5,
+		...synthConfig
 	});
 	const materialRef = useRef<Three.ShaderMaterial>();
 
@@ -44,51 +59,99 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const scene = new Three.Scene();
 		const camera = new Three.PerspectiveCamera(75, width / height, 0.1, 1000);
 		const renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
-		const sphereGeometry = new Three.SphereBufferGeometry(2, 128, 128);
+		const sphereGeometry = new Three.SphereBufferGeometry(1, 240, 240);
+		const ambientLights = new Three.HemisphereLight(0xFFFFFF, 0x000000, 1);
+		let animationFrameId = 0;
+		const pointLight = new Three.PointLight(0xffffff, 1);
+		scene.add(ambientLights);
+		scene.add(pointLight);
 
-		materialRef.current = new Three.ShaderMaterial({
-			extensions: {
-				derivatives: true
-			},
-			side: Three.DoubleSide,
-			uniforms: {
+		const uniforms = Three.UniformsUtils.merge([
+
+			Three.UniformsLib["lights"],
+			{
+
 				u_time: { value: 0 },
 				u_resolution: new Three.Uniform(new Three.Vector4()),
 				u_uvRate1: new Three.Uniform(new Three.Vector2(1, 1)),
 				u_envelope: { value: 0 },
-				u_meter: { value: 0 }
-			},
-			// vertexShader,
-			fragmentShader
+				u_pointscale: { value: 0 },
+				u_decay: { value: 1 },
+				u_complex: { value: 0.5 },
+				u_waves: { value: 6.0 },
+				u_eqcolor: { value: 0.2 },
+				u_bpm: { value: bpm },
+				u_isPlaying: { value: 0 },
+				u_noise: { value: 0 },
+				u_chebyshev: { value: 0 },
+				u_masterVolume: { value: 0 },
+			}
+		]);
+
+		materialRef.current = new Three.ShaderMaterial({
+			uniforms,
+			// wireframe: true,
+			vertexShader,
+			fragmentShader,
+			lights: true
 		})
 
 		const mesh = new Three.Mesh(sphereGeometry, materialRef.current);
 
 		renderer.setSize(width, height)
 		scene.add(mesh);
-		camera.position.z = 4
+		camera.position.z = config.current.zoom;
+
 		mount.current.appendChild(renderer.domElement);
+		const FPS = 25;
+		let clock = new Three.Clock();
+		let delta = 0;
+		let interval = 1 / FPS;
 
-		const render = () => {
-			const material = materialRef.current;
-			if (!material) return;
+		function render(){
+			animationFrameId = requestAnimationFrame(render);
+			delta += clock.getDelta();
 
-			material.uniforms.u_time.value += 0.05;
-			material.uniforms.u_envelope.value = envelope.current?.value ?? 0;
-			material.uniforms.u_meter.value = clamp(-20, 3, meter.current?.getValue()) ?? 0;
-			renderer.render(scene, camera)
-			requestAnimationFrame(render);
+			if (delta > interval) {
+				const material = materialRef.current;
+				if (!material) return;
+				material.uniforms.u_time.value += 0.05;
+
+				if (camera.position.z !== config.current.zoom - config.current.chebyshev / 20) {
+					camera.position.z = config.current.zoom - config.current.chebyshev / 20;
+				}
+				if (material.uniforms.u_chebyshev.value !== config.current.chebyshev) {
+					material.uniforms.u_chebyshev.value = config.current.chebyshev;
+				}
+				if (material.uniforms.u_masterVolume.value !== config.current.masterVolume) {
+					material.uniforms.u_masterVolume.value = config.current.masterVolume;
+				}
+				if (material.uniforms.u_bpm.value !== config.current.bpm) {
+					material.uniforms.u_bpm.value = config.current.bpm;
+				}
+				if (material.uniforms.u_isPlaying.value !== config.current.isPlaying) {
+					material.uniforms.u_isPlaying.value = config.current.isPlaying
+				}
+
+				if (material.uniforms.u_envelope.value !== envelope.current?.value) {
+					material.uniforms.u_envelope.value = envelope.current?.value ?? 0;
+				}
+				renderer.render(scene, camera)
+
+				delta = delta % interval;
+			}
 		}
 
-		requestAnimationFrame(render)
+		animationFrameId = requestAnimationFrame(render)
 
 		return () => {
 			if (!mountElement) return;
-
-			mountElement.removeChild(renderer.domElement);
 			scene.remove(mesh);
 			sphereGeometry.dispose();
 			materialRef?.current?.dispose();
+			cancelAnimationFrame(animationFrameId);
+
+			mountElement.removeChild(renderer.domElement);
 		}
 
 		// should run only on mount
@@ -96,6 +159,29 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	}, [])
 
 	useEffect(() => {
-		config.current.isPlaying = isPlaying;
+		gsap.to(config.current, {
+			isPlaying: Number(isPlaying),
+			duration: 2,
+			ease: "expo.out"
+		});
+		// config.current.isPlaying = isPlaying;
 	}, [isPlaying]);
+
+	useEffect(() => {
+		config.current.bpm = bpm;
+	}, [bpm]);
+
+	useEffect(() => {
+		gsap.to(config.current, {
+			isPlaying: currentBeatNotes.some(complement(isNil)),
+			duration: 0.75,
+			ease: "power3.out"
+		});
+	}, [currentBeatNotes])
+
+	useEffect(() => {
+		config.current.masterVolume = synthConfig.masterVolume;
+		config.current.chebyshev = synthConfig.chebyshev;
+		config.current.noise = synthConfig.chebyshev;
+	}, [synthConfig]);
 }

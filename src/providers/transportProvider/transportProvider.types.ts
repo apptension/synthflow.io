@@ -1,6 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import { AmplitudeEnvelope, Analyser, Meter } from "tone";
 
+export type ConfigType = {
+	chebyshev: number,
+	noise: number,
+	masterVolume: number
+}
+
 export type TransportContextType = {
 	isPlaying: boolean;
 	triggerTime: number;
@@ -14,4 +20,6 @@ export type TransportContextType = {
 	setEnvelopeRef: Dispatch<SetStateAction<AmplitudeEnvelope| undefined>>;
 	analyserRef: Analyser | undefined;
 	meterRef: Meter | undefined;
+	config: ConfigType;
+	setConfig: Dispatch<SetStateAction<ConfigType>>;
 }

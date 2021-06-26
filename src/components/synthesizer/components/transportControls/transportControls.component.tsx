@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { TransportProvider } from "../../../../providers";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
@@ -12,24 +12,31 @@ export const TransportControls = ({ register }: RegisteredComponent<Gain>) => {
 	const masterVolume = useMasterVolume();
 	useRegister(register, masterVolume);
 
-	const { toggleIsPlaying, isPlaying, bpm, setBpm } = useContext(TransportProvider.Context);
+	const { toggleIsPlaying, isPlaying, bpm, setBpm, setConfig } = useContext(TransportProvider.Context);
 
 	const [volume, setVolume] = useState(1);
 
 	useEffect(() => {
 		masterVolume?.set({
 			gain: volume
-		})
+		});
+
+		setConfig(state => ({
+			...state,
+			masterVolume: volume
+		}))
 
 		// should run on config values change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [volume])
 
-	return (
+	return useMemo(() => (
 		<ControlsSection title="General">
 			<Checkbox label="On/Off" isChecked={isPlaying} onChange={toggleIsPlaying} />
 			<Knob label="BPM" onChange={setBpm} value={bpm} normalRange={false} max={350} min={30} />
 			<Knob label="Master volume" onChange={setVolume} value={volume} />
 		</ControlsSection>
-	)
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	), [isPlaying, bpm, volume])
 }

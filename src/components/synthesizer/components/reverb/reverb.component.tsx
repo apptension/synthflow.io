@@ -1,7 +1,7 @@
-import { RegisteredComponent } from "../../synthesizer.types";
+import { useEffect, useMemo, useState } from "react";
 import { Freeverb } from "tone";
+import { RegisteredComponent } from "../../synthesizer.types";
 import { useReverb } from "./reverb.hooks";
-import { useEffect, useState } from "react";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
 import { useRegister } from "../../synthesizer.hooks";
@@ -21,10 +21,10 @@ export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [room]);
 
-	return (
+	return useMemo(() => (
 		<ControlsSection title="Reverb">
 			<Knob label="Room" onChange={setRoom} value={room} />
 		</ControlsSection>
-	)
+	), [room])
 }
 
