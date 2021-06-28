@@ -198,6 +198,7 @@ uniform float u_eqcolor;
 uniform bool u_fragment;
 uniform float u_bpm;
 uniform float u_isPlaying;
+uniform float u_noise;
 
 float turbulence(vec3 p) {
     float t = - 0.1;
@@ -213,14 +214,19 @@ void main() {
     float envelope = clamp(u_envelope, .2, 1.) * 2.;
 
     vUv = uv;
-    vecPos = (modelViewMatrix * vec4(position, 1.0)).xyz;
-    vecNormal = (modelViewMatrix * vec4(normal, 0.0)).xyz;
+    vecPos = (modelViewMatrix * vec4(sin(position), 1.0)).xyz;
+    vecNormal = (modelViewMatrix * vec4(normal * 1.056, 0.)).xyz;
 
-    noise = (u_masterVolume * u_isPlaying * 1.0 *  - u_waves * (1. + fract(exp((envelope / 8.5))))) * turbulence(u_decay * abs(normal + (time / 100.)));
-    qnoise = (2.0 *  - u_eqcolor) * turbulence(u_decay * abs(normal + (time / 100.)));
-    float b = pnoise(u_complex * (position) + vec3(1.0 * time), vec3(100.0));
+    noise = (u_masterVolume * u_isPlaying * 1.0 *  - u_waves * (1. + fract(exp((envelope / 4.5))))) * turbulence(u_decay * abs(normal + (time / 100.)));
+    float b = pnoise(u_noise * (100. + fract(exp((envelope / 7.5)))) * (exp(vecPos)) + vec3(1.0 * time), vec3(100.0));
 
-    displacement = -sin(noise) + cos(exp(qnoise));
+    if (u_noise > 0.) {
+        qnoise = (2.0* fract(exp((envelope / 7.5)))) * turbulence(u_decay * abs(normal + (time / 100.)));
+        displacement = -sin(noise) + cos(exp(qnoise))- tan(qnoise * b);
+    } else {
+        qnoise = (2.0 *  - u_eqcolor) * turbulence(u_decay * abs(normal + (time / 100.)));
+        displacement = -sin(noise) + cos(exp(qnoise));
+    }
 
     vec3 newPosition = (position) + (normal * displacement);
     gl_Position = (projectionMatrix * modelViewMatrix) * vec4(newPosition, 1.0);

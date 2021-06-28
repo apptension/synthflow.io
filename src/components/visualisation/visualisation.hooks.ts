@@ -59,7 +59,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const scene = new Three.Scene();
 		const camera = new Three.PerspectiveCamera(75, width / height, 0.1, 1000);
 		const renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
-		const sphereGeometry = new Three.SphereBufferGeometry(1, 240, 240);
+		const sphereGeometry = new Three.SphereBufferGeometry(1, 360, 360);
 		const ambientLights = new Three.HemisphereLight(0xFFFFFF, 0x000000, 1);
 		let animationFrameId = 0;
 		const pointLight = new Three.PointLight(0xffffff, 1);
@@ -129,6 +129,9 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (material.uniforms.u_bpm.value !== config.current.bpm) {
 					material.uniforms.u_bpm.value = config.current.bpm;
 				}
+				if (material.uniforms.u_noise.value !== config.current.noise) {
+					material.uniforms.u_noise.value = config.current.noise;
+				}
 				if (material.uniforms.u_isPlaying.value !== config.current.isPlaying) {
 					material.uniforms.u_isPlaying.value = config.current.isPlaying
 				}
@@ -159,29 +162,20 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	}, [])
 
 	useEffect(() => {
-		gsap.to(config.current, {
-			isPlaying: Number(isPlaying),
-			duration: 2,
-			ease: "expo.out"
-		});
-		// config.current.isPlaying = isPlaying;
-	}, [isPlaying]);
-
-	useEffect(() => {
 		config.current.bpm = bpm;
 	}, [bpm]);
 
 	useEffect(() => {
 		gsap.to(config.current, {
-			isPlaying: currentBeatNotes.some(complement(isNil)),
-			duration: 0.75,
+			isPlaying: isPlaying && currentBeatNotes.some(complement(isNil)),
+			duration: 0.4,
 			ease: "power3.out"
 		});
-	}, [currentBeatNotes])
+	}, [currentBeatNotes, isPlaying])
 
 	useEffect(() => {
 		config.current.masterVolume = synthConfig.masterVolume;
 		config.current.chebyshev = synthConfig.chebyshev;
-		config.current.noise = synthConfig.chebyshev;
+		config.current.noise = synthConfig.noise;
 	}, [synthConfig]);
 }
