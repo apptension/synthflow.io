@@ -1,14 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Freeverb } from "tone";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useReverb } from "./reverb.hooks";
 import { ControlsSection } from "../../../controlsSection";
 import { Knob } from "../../../knob";
 import { useRegister } from "../../synthesizer.hooks";
+import { TransportProvider } from "../../../../providers";
 
 export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 	const reverb = useReverb();
 	useRegister(register, reverb);
+
+	const { setConfig } = useContext(TransportProvider.Context);
 
 	const [room, setRoom] = useState(0.1);
 
@@ -16,6 +19,11 @@ export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 		reverb?.set({
 			roomSize: room,
 		})
+
+		setConfig(state => ({
+			...state,
+			reverb: room
+		}))
 
 		// should run on config values change
 		// eslint-disable-next-line react-hooks/exhaustive-deps

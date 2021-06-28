@@ -14,6 +14,7 @@ export const INITIAL_TRANSPORT_CONFIG = {
 		waveType: WaveTypes.SIN,
 		detune: 0
 	},
+	reverb: 0
 }
 
 export const TransportContext = createContext<TransportContextType>({

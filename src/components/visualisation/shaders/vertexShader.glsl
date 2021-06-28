@@ -1,3 +1,25 @@
+varying vec2 vUv;
+
+varying vec3 vecPos;
+varying vec3 vecNormal;
+varying float noise;
+varying float qnoise;
+varying float displacement;
+
+uniform float u_time;
+uniform float u_masterVolume;
+uniform float u_chebyshev;
+uniform float u_envelope;
+uniform float u_pointscale;
+uniform float u_decay;
+uniform float u_complex;
+uniform float u_waves;
+uniform float u_eqcolor;
+uniform bool u_fragment;
+uniform float u_bpm;
+uniform float u_reverb;
+uniform float u_isPlaying;
+uniform float u_noise;
 //
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
@@ -11,7 +33,6 @@
 // Distributed under the MIT license. See LICENSE file.
 // https://github.com/ashima/webgl-noise
 //
-
 vec3 mod289(vec3 x)
 {
     return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -171,35 +192,12 @@ float pnoise(vec3 P, vec3 rep)
 
     vec3 fade_xyz = fade(Pf0);
     vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-    vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+    vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y) - ((u_reverb) / 10.);
+    float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x) -  ((u_reverb) / 10.);
     return 1.5 * n_xyz;
 }
 
 // Turbulence By Jaume Sanchez => https://codepen.io/spite/
-
-varying vec2 vUv;
-
-varying vec3 vecPos;
-varying vec3 vecNormal;
-varying float noise;
-varying float qnoise;
-varying float displacement;
-
-uniform float u_time;
-uniform float u_masterVolume;
-uniform float u_chebyshev;
-uniform float u_envelope;
-uniform float u_pointscale;
-uniform float u_decay;
-uniform float u_complex;
-uniform float u_waves;
-uniform float u_eqcolor;
-uniform bool u_fragment;
-uniform float u_bpm;
-uniform float u_isPlaying;
-uniform float u_noise;
-
 float turbulence(vec3 p) {
     float t = - 0.1;
     for (float f = 1.0; f <= 3.0; f++){
@@ -218,7 +216,7 @@ void main() {
     vecNormal = (modelViewMatrix * vec4(normal * 1.056, 0.)).xyz;
 
     noise = (u_masterVolume * u_isPlaying * 1.0 *  - u_waves * (1. + fract(exp((envelope / 4.5))))) * turbulence(u_decay * abs(normal + (time / 100.)));
-    float b = pnoise(u_noise * (100. + fract(exp((envelope / 7.5)))) * (exp(vecPos)) + vec3(1.0 * time), vec3(100.0));
+    float b = pnoise(u_noise * (100. + fract(exp((envelope  / 7.5)))) * (exp(vecPos)) + vec3(1.0 * time), vec3(100.0));
 
     if (u_noise > 0.) {
         qnoise = (2.0* fract(exp((envelope / 7.5)))) * turbulence(u_decay * abs(normal + (time / 100.)));
@@ -229,6 +227,6 @@ void main() {
     }
 
     vec3 newPosition = (position) + (normal * displacement);
-    gl_Position = (projectionMatrix * modelViewMatrix) * vec4(newPosition, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
     gl_PointSize = (u_pointscale);
 }

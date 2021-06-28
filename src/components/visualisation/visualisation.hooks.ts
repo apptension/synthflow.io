@@ -107,6 +107,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				u_noise: { value: 0 },
 				u_chebyshev: { value: 0 },
 				u_masterVolume: { value: 0 },
+				u_reverb: { value: 0 }
 			}
 		]);
 
@@ -153,6 +154,11 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (material.uniforms.u_noise.value !== config.current.noise) {
 					material.uniforms.u_noise.value = config.current.noise;
 				}
+
+				if (material.uniforms.u_reverb.value !== config.current.reverb) {
+					material.uniforms.u_reverb.value = config.current.reverb;
+				}
+
 				if (material.uniforms.u_isPlaying.value !== config.current.isPlaying) {
 					material.uniforms.u_isPlaying.value = config.current.isPlaying
 				}
@@ -177,7 +183,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 					material.uniforms.u_osc2Rgb.value = new THREE.Vector3(config.current.oscillator2.r, config.current.oscillator2.g, config.current.oscillator2.b);
 				}
 
-				renderer.render(scene, camera)
+				renderer.render(scene, camera);
 
 				delta = delta % interval;
 			}
@@ -215,7 +221,8 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		config.current.masterVolume = synthConfig.masterVolume;
 		config.current.chebyshev = synthConfig.chebyshev;
 		config.current.noise = synthConfig.noise;
-	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev]);
+		config.current.reverb = synthConfig.reverb;
+	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev, synthConfig.reverb]);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const debounced = useCallback(debounce((config: any, to: any) => {

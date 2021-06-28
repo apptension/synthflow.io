@@ -12,6 +12,7 @@ export type ConfigType = {
 	masterVolume: number,
 	oscillator1: OscillatorConfig,
 	oscillator2: OscillatorConfig,
+	reverb: number;
 }
 
 export type TransportContextType = {
