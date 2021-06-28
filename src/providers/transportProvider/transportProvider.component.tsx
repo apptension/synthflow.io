@@ -2,15 +2,12 @@ import { INITIAL_TRANSPORT_CONFIG, TransportContext } from "./transportProvider.
 import { ReactNode, useEffect, useState } from "react";
 import { not } from "ramda";
 import { AmplitudeEnvelope, Draw, Loop, start, Transport } from "tone";
-import { useAnalyser, useMeter } from "../../components/visualisation/analysers";
 
 type TransportProviderProps = {
 	children: ReactNode;
 }
 
 export const TransportProvider = ({ children }: TransportProviderProps) => {
-	const analyser = useAnalyser();
-	const meter = useMeter();
 
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [config, setConfig] = useState(INITIAL_TRANSPORT_CONFIG)
@@ -70,8 +67,6 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 				setCurrentBeatNotes,
 				envelopeRef,
 				setEnvelopeRef,
-				analyserRef: analyser,
-				meterRef: meter,
 				config,
 				setConfig
 			}}>

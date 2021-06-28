@@ -14,7 +14,8 @@ export const INITIAL_TRANSPORT_CONFIG = {
 		waveType: WaveTypes.SIN,
 		detune: 0
 	},
-	reverb: 0
+	reverb: 0,
+	filter: 0
 }
 
 export const TransportContext = createContext<TransportContextType>({
@@ -28,8 +29,6 @@ export const TransportContext = createContext<TransportContextType>({
 	setCurrentBeatNotes: () => undefined,
 	envelopeRef: undefined,
 	setEnvelopeRef: () => undefined,
-	analyserRef: undefined,
-	meterRef: undefined,
 	config: INITIAL_TRANSPORT_CONFIG,
 	setConfig: () => undefined
 })

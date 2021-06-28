@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { AmplitudeEnvelope, Analyser, Meter } from "tone";
+import { AmplitudeEnvelope } from "tone";
 import { WaveTypes } from "../../components/waveTypeSelect/waveTypeSelect.types";
 
 export type OscillatorConfig = {
@@ -13,6 +13,7 @@ export type ConfigType = {
 	oscillator1: OscillatorConfig,
 	oscillator2: OscillatorConfig,
 	reverb: number;
+	filter: number;
 }
 
 export type TransportContextType = {
@@ -26,8 +27,6 @@ export type TransportContextType = {
 	setCurrentBeatNotes: Dispatch<SetStateAction<Array<string | null>>>;
 	envelopeRef: AmplitudeEnvelope | undefined;
 	setEnvelopeRef: Dispatch<SetStateAction<AmplitudeEnvelope| undefined>>;
-	analyserRef: Analyser | undefined;
-	meterRef: Meter | undefined;
 	config: ConfigType;
 	setConfig: Dispatch<SetStateAction<ConfigType>>;
 }

@@ -1,11 +1,11 @@
 import { RefObject, useCallback, useContext, useEffect, useRef } from "react";
 import * as THREE from "three"
+import gsap from "gsap";
 import debounce from "lodash.debounce";
-import { AmplitudeEnvelope, Analyser, Meter } from "tone";
+import { AmplitudeEnvelope } from "tone";
 import { complement, isNil, omit } from "ramda";
 import { TransportProvider } from "../../providers";
 import { fragmentShader, vertexShader } from "./shaders";
-import gsap from "gsap";
 import { ConfigType } from "../../providers/transportProvider/transportProvider.types";
 import { WaveTypes } from "../waveTypeSelect/waveTypeSelect.types";
 
@@ -27,14 +27,10 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		isPlaying,
 		bpm,
 		envelopeRef,
-		analyserRef,
-		meterRef,
 		config: synthConfig,
 		currentBeatNotes
 	} = useContext(TransportProvider.Context);
 
-	const analyser = useRef<Analyser>();
-	const meter = useRef<Meter>();
 	const envelope = useRef<AmplitudeEnvelope>();
 	const config = useRef<{
 		isPlaying: number;
@@ -54,16 +50,6 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	const materialRef = useRef<THREE.ShaderMaterial>();
 
 	useEffect(() => {
-		if (meter.current) return;
-		meter.current = meterRef;
-	}, [meterRef])
-
-	useEffect(() => {
-		if (analyser.current) return;
-		analyser.current = analyserRef;
-	}, [analyserRef])
-
-	useEffect(() => {
 		if (envelope.current) return;
 		envelope.current = envelopeRef;
 	}, [envelopeRef])
@@ -71,6 +57,12 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 
 	useEffect(() => {
 		if (!mount.current) return;
+
+		let animationFrameId = 0;
+		const FPS = 30;
+		let clock = new THREE.Clock();
+		let delta = 0;
+		let interval = 1 / FPS;
 
 		const mountElement = mount.current;
 		const width = mountElement.clientWidth;
@@ -81,54 +73,40 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
 		const sphereGeometry = new THREE.SphereBufferGeometry(1, 360, 360);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
-		let animationFrameId = 0;
-		const pointLight = new THREE.PointLight(0xffffff, 1);
-		scene.add(ambientLights);
-		scene.add(pointLight);
 
-		const uniforms = THREE.UniformsUtils.merge([
-
-			THREE.UniformsLib["lights"],
-			{
-
-				u_time: { value: 0 },
-				u_resolution: new THREE.Uniform(new THREE.Vector4()),
-				u_uvRate1: new THREE.Uniform(new THREE.Vector2(1, 1)),
-				u_osc1Rgb: new THREE.Uniform(new THREE.Vector3(1)),
-				u_osc2Rgb: new THREE.Uniform(new THREE.Vector3(1)),
-				u_envelope: { value: 0 },
-				u_pointscale: { value: 0 },
-				u_decay: { value: 1 },
-				u_complex: { value: 0.5 },
-				u_waves: { value: 6.0 },
-				u_eqcolor: { value: 0.2 },
-				u_bpm: { value: bpm },
-				u_isPlaying: { value: 0 },
-				u_noise: { value: 0 },
-				u_chebyshev: { value: 0 },
-				u_masterVolume: { value: 0 },
-				u_reverb: { value: 0 }
-			}
-		]);
+		const uniforms = {
+			u_time: { value: 0 },
+			u_resolution: new THREE.Uniform(new THREE.Vector4()),
+			u_uvRate1: new THREE.Uniform(new THREE.Vector2(1, 1)),
+			u_osc1Rgb: new THREE.Uniform(new THREE.Vector3(1)),
+			u_osc2Rgb: new THREE.Uniform(new THREE.Vector3(1)),
+			u_envelope: { value: 0 },
+			u_decay: { value: 1 },
+			u_waves: { value: 6 },
+			u_bpm: { value: bpm },
+			u_isPlaying: { value: 0 },
+			u_noise: { value: 0 },
+			u_chebyshev: { value: 0 },
+			u_masterVolume: { value: 0 },
+			u_reverb: { value: 0 },
+			u_filter: { value: 0 }
+		};
 
 		materialRef.current = new THREE.ShaderMaterial({
 			uniforms,
 			vertexShader,
 			fragmentShader,
-			lights: true,
 		})
 
 		const mesh = new THREE.Mesh(sphereGeometry, materialRef.current);
 
 		renderer.setSize(width, height)
+		scene.add(ambientLights);
 		scene.add(mesh);
+
 		camera.position.z = config.current.zoom;
 
 		mount.current.appendChild(renderer.domElement);
-		const FPS = 30;
-		let clock = new THREE.Clock();
-		let delta = 0;
-		let interval = 1 / FPS;
 
 		function render(){
 			animationFrameId = requestAnimationFrame(render);
@@ -142,17 +120,25 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (camera.position.z !== config.current.zoom - config.current.chebyshev / 20) {
 					camera.position.z = config.current.zoom - config.current.chebyshev / 20;
 				}
+
 				if (material.uniforms.u_chebyshev.value !== config.current.chebyshev) {
 					material.uniforms.u_chebyshev.value = config.current.chebyshev;
 				}
+
 				if (material.uniforms.u_masterVolume.value !== config.current.masterVolume) {
 					material.uniforms.u_masterVolume.value = config.current.masterVolume;
 				}
+
 				if (material.uniforms.u_bpm.value !== config.current.bpm) {
 					material.uniforms.u_bpm.value = config.current.bpm;
 				}
+
 				if (material.uniforms.u_noise.value !== config.current.noise) {
 					material.uniforms.u_noise.value = config.current.noise;
+				}
+
+				if (material.uniforms.u_filter.value !== config.current.filter) {
+					material.uniforms.u_filter.value = config.current.filter;
 				}
 
 				if (material.uniforms.u_reverb.value !== config.current.reverb) {
@@ -222,7 +208,8 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		config.current.chebyshev = synthConfig.chebyshev;
 		config.current.noise = synthConfig.noise;
 		config.current.reverb = synthConfig.reverb;
-	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev, synthConfig.reverb]);
+		config.current.filter = synthConfig.filter;
+	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev, synthConfig.reverb, synthConfig.filter]);
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const debounced = useCallback(debounce((config: any, to: any) => {
