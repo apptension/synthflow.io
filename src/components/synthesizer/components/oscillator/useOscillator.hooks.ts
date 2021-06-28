@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { FatOscillator, Signal, ToneOscillatorType, Gain } from "tone";
+import { TransportProvider } from "../../../../providers";
+import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
 
 type OscillatorHookProps = {
 	oscWave1: ToneOscillatorType,
@@ -14,7 +16,7 @@ export const useOscillator = ({
 	detune1,
 	detune2,
 }: OscillatorHookProps) => {
-	// const { triggerTime } = useContext(TransportProvider.Context);
+	const { setConfig } = useContext(TransportProvider.Context);
 
 	const oscillator1 = useRef<FatOscillator>();
 	const oscillator2 = useRef<FatOscillator>();
@@ -42,11 +44,30 @@ export const useOscillator = ({
 	}, [])
 
 	useEffect(() => {
-		oscillator1.current?.set({ type: oscWave1, detune: detune1 })
+		oscillator1.current?.set({ type: oscWave1, detune: detune1 });
+		setConfig((state) => ({
+			...state,
+			oscillator1: {
+				waveType: oscWave1 as WaveTypes,
+				detune: detune1
+			}
+		}))
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [oscWave1, detune1])
 
 	useEffect(() => {
 		oscillator2.current?.set({ type: oscWave2, detune: detune2 })
+
+		setConfig((state) => ({
+			...state,
+			oscillator2: {
+				waveType: oscWave2 as WaveTypes,
+				detune: detune2
+			}
+		}))
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [oscWave2, detune2]);
 
 	return { gain: gain.current, signal: signal.current};

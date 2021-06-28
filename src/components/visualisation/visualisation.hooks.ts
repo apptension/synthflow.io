@@ -1,12 +1,27 @@
-import { RefObject, useContext, useEffect, useRef } from "react";
-import * as Three from "three"
+import { RefObject, useCallback, useContext, useEffect, useRef } from "react";
+import * as THREE from "three"
+import debounce from "lodash.debounce";
 import { AmplitudeEnvelope, Analyser, Meter } from "tone";
-import { complement, isNil } from "ramda";
+import { complement, isNil, omit } from "ramda";
 import { TransportProvider } from "../../providers";
 import { fragmentShader, vertexShader } from "./shaders";
 import gsap from "gsap";
 import { ConfigType } from "../../providers/transportProvider/transportProvider.types";
+import { WaveTypes } from "../waveTypeSelect/waveTypeSelect.types";
 
+const createOscRgb = ({ waveType, detune }: ConfigType["oscillator1"]) => {
+	return {
+		r: Number(waveType === WaveTypes.SIN) / 2 + detune / 1500.,
+		g: Number(waveType === WaveTypes.SQUARE) / 3 + detune / 1500.,
+		b: Number(waveType === WaveTypes.SAWTOOTH) / 4.5 + detune / 1500.,
+	}
+}
+
+export type Rgb = {
+	r: number;
+	g: number;
+	b: number;
+}
 export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	const {
 		isPlaying,
@@ -25,13 +40,18 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		isPlaying: number;
 		bpm: number;
 		zoom: number;
-	} & ConfigType>({
+	} & Omit<ConfigType, "oscillator1" | "oscillator2"> & {
+		oscillator1: Rgb
+		oscillator2: Rgb
+	}>({
 		isPlaying: Number(isPlaying),
 		bpm,
 		zoom: 5,
-		...synthConfig
+		...omit(["oscillator1", "oscillator2"], synthConfig),
+		oscillator1: { r: 0, g: 0, b: 0 },
+		oscillator2: { r: 0, g: 0, b: 0 }
 	});
-	const materialRef = useRef<Three.ShaderMaterial>();
+	const materialRef = useRef<THREE.ShaderMaterial>();
 
 	useEffect(() => {
 		if (meter.current) return;
@@ -56,24 +76,26 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const width = mountElement.clientWidth;
 		const height = mountElement.clientHeight;
 
-		const scene = new Three.Scene();
-		const camera = new Three.PerspectiveCamera(75, width / height, 0.1, 1000);
-		const renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
-		const sphereGeometry = new Three.SphereBufferGeometry(1, 360, 360);
-		const ambientLights = new Three.HemisphereLight(0xFFFFFF, 0x000000, 1);
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
+		const sphereGeometry = new THREE.SphereBufferGeometry(1, 360, 360);
+		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
 		let animationFrameId = 0;
-		const pointLight = new Three.PointLight(0xffffff, 1);
+		const pointLight = new THREE.PointLight(0xffffff, 1);
 		scene.add(ambientLights);
 		scene.add(pointLight);
 
-		const uniforms = Three.UniformsUtils.merge([
+		const uniforms = THREE.UniformsUtils.merge([
 
-			Three.UniformsLib["lights"],
+			THREE.UniformsLib["lights"],
 			{
 
 				u_time: { value: 0 },
-				u_resolution: new Three.Uniform(new Three.Vector4()),
-				u_uvRate1: new Three.Uniform(new Three.Vector2(1, 1)),
+				u_resolution: new THREE.Uniform(new THREE.Vector4()),
+				u_uvRate1: new THREE.Uniform(new THREE.Vector2(1, 1)),
+				u_osc1Rgb: new THREE.Uniform(new THREE.Vector3(1)),
+				u_osc2Rgb: new THREE.Uniform(new THREE.Vector3(1)),
 				u_envelope: { value: 0 },
 				u_pointscale: { value: 0 },
 				u_decay: { value: 1 },
@@ -88,23 +110,22 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			}
 		]);
 
-		materialRef.current = new Three.ShaderMaterial({
+		materialRef.current = new THREE.ShaderMaterial({
 			uniforms,
-			// wireframe: true,
 			vertexShader,
 			fragmentShader,
-			lights: true
+			lights: true,
 		})
 
-		const mesh = new Three.Mesh(sphereGeometry, materialRef.current);
+		const mesh = new THREE.Mesh(sphereGeometry, materialRef.current);
 
 		renderer.setSize(width, height)
 		scene.add(mesh);
 		camera.position.z = config.current.zoom;
 
 		mount.current.appendChild(renderer.domElement);
-		const FPS = 25;
-		let clock = new Three.Clock();
+		const FPS = 30;
+		let clock = new THREE.Clock();
 		let delta = 0;
 		let interval = 1 / FPS;
 
@@ -139,6 +160,23 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (material.uniforms.u_envelope.value !== envelope.current?.value) {
 					material.uniforms.u_envelope.value = envelope.current?.value ?? 0;
 				}
+
+				if (
+					material.uniforms.u_osc1Rgb.value.x !== config.current.oscillator1.r ||
+					material.uniforms.u_osc1Rgb.value.y !== config.current.oscillator1.g ||
+					material.uniforms.u_osc1Rgb.value.z !== config.current.oscillator1.b
+				) {
+					material.uniforms.u_osc1Rgb.value = new THREE.Vector3(config.current.oscillator1.r, config.current.oscillator1.g, config.current.oscillator1.b);
+				}
+
+				if (
+					material.uniforms.u_osc2Rgb.value.x !== config.current.oscillator2.r ||
+					material.uniforms.u_osc2Rgb.value.y !== config.current.oscillator2.g ||
+					material.uniforms.u_osc2Rgb.value.z !== config.current.oscillator2.b
+				) {
+					material.uniforms.u_osc2Rgb.value = new THREE.Vector3(config.current.oscillator2.r, config.current.oscillator2.g, config.current.oscillator2.b);
+				}
+
 				renderer.render(scene, camera)
 
 				delta = delta % interval;
@@ -177,5 +215,31 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		config.current.masterVolume = synthConfig.masterVolume;
 		config.current.chebyshev = synthConfig.chebyshev;
 		config.current.noise = synthConfig.noise;
-	}, [synthConfig]);
+	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev]);
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const debounced = useCallback(debounce((config: any, to: any) => {
+		const rgb = createOscRgb(config)
+		gsap.to(to, {
+			r: rgb.r,
+			g: rgb.g,
+			b: rgb.b,
+			duration: 1,
+			ease: "power3.out"
+		});
+	}, 200), []);
+
+	useEffect(() => {
+		if (!config.current.oscillator1) return;
+		debounced(synthConfig.oscillator1, config.current.oscillator1);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [synthConfig.oscillator1])
+
+	useEffect(() => {
+		if (!config.current.oscillator2) return;
+		debounced(synthConfig.oscillator2, config.current.oscillator2);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [synthConfig.oscillator2])
 }

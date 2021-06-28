@@ -1,4 +1,4 @@
-import { TransportContext } from "./transportProvider.context"
+import { INITIAL_TRANSPORT_CONFIG, TransportContext } from "./transportProvider.context"
 import { ReactNode, useEffect, useState } from "react";
 import { not } from "ramda";
 import { AmplitudeEnvelope, Draw, Loop, start, Transport } from "tone";
@@ -13,11 +13,7 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 	const meter = useMeter();
 
 	const [isPlaying, setIsPlaying] = useState(false);
-	const [config, setConfig] = useState({
-		chebyshev: 1,
-		masterVolume: 1,
-		noise: 0
-	})
+	const [config, setConfig] = useState(INITIAL_TRANSPORT_CONFIG)
 	const [triggerTime, setTriggerTime] = useState(0);
 	const [currentBeat, setCurrentBeat] = useState(0);
 	const [bpm, setBpm] = useState(90);
@@ -47,7 +43,6 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 		})
 	}, [bpm])
 
-
 	useEffect(() => {
 		if (isPlaying) {
 			start().then(() => {
@@ -57,7 +52,6 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 			Transport.stop();
 		}
 	}, [isPlaying])
-
 
 	const toggleIsPlaying = () => {
 		setIsPlaying(not);

@@ -11,9 +11,9 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 	const envelope = useEnvelope();
 	useRegister(register, envelope);
 
-	const [attack, setAttack] = useState<NormalRange>(0.2);
-	const [release, setRelease] = useState<NormalRange>(0.1);
-	const [sustain, setSustain] = useState<NormalRange>(0.2);
+	const [attack, setAttack] = useState<NormalRange>(0.5);
+	const [release, setRelease] = useState<NormalRange>(0.5);
+	const [sustain, setSustain] = useState<NormalRange>(0.5);
 	const [decay, setDecay] = useState<NormalRange>(0.5);
 
 	useEffect(() => {

@@ -1,10 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 import { AmplitudeEnvelope, Analyser, Meter } from "tone";
+import { WaveTypes } from "../../components/waveTypeSelect/waveTypeSelect.types";
 
+export type OscillatorConfig = {
+	waveType: WaveTypes,
+	detune: number
+}
 export type ConfigType = {
 	chebyshev: number,
 	noise: number,
-	masterVolume: number
+	masterVolume: number,
+	oscillator1: OscillatorConfig,
+	oscillator2: OscillatorConfig,
 }
 
 export type TransportContextType = {
