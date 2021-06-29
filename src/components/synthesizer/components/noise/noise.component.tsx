@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Gain } from "tone";
 import { useNoise } from "./noise.hooks";
-import { ControlsSection } from "../../../controlsSection";
-import { Knob } from "../../../knob";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { Knob } from "../../../UI/knob";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";

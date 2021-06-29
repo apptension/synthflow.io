@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { AmplitudeEnvelope } from "tone";
-import { WaveTypes } from "../../components/waveTypeSelect/waveTypeSelect.types";
+import { WaveTypes } from "../../components/UI/waveTypeSelect/waveTypeSelect.types";
 
 export type OscillatorConfig = {
 	waveType: WaveTypes,

@@ -1,10 +1,1 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Libre&family=Poppins&display=swap');
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-html {
-  font-size: 62.5% !important;
-}

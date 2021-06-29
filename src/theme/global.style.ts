@@ -1,11 +1,26 @@
 import { createGlobalStyle } from "styled-components/macro";
 import reset from "styled-reset";
 import normalize from "styled-normalize";
-import { Color, FontFamily } from "./index";
+import { Breakpoints, Color, FontFamily } from "./index";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset};
   ${normalize};
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html, body {
+    font-size: 58% !important;
+
+    @media screen and (max-width: ${Breakpoints.DESKTOP_LARGE}) {
+      font-size: 50% !important;
+    }
+    
+    overflow-x: hidden;
+  }
 
   ::selection {
     background: ${Color.HIGHLIGHT} /* WebKit/Blink Browsers */
@@ -22,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     height: 100%;
-    background: linear-gradient(233.07deg, rgba(205, 44, 44, 0.61) -5.07%, rgba(89, 110, 185, 0.63) 71.46%), #4E4D4D;
+    background: #000000 linear-gradient(233.07deg,rgb(255 97 97 / 61%) -5.07%, rgb(42 43 96 / 63%) 71.46%) no-repeat fixed;
   }
 
   button {

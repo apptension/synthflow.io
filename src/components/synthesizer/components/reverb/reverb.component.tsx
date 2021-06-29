@@ -2,8 +2,8 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Freeverb } from "tone";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useReverb } from "./reverb.hooks";
-import { ControlsSection } from "../../../controlsSection";
-import { Knob } from "../../../knob";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { Knob } from "../../../UI/knob";
 import { useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";
 

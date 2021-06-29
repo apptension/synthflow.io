@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import Color from "color";
-import { Color as ThemeColor, Transitions } from "../../theme";
+import { Color as ThemeColor, Transitions } from "../../../theme";
 
 export const SelectorContainer = styled.div`
   display: flex;

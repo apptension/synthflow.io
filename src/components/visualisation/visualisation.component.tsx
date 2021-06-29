@@ -9,6 +9,6 @@ export const Visualisation = () => {
 	useRenderer(mountRef);
 
 	return useMemo(() => (
-		<Container hasFullWidth={!showControls} ref={mountRef} />
+		<Container inSoloView={!showControls} ref={mountRef} />
 	), [showControls])
 }

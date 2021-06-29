@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { TransportContextType } from "./transportProvider.types";
-import { WaveTypes } from "../../components/waveTypeSelect/waveTypeSelect.types";
+import { WaveTypes } from "../../components/UI/waveTypeSelect/waveTypeSelect.types";
 
 export const INITIAL_TRANSPORT_CONFIG = {
 	chebyshev: 0,

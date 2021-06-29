@@ -1,14 +1,18 @@
 import styled from "styled-components/macro";
 import * as NoteInputStyles from "./noteInput/noteInput.style";
-import * as ControlsSectionStyles from "../controlsSection/controlsSection.style";
-import * as SelectStyles from "../select/select.style";
-import { Color, FontFamily } from "../../theme";
+import * as ControlsSectionStyles from "../UI/controlsSection/controlsSection.style";
+import * as SelectStyles from "../UI/select/select.style";
+import { Breakpoints, Color, FontFamily } from "../../theme";
 
 export const Container = styled.div`
   grid-area: sequencer;
 
   ${ControlsSectionStyles.ControlsContainer} {
     padding: 2rem 4rem;
+
+    @media screen and (max-width: ${Breakpoints.MOBILE}) {
+      padding: 1rem 2rem;
+    }
   }
 `;
 
@@ -40,6 +44,7 @@ export const GridContainer = styled.div`
 export const LabelsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: max-content;
 `;
 
 export const Label = styled.span`
@@ -98,4 +103,9 @@ export const Controls = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media screen and (max-width: ${Breakpoints.MOBILE}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;

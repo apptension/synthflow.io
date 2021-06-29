@@ -14,11 +14,11 @@ import {
 	Controls
 } from "./sequencer.style"
 import { NoteInput } from "./noteInput";
-import { ControlsSection } from "../controlsSection";
+import { ControlsSection } from "../UI/controlsSection";
 import { BeatIndicator } from "./beatIndicator";
 import { TransportProvider } from "../../providers";
 import { OCTAVES, SEQUENCER_PATTERNS } from "./sequencer.constants";
-import { Select } from "../select";
+import { Select } from "../UI/select";
 
 export const Sequencer = () => {
 	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);

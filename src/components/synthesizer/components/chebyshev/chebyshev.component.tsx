@@ -2,8 +2,8 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useChebyshev } from "./chebyshev.hooks";
 import { useRegister } from "../../synthesizer.hooks";
-import { ControlsSection } from "../../../controlsSection";
-import { Knob } from "../../../knob";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { Knob } from "../../../UI/knob";
 import { TransportProvider } from "../../../../providers";
 
 export const Chebyshev = ({ register }: RegisteredComponent<any>) => {

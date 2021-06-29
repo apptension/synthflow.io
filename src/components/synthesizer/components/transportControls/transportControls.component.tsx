@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { TransportProvider } from "../../../../providers";
-import { ControlsSection } from "../../../controlsSection";
-import { Knob } from "../../../knob";
-import { Checkbox } from "../../../checkbox";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { Knob } from "../../../UI/knob";
+import { Checkbox } from "../../../UI/checkbox";
 import { useMasterVolume } from "./transportControls.hooks";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { Gain } from "tone";

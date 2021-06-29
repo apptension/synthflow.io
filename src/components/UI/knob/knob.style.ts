@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import Color from "color";
-import { Color as ThemeColor, FontFamily } from "../../theme";
+import { Color as ThemeColor, FontFamily } from "../../../theme";
 
 export const Container = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Svg = styled.svg`
 
 export const SvgCircle = styled.circle`
   stroke: ${ThemeColor.WHITE};
-  stroke-width: 4;
+  stroke-width: 3;
   fill: transparent;
 `;
 

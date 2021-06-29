@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { v4 as uuidV4 } from 'uuid';
 import { Container, Indicator, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
-import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../images/icons";
-import { SharedStyles } from "../../theme";
+import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../../images/icons";
+import { SharedStyles } from "../../../theme";
 import { WaveTypes } from "./waveTypeSelect.types";
 
 const mappedIcons = {

@@ -1,5 +1,5 @@
 import { Container, Indicator, Input, Label } from "./checkbox.style"
-import { SharedStyles } from "../../theme";
+import { SharedStyles } from "../../../theme";
 
 type CheckboxProps = {
 	isChecked: boolean;

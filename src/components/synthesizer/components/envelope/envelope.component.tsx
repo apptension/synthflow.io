@@ -1,5 +1,5 @@
-import { Knob } from "../../../knob";
-import { ControlsSection } from "../../../controlsSection";
+import { Knob } from "../../../UI/knob";
+import { ControlsSection } from "../../../UI/controlsSection";
 import { AmplitudeEnvelope } from "tone";
 import { useEnvelope } from "./envelope.hooks";
 import { useEffect, useMemo, useState } from "react";

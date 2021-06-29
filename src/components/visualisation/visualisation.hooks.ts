@@ -6,22 +6,9 @@ import { AmplitudeEnvelope } from "tone";
 import { complement, isNil, omit } from "ramda";
 import { TransportProvider } from "../../providers";
 import { fragmentShader, vertexShader } from "./shaders";
-import { ConfigType } from "../../providers/transportProvider/transportProvider.types";
-import { WaveTypes } from "../waveTypeSelect/waveTypeSelect.types";
+import { VisualisationConfig } from "./visualisation.types";
+import { createOscRgb } from "./visualisation.helpers";
 
-const createOscRgb = ({ waveType, detune }: ConfigType["oscillator1"]) => {
-	return {
-		r: Number(waveType === WaveTypes.SIN) / 2 + detune / 1500.,
-		g: Number(waveType === WaveTypes.SQUARE) / 3 + detune / 1500.,
-		b: Number(waveType === WaveTypes.SAWTOOTH) / 4.5 + detune / 1500.,
-	}
-}
-
-export type Rgb = {
-	r: number;
-	g: number;
-	b: number;
-}
 export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	const {
 		isPlaying,
@@ -32,14 +19,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	} = useContext(TransportProvider.Context);
 
 	const envelope = useRef<AmplitudeEnvelope>();
-	const config = useRef<{
-		isPlaying: number;
-		bpm: number;
-		zoom: number;
-	} & Omit<ConfigType, "oscillator1" | "oscillator2"> & {
-		oscillator1: Rgb
-		oscillator2: Rgb
-	}>({
+	const config = useRef<VisualisationConfig>({
 		isPlaying: Number(isPlaying),
 		bpm,
 		zoom: 5,
@@ -53,7 +33,6 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		if (envelope.current) return;
 		envelope.current = envelopeRef;
 	}, [envelopeRef])
-
 
 	useEffect(() => {
 		if (!mount.current) return;
@@ -108,9 +87,24 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 
 		mount.current.appendChild(renderer.domElement);
 
-		function render(){
+		const resizeCanvasToDisplaySize = () => {
+			if (!mount.current) return;
+
+			const canvas = renderer.domElement;
+			const { clientWidth, clientHeight } = mount.current;
+
+			if (canvas.width !== clientWidth || canvas.height !== clientHeight) {
+				renderer.setSize(clientWidth, clientHeight, false);
+				camera.aspect = canvas.clientWidth / canvas.clientHeight;
+				camera.updateProjectionMatrix();
+			}
+		}
+
+		const render = () => {
 			animationFrameId = requestAnimationFrame(render);
 			delta += clock.getDelta();
+
+			resizeCanvasToDisplaySize();
 
 			if (delta > interval) {
 				const material = materialRef.current;

@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { Select as SelectComponent } from '../../theme/shared.style';
+import { Select as SelectComponent } from '../../../theme/shared.style';
 
 export const Container = styled.div``;
 

@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import Color from "color";
-import { Color as ThemeColor, SharedStyles } from "../../theme";
+import { Color as ThemeColor, SharedStyles } from "../../../theme";
 
 export const SectionName = styled.span`
   ${SharedStyles.LabelStyle};

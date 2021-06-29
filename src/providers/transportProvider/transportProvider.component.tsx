@@ -8,7 +8,6 @@ type TransportProviderProps = {
 }
 
 export const TransportProvider = ({ children }: TransportProviderProps) => {
-
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [config, setConfig] = useState(INITIAL_TRANSPORT_CONFIG)
 	const [triggerTime, setTriggerTime] = useState(0);

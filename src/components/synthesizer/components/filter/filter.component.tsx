@@ -1,8 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Filter as FilterClass } from "tone";
 import { useFilter } from "./filter.hooks";
-import { ControlsSection } from "../../../controlsSection";
-import { Knob } from "../../../knob";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { Knob } from "../../../UI/knob";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { FatOscillator, Signal, ToneOscillatorType, Gain } from "tone";
 import { TransportProvider } from "../../../../providers";
-import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
+import { WaveTypes } from "../../../UI/waveTypeSelect/waveTypeSelect.types";
 
 type OscillatorHookProps = {
 	oscWave1: ToneOscillatorType,

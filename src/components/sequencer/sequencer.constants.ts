@@ -1,4 +1,4 @@
-import { NoteType } from "./noteInput/noteInput.component";
+import { NoteType } from "./noteInput/noteInput.types";
 
 export const OCTAVES = [0, 1, 2, 3, 4, 5];
 

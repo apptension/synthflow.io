@@ -29,7 +29,6 @@ export const Synthesizer = () => {
 	const compressor = useCompressor();
 	const [isConnected, setIsConnected] = useState(false);
 
-
 	useEffect(() => {
 		if (isConnected) return;
 		if (!(

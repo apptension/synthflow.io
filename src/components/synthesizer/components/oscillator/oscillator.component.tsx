@@ -1,16 +1,18 @@
-import { ControlsSection } from "../../../controlsSection";
-import { WaveTypeSelect } from "../../../waveTypeSelect";
-import { Knob } from "../../../knob";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { WaveTypes } from "../../../waveTypeSelect/waveTypeSelect.types";
-import { useOscillator } from "./useOscillator.hooks";
+import { isNil } from "ramda";
 import { Gain } from "tone";
+import { ControlsSection } from "../../../UI/controlsSection";
+import { WaveTypeSelect } from "../../../UI/waveTypeSelect";
+import { Knob } from "../../../UI/knob";
+import { WaveTypes } from "../../../UI/waveTypeSelect/waveTypeSelect.types";
+import { useOscillator } from "./useOscillator.hooks";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useGain, useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";
-import { isNil } from "ramda";
 
 export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
+	const { currentBeatNotes, triggerTime } = useContext(TransportProvider.Context);
+
 	const [detune1, setDetune1] = useState(0);
 	const [detune2, setDetune2] = useState(0);
 	const [oscWave1, setOscWave1] = useState<WaveTypes>(WaveTypes.SIN);
@@ -19,28 +21,15 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 
 	const gain = useGain();
 
-	const { currentBeatNotes, triggerTime } = useContext(TransportProvider.Context);
-
-	const oscillator1 = useOscillator({
+	const oscillatorConfig = {
 		oscWave1,
 		oscWave2,
 		detune2,
 		detune1,
-	});
-
-	const oscillator2 = useOscillator({
-		oscWave1,
-		oscWave2,
-		detune2,
-		detune1,
-	});
-
-	const oscillator3 = useOscillator({
-		oscWave1,
-		oscWave2,
-		detune2,
-		detune1,
-	});
+	};
+	const oscillator1 = useOscillator(oscillatorConfig);
+	const oscillator2 = useOscillator(oscillatorConfig);
+	const oscillator3 = useOscillator(oscillatorConfig);
 
 	useEffect(() => {
 		if (isConnected || !gain || !oscillator1 || !oscillator2 || !oscillator3) return;

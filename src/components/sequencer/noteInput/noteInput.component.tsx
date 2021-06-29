@@ -1,9 +1,6 @@
 import { Container, Select, Option } from "./noteInput.style";
-
-const NOTES: NoteInputValue[] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "NULL"];
-export type NoteType = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A" | "A#" | "B";
-
-export type NoteInputValue = NoteType | "NULL";
+import { NoteInputValue } from "./noteInput.types";
+import { NOTES } from "./noteInput.constants";
 
 type NoteInputProps = {
 	value: NoteInputValue;

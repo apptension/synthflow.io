@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components/macro";
-import { Transitions } from "../../theme/";
+import { Breakpoints, Transitions } from "../../theme/";
 
 type ContainerProps = {
 	isVisible: boolean;
@@ -15,6 +15,11 @@ export const Container = styled.div<ContainerProps>`
   margin-right: 10rem;
   transition: opacity 300ms;
   ${Transitions.Snappy};
+
+  @media screen and (max-width: ${Breakpoints.MOBILE}) {
+    grid-template-areas: "synth-controls-left" "synth-controls-right" "sequencer";
+    margin-right: 0;
+  }
 
   ${({ isVisible }) => !isVisible && css`
     opacity: 0;

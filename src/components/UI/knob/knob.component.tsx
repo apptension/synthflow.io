@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Container, Svg, SvgBackgroundCircle, SvgCircle, Input } from "./knob.style";
 import { CIRCUMFERENCE, RADIUS } from "./knob.constants";
-import { Label } from "../../theme/shared.style";
-import { roundTo2Decimal } from "../../utils";
+import { Label } from "../../../theme/shared.style";
+import { roundTo2Decimal } from "../../../utils";
 
 type KnobProps = {
 	onChange: (value: number) => void;
@@ -68,8 +68,8 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				{label}
 			</Label>
 			<Svg onMouseDown={(event) => handleDragChange(event, true)}>
-				<SvgCircle r={RADIUS} cx="13" cy="13" strokeDasharray={CIRCUMFERENCE} strokeDashoffset={strokeOffset} />
-				<SvgBackgroundCircle r={RADIUS} cx="13" cy="13" />
+				<SvgCircle r={`${RADIUS / 10}rem`} cx="1.3rem" cy="1.3rem" strokeDasharray={CIRCUMFERENCE} strokeDashoffset={strokeOffset} />
+				<SvgBackgroundCircle r={`${RADIUS / 10}rem`} cx="1.3rem" cy="1.3rem" />
 			</Svg>
 			<Input
 				value={value}

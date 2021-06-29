@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import { Color, Transitions } from "../../theme";
+import { Color, Transitions } from "../../../theme";
 
 export const Container = styled.div`
   user-select: none;
