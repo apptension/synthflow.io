@@ -79,10 +79,11 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 
 		const mesh = new THREE.Mesh(sphereGeometry, materialRef.current);
 
+		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(width, height)
+
 		scene.add(ambientLights);
 		scene.add(mesh);
-
 		camera.position.z = config.current.zoom;
 
 		mount.current.appendChild(renderer.domElement);
