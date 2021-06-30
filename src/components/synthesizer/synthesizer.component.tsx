@@ -15,7 +15,7 @@ import { Reverb } from "./components/reverb";
 import { Chebyshev } from "./components/chebyshev";
 import { TransportControls } from "./components/transportControls"
 import { Sequencer } from "../sequencer";
-import { useCompressor } from "./synthesizer.hooks";
+import { useCompressor, useVolume } from "./synthesizer.hooks";
 
 export const Synthesizer = () => {
 	const { showControls } = useContext(AppSettingsProvider.Context);
@@ -28,6 +28,7 @@ export const Synthesizer = () => {
 	const [masterVolume, registerMasterVolume] = useState<Gain>();
 	const compressor = useCompressor();
 	const [isConnected, setIsConnected] = useState(false);
+	const volume = useVolume();
 
 	useEffect(() => {
 		if (isConnected) return;
@@ -39,17 +40,19 @@ export const Synthesizer = () => {
 			reverb &&
 			chebyshev &&
 			masterVolume &&
-			compressor
+			compressor &&
+			volume
 		)) return;
 
 		connect(oscillators, envelope);
 		connect(noise, envelope);
-		connect(envelope, chebyshev);
+		connect(envelope, compressor);
+		connect(compressor, chebyshev);
 		connect(chebyshev, filter);
 		connect(filter, reverb);
-		connect(reverb, compressor);
-		connect(compressor, masterVolume);
-		connect(masterVolume, Destination)
+		connect(reverb, masterVolume);
+		connect(masterVolume, volume);
+		connect(volume, Destination)
 
 		setIsConnected(true);
 		console.info("-> Tone connected")
@@ -63,7 +66,8 @@ export const Synthesizer = () => {
 		filter,
 		envelope,
 		oscillators,
-		noise
+		noise,
+		volume
 	]);
 
 	return (

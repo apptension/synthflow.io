@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Compressor, Gain } from "tone";
+import { Compressor, Gain, Volume } from "tone";
 import { RegisteredComponent } from "./synthesizer.types";
 
 export const useRegister = <T>(register: RegisteredComponent<T>["register"], synthComponent: T | undefined) => {
@@ -16,7 +16,7 @@ export const useCompressor = () => {
 	const compressor = useRef<Compressor>();
 
 	useEffect(() => {
-		compressor.current = new Compressor(-30, 3);
+		compressor.current = new Compressor(-40, 8);
 	})
 
 	return compressor.current;
@@ -30,4 +30,14 @@ export const useGain = () => {
 	})
 
 	return gain.current;
+}
+
+export const useVolume = () => {
+	const volume = useRef<Volume>();
+
+	useEffect(() => {
+		volume.current = new Volume(-12);
+	})
+
+	return volume.current;
 }
