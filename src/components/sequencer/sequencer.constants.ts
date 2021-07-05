@@ -94,3 +94,4 @@ export const SEQUENCER_PATTERNS: Record<string,
 	}
 }
 
+export const BEATS = 8;

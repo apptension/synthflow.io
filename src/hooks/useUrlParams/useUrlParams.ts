@@ -1,10 +1,11 @@
-import { useHistory, useLocation } from "react-router";
-import { UrlConfig, UrlConfigKeys } from "./useUrlParams.types";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
-import { equals, filter, forEachObjIndexed, isEmpty, map, mergeDeepLeft, pick, prop } from "ramda";
+import { useHistory, useLocation } from "react-router";
+import { equals, filter, forEachObjIndexed, isEmpty, isNil, map, mergeDeepLeft, pick, prop } from "ramda";
 import debounce from "lodash.debounce";
+import { UrlConfig, UrlConfigKeys } from "./useUrlParams.types";
+import { parseSequencerPattern } from "./useUrlParams.helpers";
 
-type UrlHandlersType = Record<UrlConfigKeys, { value: string | number; setter: Dispatch<SetStateAction<any>> }>;
+type UrlHandlersType = Record<UrlConfigKeys, { value: any; setter: Dispatch<SetStateAction<any>> }>;
 
 export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 	const history = useHistory();
@@ -14,11 +15,23 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 
 	const getUrlValues = () => {
 		const params = new URLSearchParams(location.search);
-		let parsedValues: Record<string, string | number> = {};
+		let parsedValues: Record<string, any> = {};
 		const configEntries = Array.from(params.entries());
+
 		configEntries.forEach(([key, value]) => {
-			const valueAsNumber = Number(value);
-			parsedValues[key] = isNaN(valueAsNumber) ? value : valueAsNumber;
+			switch (key) {
+				case UrlConfigKeys.SEQUENCER_OCTAVES:
+					parsedValues[key] = value.split("-");
+					break;
+				case UrlConfigKeys.SEQUENCER_PATTERN:
+					const parsedPattern = parseSequencerPattern(value);
+					if (!parsedPattern) return;
+					parsedValues[key] = parsedPattern;
+					break;
+				default:
+					const valueAsNumber = Number(value);
+					parsedValues[key] = isNaN(valueAsNumber) ? value : valueAsNumber;
+			}
 		})
 
 		return parsedValues;
@@ -30,7 +43,11 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 		let stringifiedValues: Record<string, string> = {};
 		const configEntries = Object.entries(merged);
 		configEntries.forEach(([key, value]) => {
-			stringifiedValues[key] = String(value);
+			if (key === UrlConfigKeys.SEQUENCER_PATTERN || key === UrlConfigKeys.SEQUENCER_OCTAVES) {
+				stringifiedValues[key] = (value as any[]).flat().join("-");
+			} else {
+				stringifiedValues[key] = String(value);
+			}
 		})
 
 		if (isEmpty(stringifiedValues)) return;
@@ -53,13 +70,12 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 	useEffect(() => {
 		if (!isUrlConfigSet) return;
 		const handlersValues = Object.values(handlers).map(({ value }) => value);
-
 		if (equals(previousHandlersValues, handlersValues)) return;
 		setPreviousHandlersValues(handlersValues);
 
-		const handlersObjects = map<any, any>(({ value }) => value, handlers);
-		const filteredHandlers = filter<any>(value => value, handlersObjects);
-		updateConfig((filteredHandlers as unknown) as UrlConfig)
+		const handlersObjects = map<any, Partial<UrlHandlersType>>(({ value }) => value, handlers);
+		const filteredHandlers = filter<any>(value => !isNil(value), handlersObjects);
+		updateConfig(filteredHandlers);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [handlers, isUrlConfigSet, previousHandlersValues]);
@@ -67,8 +83,7 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 	useEffect(() => {
 		forEachObjIndexed(({ value, setter }, key) => {
 			const urlValue = prop<any, any>(key, preparedConfig);
-			if (!urlValue || value === urlValue) return;
-
+			if (isNil(urlValue) || value === urlValue) return;
 			setter(urlValue);
 		}, handlers as Required<UrlHandlersType>)
 
@@ -78,10 +93,4 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [preparedConfig])
-
-	const getValues = () => {
-
-	}
-
-	return { getValues }
 }

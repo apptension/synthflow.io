@@ -1,3 +1,5 @@
+import { NoteType } from "../../components/sequencer/noteInput/noteInput.types";
+
 export enum UrlConfigKeys {
 	OSC_1_WAVE= 'ow1',
 	OSC_2_WAVE = 'ow2',
@@ -12,7 +14,9 @@ export enum UrlConfigKeys {
 	FILTER = 'f',
 	NOISE ='n',
 	REVERB = 'r',
-	CHEBYSHEV = 'c'
+	CHEBYSHEV = 'c',
+	SEQUENCER_OCTAVES = 'so',
+	SEQUENCER_PATTERN = 'sp',
 }
 
 export type UrlConfig = Partial<{
@@ -30,4 +34,6 @@ export type UrlConfig = Partial<{
 	[UrlConfigKeys.NOISE]: number;
 	[UrlConfigKeys.REVERB]: number;
 	[UrlConfigKeys.CHEBYSHEV]: number;
+	[UrlConfigKeys.SEQUENCER_OCTAVES]: string[];
+	[UrlConfigKeys.SEQUENCER_PATTERN]: ( NoteType | null )[][];
 }>;

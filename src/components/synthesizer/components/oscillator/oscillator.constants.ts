@@ -1,0 +1,1 @@
+export const VOICES = 3;

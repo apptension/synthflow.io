@@ -19,12 +19,25 @@ import { BeatIndicator } from "./beatIndicator";
 import { TransportProvider } from "../../providers";
 import { OCTAVES, SEQUENCER_PATTERNS } from "./sequencer.constants";
 import { Select } from "../UI/select";
+import { useUrlParams } from "../../hooks";
+import { UrlConfigKeys } from "../../hooks/useUrlParams/useUrlParams.types";
 
 export const Sequencer = () => {
 	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
 	const { currentBeat, setCurrentBeatNotes } = useContext(TransportProvider.Context);
 	const [octaves, setOctaves] = useState(["1", "1", "1"]);
 	const [currentPreset, setCurrentPreset] = useState<string>("CUSTOM");
+
+	useUrlParams({
+		[UrlConfigKeys.SEQUENCER_PATTERN]: {
+			value: notesMatrix,
+			setter: setNotesMatrix
+		},
+		[UrlConfigKeys.SEQUENCER_OCTAVES]: {
+			value: octaves,
+			setter: setOctaves
+		}
+	})
 
 	useEffect(() => {
 		const withOctaves = [...notesMatrix[currentBeat]].map((note, index) => isNil(note) ? null : `${note}${octaves[index]}`)
@@ -35,11 +48,12 @@ export const Sequencer = () => {
 	}, [setCurrentBeatNotes, currentBeat])
 
 	useEffect(() => {
-		if (!currentPreset) return;
-		const { pattern, octaves } = SEQUENCER_PATTERNS[currentPreset];
-		setNotesMatrix(pattern);
-		setOctaves(octaves)
-	}, [currentPreset])
+			if (!currentPreset) return;
+			const { pattern, octaves } = SEQUENCER_PATTERNS[currentPreset];
+			setNotesMatrix(pattern);
+			setOctaves(octaves)
+		}, [currentPreset]
+	)
 
 	return useMemo(() => (
 		<Container>
@@ -103,5 +117,5 @@ export const Sequencer = () => {
 				</Controls>
 			</ControlsSection>
 		</Container>
-	 ), [notesMatrix, octaves, currentPreset])
+	), [notesMatrix, octaves, currentPreset])
 }
