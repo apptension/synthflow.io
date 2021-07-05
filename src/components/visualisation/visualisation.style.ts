@@ -11,7 +11,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
+  cursor: grab;
   transition: all 300ms;
   transition-property: width, opacity;
   ${Transitions.Snappy};

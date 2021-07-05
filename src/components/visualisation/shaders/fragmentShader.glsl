@@ -1,6 +1,6 @@
-varying float qnoise;
-varying vec3 vecNormal;
-varying float displacement;
+varying float v_qnoise;
+varying vec3 v_normal;
+varying float v_displacement;
 
 uniform float u_reverb;
 uniform float u_filter;
@@ -12,8 +12,8 @@ void main(void) {
     vec3 light = vec3(0.) * 2.;
     vec3 skyColor = vec3(1., 1., 0.7) * cos(u_osc1Rgb * 10.);
     vec3 groundColor = vec3(0.5, 0.3, 0.7) * sin((u_osc2Rgb * 10.)) + vec3(0.5);
-    vec3 color1 =  vec3(cos(displacement * 2.), cos(qnoise  * 2.), sin(displacement * 2.));
-    vec3 color2 = vec3(qnoise * displacement);
+    vec3 color1 =  vec3(cos(v_displacement * 2.), cos(v_qnoise  * 2.), sin(v_displacement * 2.));
+    vec3 color2 = vec3(v_qnoise * v_displacement);
     float filterValue = u_filter / 10000.;
 
     vec3 leadingColor;
@@ -27,7 +27,7 @@ void main(void) {
         lightDirection = normalize(vec3(0.9, -1.5, 0.7));
     }
 
-    light = mix(skyColor, groundColor, dot(lightDirection, vecNormal) * 2.);
+    light = mix(skyColor, groundColor, dot(lightDirection, v_normal) * 2.);
     light += dot(lightDirection, leadingColor);
     vec4 finalFragColor = vec4(0.);
 

@@ -8,6 +8,7 @@ import { TransportProvider } from "../../providers";
 import { fragmentShader, vertexShader } from "./shaders";
 import { VisualisationConfig } from "./visualisation.types";
 import { createOscRgb } from "./visualisation.helpers";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	const {
@@ -48,7 +49,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const height = mountElement.clientHeight;
 
 		const scene = new THREE.Scene();
-		const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+		const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
 		const sphereGeometry = new THREE.SphereBufferGeometry(1, 360, 360);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
@@ -78,13 +79,25 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		})
 
 		const mesh = new THREE.Mesh(sphereGeometry, materialRef.current);
+		mesh.position.set(0, 0, 10);
+
+		camera.position.set(0, 0, 0);
+		camera.lookAt(0, 0, 0);
 
 		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(width, height)
-
 		scene.add(ambientLights);
 		scene.add(mesh);
-		camera.position.z = config.current.zoom;
+
+		const controls = new OrbitControls(camera, renderer.domElement);
+		controls.maxZoom = 0;
+		controls.minZoom = 0;
+		controls.enablePan = false;
+		controls.maxDistance = 20;
+		controls.minDistance = 7.5;
+		controls.enableDamping = true;
+		controls.target.copy(mesh.position);
+		controls.update()
 
 		mount.current.appendChild(renderer.domElement);
 
@@ -104,17 +117,13 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const render = () => {
 			animationFrameId = requestAnimationFrame(render);
 			delta += clock.getDelta();
-
+			controls.update();
 			resizeCanvasToDisplaySize();
 
 			if (delta > interval) {
 				const material = materialRef.current;
 				if (!material) return;
 				material.uniforms.u_time.value += 0.05;
-
-				if (camera.position.z !== config.current.zoom - config.current.chebyshev / 20) {
-					camera.position.z = config.current.zoom - config.current.chebyshev / 20;
-				}
 
 				if (material.uniforms.u_chebyshev.value !== config.current.chebyshev) {
 					material.uniforms.u_chebyshev.value = config.current.chebyshev;
@@ -186,6 +195,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+
 	useEffect(() => {
 		config.current.bpm = bpm;
 	}, [bpm]);
@@ -206,8 +216,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		config.current.filter = synthConfig.filter;
 	}, [synthConfig.masterVolume, synthConfig.noise, synthConfig.chebyshev, synthConfig.reverb, synthConfig.filter]);
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const debounced = useCallback(debounce((config: any, to: any) => {
+	const handleRgbChange = (config: any, to: any) => {
 		const rgb = createOscRgb(config)
 		gsap.to(to, {
 			r: rgb.r,
@@ -216,18 +225,24 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			duration: 1,
 			ease: "power3.out"
 		});
-	}, 200), []);
+	}
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const handleRgbDebounced1 = useCallback(debounce(handleRgbChange, 200), []);
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const handleRgbDebounced2 = useCallback(debounce(handleRgbChange, 200), []);
 
 	useEffect(() => {
 		if (!config.current.oscillator1) return;
-		debounced(synthConfig.oscillator1, config.current.oscillator1);
+		handleRgbDebounced1(synthConfig.oscillator1, config.current.oscillator1);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [synthConfig.oscillator1])
 
 	useEffect(() => {
 		if (!config.current.oscillator2) return;
-		debounced(synthConfig.oscillator2, config.current.oscillator2);
+		handleRgbDebounced2(synthConfig.oscillator2, config.current.oscillator2);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [synthConfig.oscillator2])
