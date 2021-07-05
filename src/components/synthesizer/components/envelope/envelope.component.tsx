@@ -6,6 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 import { NormalRange } from "tone/build/esm/core/type/Units";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) => {
 	const envelope = useEnvelope();
@@ -15,6 +17,13 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 	const [release, setRelease] = useState<NormalRange>(0.5);
 	const [sustain, setSustain] = useState<NormalRange>(0.5);
 	const [decay, setDecay] = useState<NormalRange>(0.5);
+
+	useUrlParams({
+		[UrlConfigKeys.ENV_ATTACK]: { value: attack, setter: setAttack },
+		[UrlConfigKeys.ENV_RELEASE]: { value: release, setter: setRelease },
+		[UrlConfigKeys.ENV_SUSTAIN]: { value: sustain, setter: setSustain },
+		[UrlConfigKeys.ENV_DECAY]: { value: decay, setter: setDecay },
+	});
 
 	useEffect(() => {
 		envelope?.set({

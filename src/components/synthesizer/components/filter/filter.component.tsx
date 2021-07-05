@@ -6,13 +6,19 @@ import { Knob } from "../../../UI/knob";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	const filter = useFilter();
 	useRegister(register, filter);
-	const { setConfig } = useContext(TransportProvider.Context);
 
+	const { setConfig } = useContext(TransportProvider.Context);
 	const [frequency, setFrequency] = useState(8000);
+
+	useUrlParams({
+		[UrlConfigKeys.FILTER]: { value: frequency, setter: setFrequency },
+	});
 
 	useEffect(() => {
 		filter?.set({ frequency });

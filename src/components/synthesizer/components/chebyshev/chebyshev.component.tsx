@@ -5,13 +5,17 @@ import { useRegister } from "../../synthesizer.hooks";
 import { ControlsSection } from "../../../UI/controlsSection";
 import { Knob } from "../../../UI/knob";
 import { TransportProvider } from "../../../../providers";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const Chebyshev = ({ register }: RegisteredComponent<any>) => {
 	const chebyshev = useChebyshev();
 	const { setConfig } = useContext(TransportProvider.Context);
 	useRegister(register, chebyshev);
 	const [order, setOrder] = useState(1);
-
+	useUrlParams({
+		[UrlConfigKeys.CHEBYSHEV]: { value: order, setter: setOrder },
+	});
 	useEffect(() => {
 		chebyshev?.set({
 			order

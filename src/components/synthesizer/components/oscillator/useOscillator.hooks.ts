@@ -29,7 +29,7 @@ export const useOscillator = ({
 		gain.current = new Gain(1);
 
 		signal.current = new Signal<"frequency">({
-			value: 'C1',
+			value: "C1",
 			units: "frequency"
 		})
 
@@ -70,5 +70,5 @@ export const useOscillator = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [oscWave2, detune2]);
 
-	return { gain: gain.current, signal: signal.current};
+	return { gain: gain.current, signal: signal.current };
 }

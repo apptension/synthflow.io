@@ -7,14 +7,20 @@ import { useMasterVolume } from "./transportControls.hooks";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { Gain } from "tone";
 import { useRegister } from "../../synthesizer.hooks";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const TransportControls = ({ register }: RegisteredComponent<Gain>) => {
 	const masterVolume = useMasterVolume();
 	useRegister(register, masterVolume);
 
 	const { toggleIsPlaying, isPlaying, bpm, setBpm, setConfig } = useContext(TransportProvider.Context);
-
 	const [volume, setVolume] = useState(1);
+
+	useUrlParams({
+		[UrlConfigKeys.BPM]: { value: bpm, setter: setBpm },
+		[UrlConfigKeys.MASTER]: { value: volume, setter: setVolume }
+	});
 
 	useEffect(() => {
 		masterVolume?.set({

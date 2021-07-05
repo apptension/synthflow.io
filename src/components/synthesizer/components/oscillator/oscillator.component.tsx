@@ -9,6 +9,8 @@ import { useOscillator } from "./useOscillator.hooks";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { useGain, useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	const { currentBeatNotes, triggerTime } = useContext(TransportProvider.Context);
@@ -18,6 +20,13 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 	const [oscWave1, setOscWave1] = useState<WaveTypes>(WaveTypes.SIN);
 	const [oscWave2, setOscWave2] = useState<WaveTypes>(WaveTypes.SIN);
 	const [isConnected, setIsConnected] = useState(false);
+
+	useUrlParams({
+		[UrlConfigKeys.OSC_1_WAVE]: { value: oscWave1, setter: setOscWave1 },
+		[UrlConfigKeys.OSC_2_WAVE]: { value: oscWave2, setter: setOscWave2 },
+		[UrlConfigKeys.OSC_1_DETUNE]: { value: detune1, setter: setDetune1 },
+		[UrlConfigKeys.OSC_2_DETUNE]: { value: detune2, setter: setDetune2 },
+	});
 
 	const gain = useGain();
 

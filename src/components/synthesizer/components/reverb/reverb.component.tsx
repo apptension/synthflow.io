@@ -6,14 +6,19 @@ import { ControlsSection } from "../../../UI/controlsSection";
 import { Knob } from "../../../UI/knob";
 import { useRegister } from "../../synthesizer.hooks";
 import { TransportProvider } from "../../../../providers";
+import { useUrlParams } from "../../../../hooks";
+import { UrlConfigKeys } from "../../../../hooks/useUrlParams/useUrlParams.types";
 
 export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 	const reverb = useReverb();
 	useRegister(register, reverb);
 
 	const { setConfig } = useContext(TransportProvider.Context);
-
 	const [room, setRoom] = useState(0.1);
+
+	useUrlParams({
+		[UrlConfigKeys.REVERB]: { value: room, setter: setRoom },
+	});
 
 	useEffect(() => {
 		reverb?.set({
