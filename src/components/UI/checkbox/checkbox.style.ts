@@ -10,13 +10,15 @@ export const Container = styled.div`
 
 export const Label = styled.label`
   cursor: pointer;
-  margin-left: .5rem;
+  margin-left: 4px;
+  height: 16px;
+  width: 16px;
 `;
 
 export const Indicator = styled.span`
   display: inline-block;
-  height: 1.6rem;
-  width: 1.6rem;
+  height: 16px;
+  width: 16px;
   border-radius: 50%;
   border: .3rem solid ${Color.WHITE};
   opacity: .5;
@@ -31,8 +33,8 @@ export const Indicator = styled.span`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: .8rem;
-    height: .8rem;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background-color: ${Color.WHITE};
     opacity: 0;
@@ -44,6 +46,7 @@ export const Input = styled.input`
   opacity: 0;
   width: 0;
   height: 0;
+  position: absolute;
 
   &:checked + ${Indicator} {
     transform: scale(1.4);
