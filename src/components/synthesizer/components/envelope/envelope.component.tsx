@@ -40,8 +40,8 @@ export const Envelope = ({ register }: RegisteredComponent<AmplitudeEnvelope>) =
 	return useMemo((() =>
 			(
 				<ControlsSection title="Envelope">
-					<Knob label="Attack" onChange={setAttack} value={attack} />
-					<Knob label="Release" onChange={setRelease} value={release} />
+					<Knob label="Attack" onChange={setAttack} value={attack} min={0.01}/>
+					<Knob label="Release" onChange={setRelease} value={release}  min={0.01}/>
 					<Knob label="Sustain" onChange={setSustain} value={sustain} />
 					<Knob label="Decay" onChange={setDecay} value={decay} />
 				</ControlsSection>

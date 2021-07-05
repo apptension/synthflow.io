@@ -14,7 +14,7 @@ export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	useRegister(register, filter);
 
 	const { setConfig } = useContext(TransportProvider.Context);
-	const [frequency, setFrequency] = useState(8000);
+	const [frequency, setFrequency] = useState(10000);
 
 	useUrlParams({
 		[UrlConfigKeys.FILTER]: { value: frequency, setter: setFrequency },

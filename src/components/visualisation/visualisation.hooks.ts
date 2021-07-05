@@ -39,9 +39,9 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		if (!mount.current) return;
 
 		let animationFrameId = 0;
-		const FPS = 30;
 		let clock = new THREE.Clock();
 		let delta = 0;
+		const FPS = 30;
 		let interval = 1 / FPS;
 
 		const mountElement = mount.current;
