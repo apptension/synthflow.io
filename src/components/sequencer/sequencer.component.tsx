@@ -16,7 +16,7 @@ import {
 	BeatNumber,
 	UpperContainer
 } from "./sequencer.style"
-import { NoteInput } from "./noteInput";
+import { NoteSelect } from "./noteSelect";
 import { ControlsSection } from "../UI/controlsSection";
 import { BeatIndicator } from "./beatIndicator";
 import { TransportProvider } from "../../providers";
@@ -24,7 +24,7 @@ import { OCTAVES, SEQUENCER_PATTERNS } from "./sequencer.constants";
 import { Select } from "../UI/select";
 import { useUrlParams } from "../../hooks";
 import { UrlConfigKeys } from "../../hooks/useUrlParams/useUrlParams.types";
-import { BeatsSwitcher } from "./beatsSwitcher";
+import { BeatsSelect } from "./beatsSelect";
 
 export const Sequencer = () => {
 	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
@@ -81,7 +81,7 @@ export const Sequencer = () => {
 		<Container>
 			<ControlsSection title="Sequencer">
 				<UpperContainer>
-				<BeatsSwitcher />
+				<BeatsSelect />
 				<PresetsContainer>
 					<Label>Patterns</Label>
 					<Select
@@ -104,7 +104,7 @@ export const Sequencer = () => {
 								{notesMatrix.map((beat, beatIndex) =>
 									<BeatContainer key={`beat-${beatIndex}`}>
 										{beat.map((note, noteIndex) => {
-											return <NoteInput
+											return <NoteSelect
 												value={isNil(note) ? "NULL" : note}
 												key={`note-${noteIndex}-${beatIndex}`}
 												onChange={(value) => {

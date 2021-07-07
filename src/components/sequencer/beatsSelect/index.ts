@@ -1,0 +1,1 @@
+export { BeatsSelect } from "./beatsSelect.component";

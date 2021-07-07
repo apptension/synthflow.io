@@ -2,11 +2,11 @@ import { useContext } from "react";
 import { TransportProvider } from "../../../providers";
 import { Select } from "../../UI/select";
 import { AvailableBeats } from "../../../providers/transportProvider/transportProvider.types";
-import { Container, Label } from "./beatsSwitcher.style";
+import { Container, Label } from "./beatsSelect.style";
 
 const BEATS: AvailableBeats[] = [8, 16, 32];
 
-export const BeatsSwitcher = () => {
+export const BeatsSelect = () => {
 	const { beats, setBeats, setCurrentBeat } = useContext(TransportProvider.Context);
 	return (
 		<Container>

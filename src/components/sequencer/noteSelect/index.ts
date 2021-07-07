@@ -1,0 +1,1 @@
+export { NoteSelect } from "./noteSelect.component";

@@ -1,13 +1,13 @@
-import { Container, Select, Option } from "./noteInput.style";
-import { NoteInputValue } from "./noteInput.types";
-import { NOTES } from "./noteInput.constants";
+import { Container, Select, Option } from "./noteSelect.style";
+import { NoteInputValue } from "./noteSelect.types";
+import { NOTES } from "./noteSelect.constants";
 
 type NoteInputProps = {
 	value: NoteInputValue;
 	onChange: (value: NoteInputValue) => void;
 }
 
-export const NoteInput = ({ value, onChange }: NoteInputProps) => {
+export const NoteSelect = ({ value, onChange }: NoteInputProps) => {
 	return (
 		<Container>
 			<Select

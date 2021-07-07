@@ -1,5 +1,5 @@
 import { VOICES } from "../../components/synthesizer/components/oscillator/oscillator.constants";
-import { NoteType } from "../../components/sequencer/noteInput/noteInput.types";
+import { NoteType } from "../../components/sequencer/noteSelect/noteSelect.types";
 import { AvailableBeats } from "../../providers/transportProvider/transportProvider.types";
 
 export const parseSequencerPattern = (pattern: string, beats: AvailableBeats) => {

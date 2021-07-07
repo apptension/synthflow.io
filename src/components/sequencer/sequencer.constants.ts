@@ -1,4 +1,4 @@
-import { NoteType } from "./noteInput/noteInput.types";
+import { NoteType } from "./noteSelect/noteSelect.types";
 import { AvailableBeats } from "../../providers/transportProvider/transportProvider.types";
 
 export const OCTAVES = [0, 1, 2, 3, 4, 5];

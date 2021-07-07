@@ -1,4 +1,4 @@
-import { NoteType } from "../../components/sequencer/noteInput/noteInput.types";
+import { NoteType } from "../../components/sequencer/noteSelect/noteSelect.types";
 
 export enum UrlConfigKeys {
 	OSC_1_WAVE= 'ow1',

@@ -1,1 +1,0 @@
-export { NoteInput } from "./noteInput.component";

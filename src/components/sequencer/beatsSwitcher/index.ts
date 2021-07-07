@@ -1,1 +1,0 @@
-export { BeatsSwitcher } from "./beatsSwitcher.component";

@@ -1,5 +1,5 @@
 import styled from "styled-components/macro";
-import * as NoteInputStyles from "./noteInput/noteInput.style";
+import * as NoteSelectStyles from "./noteSelect/noteSelect.style";
 import * as ControlsSectionStyles from "../UI/controlsSection/controlsSection.style";
 import * as SelectStyles from "../UI/select/select.style";
 import { Breakpoints, Color, FontFamily } from "../../theme";
@@ -27,7 +27,7 @@ export const BeatContainer = styled.div`
     margin-right: 0;
   }
 
-  ${NoteInputStyles.Container} {
+  ${NoteSelectStyles.Container} {
     margin-bottom: .5rem;
 
     :last-child {
