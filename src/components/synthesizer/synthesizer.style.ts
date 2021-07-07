@@ -18,6 +18,7 @@ export const Container = styled.div<ContainerProps>`
 
   @media screen and (max-width: ${Breakpoints.MOBILE}) {
     grid-template-areas: "synth-controls-left" "synth-controls-right" "sequencer";
+		top: 10rem;
     margin-right: 0;
   }
 

@@ -33,7 +33,7 @@ export const Input = styled.input`
   border: none;
   color: ${ThemeColor.WHITE};
   font-size: 1.6rem;
-  font-family: ${FontFamily.FONT_SECONDARY};
+  font-family: ${FontFamily.FONT_PRIMARY};
   background-color: ${Color(ThemeColor.BLACK).alpha(0.2).toString()};
   text-align: right;
   outline: none;
