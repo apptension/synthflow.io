@@ -1,9 +1,10 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { equals, filter, forEachObjIndexed, isEmpty, isNil, map, mergeDeepLeft, pick, prop } from "ramda";
 import debounce from "lodash.debounce";
 import { UrlConfig, UrlConfigKeys } from "./useUrlParams.types";
 import { parseSequencerPattern } from "./useUrlParams.helpers";
+import { TransportProvider } from "../../providers";
 
 type UrlHandlersType = Record<UrlConfigKeys, { value: any; setter: Dispatch<SetStateAction<any>> }>;
 
@@ -12,6 +13,7 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 	const location = useLocation();
 	const [isUrlConfigSet, setIsUrlConfigSet] = useState(false);
 	const [previousHandlersValues, setPreviousHandlersValues] = useState<any>();
+	const { beats } = useContext(TransportProvider.Context);
 
 	const getUrlValues = () => {
 		const params = new URLSearchParams(location.search);
@@ -24,7 +26,7 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 					parsedValues[key] = value.split("-");
 					break;
 				case UrlConfigKeys.SEQUENCER_PATTERN:
-					const parsedPattern = parseSequencerPattern(value);
+					const parsedPattern = parseSequencerPattern(value, beats);
 					if (!parsedPattern) return;
 					parsedValues[key] = parsedPattern;
 					break;

@@ -16,6 +16,8 @@ export type ConfigType = {
 	filter: number;
 }
 
+export type AvailableBeats = 8 | 16 | 32;
+
 export type TransportContextType = {
 	isPlaying: boolean;
 	triggerTime: number;
@@ -23,10 +25,13 @@ export type TransportContextType = {
 	bpm: number;
 	setBpm: Dispatch<SetStateAction<number>>;
 	currentBeat: number;
+	setCurrentBeat: Dispatch<SetStateAction<number>>;
 	currentBeatNotes: Array<string | null>;
 	setCurrentBeatNotes: Dispatch<SetStateAction<Array<string | null>>>;
 	envelopeRef: AmplitudeEnvelope | undefined;
 	setEnvelopeRef: Dispatch<SetStateAction<AmplitudeEnvelope| undefined>>;
 	config: ConfigType;
 	setConfig: Dispatch<SetStateAction<ConfigType>>;
+	beats: AvailableBeats;
+	setBeats: Dispatch<SetStateAction<AvailableBeats>>
 }

@@ -17,6 +17,7 @@ export enum UrlConfigKeys {
 	CHEBYSHEV = 'c',
 	SEQUENCER_OCTAVES = 'so',
 	SEQUENCER_PATTERN = 'sp',
+	SEQUENCER_BEATS = 'sb'
 }
 
 export type UrlConfig = Partial<{
@@ -36,4 +37,5 @@ export type UrlConfig = Partial<{
 	[UrlConfigKeys.CHEBYSHEV]: number;
 	[UrlConfigKeys.SEQUENCER_OCTAVES]: string[];
 	[UrlConfigKeys.SEQUENCER_PATTERN]: ( NoteType | null )[][];
+	[UrlConfigKeys.SEQUENCER_BEATS]: number;
 }>;

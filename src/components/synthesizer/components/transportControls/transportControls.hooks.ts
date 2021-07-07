@@ -1,5 +1,5 @@
-import { Gain } from "tone";
 import { useEffect, useRef } from "react";
+import { Gain } from "tone";
 
 export const useMasterVolume = () => {
 	const gain = useRef<Gain>();

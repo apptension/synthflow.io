@@ -1,4 +1,5 @@
 import { NoteType } from "./noteInput/noteInput.types";
+import { AvailableBeats } from "../../providers/transportProvider/transportProvider.types";
 
 export const OCTAVES = [0, 1, 2, 3, 4, 5];
 
@@ -7,6 +8,7 @@ export const SEQUENCER_PATTERNS: Record<string,
 		label: string,
 		octaves: Array<string>,
 		pattern: Array<Array<NoteType | null>>
+		beats: AvailableBeats
 	}> = {
 	DARKNESS: {
 		label: "Into the darkness",
@@ -20,7 +22,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			["D#", null, "A#"],
 			[null, "A#", "B"],
 			[null, "C#", "A#"]
-		]
+		],
+		beats: 8
 	},
 	POSITIVE: {
 		label: "Simply positive",
@@ -34,7 +37,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			[null, "F#", null],
 			[null, null, "F#"],
 			[null, "C#", null]
-		]
+		],
+		beats: 8
 	},
 	QUEST: {
 		label: "On the quest...",
@@ -48,7 +52,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			[null, null, "D"],
 			["C", "G", null],
 			[null, null, null]
-		]
+		],
+		beats: 8
 	},
 	BRUTAL: {
 		label: "Brutal (200BPM)",
@@ -62,7 +67,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			["A", "G", null],
 			["B", null, null],
 			[null, null, null]
-		]
+		],
+		beats: 8
 	},
 	HAPPY: {
 		label: "Happy & Sunny",
@@ -76,7 +82,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			[null, null, "G"],
 			["C", null, null],
 			["E", null, null]
-		]
+		],
+		beats: 8
 	},
 	CUSTOM: {
 		label: "Custom",
@@ -90,7 +97,8 @@ export const SEQUENCER_PATTERNS: Record<string,
 			[null, null, null],
 			[null, null, null],
 			[null, null, null],
-		]
+		],
+		beats: 8
 	}
 }
 

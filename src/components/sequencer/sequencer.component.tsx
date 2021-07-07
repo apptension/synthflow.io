@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { clone, isNil } from "ramda";
+import { clone, isNil, take, times } from "ramda";
 import {
 	BeatContainer,
 	Container,
@@ -11,7 +11,10 @@ import {
 	OctaveControls,
 	Octave,
 	PresetsContainer,
-	Controls
+	Controls,
+	BeatNumbersContainer,
+	BeatNumber,
+	UpperContainer
 } from "./sequencer.style"
 import { NoteInput } from "./noteInput";
 import { ControlsSection } from "../UI/controlsSection";
@@ -21,10 +24,11 @@ import { OCTAVES, SEQUENCER_PATTERNS } from "./sequencer.constants";
 import { Select } from "../UI/select";
 import { useUrlParams } from "../../hooks";
 import { UrlConfigKeys } from "../../hooks/useUrlParams/useUrlParams.types";
+import { BeatsSwitcher } from "./beatsSwitcher";
 
 export const Sequencer = () => {
 	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
-	const { currentBeat, setCurrentBeatNotes } = useContext(TransportProvider.Context);
+	const { currentBeat, setCurrentBeatNotes, beats, setBeats, setCurrentBeat } = useContext(TransportProvider.Context);
 	const [octaves, setOctaves] = useState(["1", "1", "1"]);
 	const [currentPreset, setCurrentPreset] = useState<string>("CUSTOM");
 
@@ -36,6 +40,10 @@ export const Sequencer = () => {
 		[UrlConfigKeys.SEQUENCER_OCTAVES]: {
 			value: octaves,
 			setter: setOctaves
+		},
+		[UrlConfigKeys.SEQUENCER_BEATS]: {
+			value: beats,
+			setter: setBeats
 		}
 	})
 
@@ -49,15 +57,31 @@ export const Sequencer = () => {
 
 	useEffect(() => {
 			if (!currentPreset) return;
-			const { pattern, octaves } = SEQUENCER_PATTERNS[currentPreset];
+			const { pattern, octaves, beats } = SEQUENCER_PATTERNS[currentPreset];
 			setNotesMatrix(pattern);
-			setOctaves(octaves)
+			setOctaves(octaves);
+			setBeats(beats);
+			setCurrentBeat(0);
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [currentPreset]
 	)
+
+	useEffect(() => {
+		if (beats === 8) {
+			setNotesMatrix(state => take(8, state))
+		} else if (beats === 16) {
+			setNotesMatrix([...times(() => SEQUENCER_PATTERNS["CUSTOM"].pattern, 2).flat()])
+		} else if (beats === 32) {
+			setNotesMatrix([...times(() => SEQUENCER_PATTERNS["CUSTOM"].pattern, 4).flat()])
+		}
+	}, [beats])
 
 	return useMemo(() => (
 		<Container>
 			<ControlsSection title="Sequencer">
+				<UpperContainer>
+				<BeatsSwitcher />
 				<PresetsContainer>
 					<Label>Patterns</Label>
 					<Select
@@ -66,6 +90,7 @@ export const Sequencer = () => {
 						onChange={(value) => setCurrentPreset(value)}
 					/>
 				</PresetsContainer>
+				</UpperContainer>
 				<Controls>
 					<SequencerContainer>
 						<LabelsContainer>
@@ -94,6 +119,11 @@ export const Sequencer = () => {
 									</BeatContainer>
 								)}
 							</NotesGrid>
+							<BeatNumbersContainer>
+								{notesMatrix.map((_, index) => (
+									<BeatNumber key={index + 1}>{index + 1}</BeatNumber>
+								))}
+							</BeatNumbersContainer>
 						</GridContainer>
 					</SequencerContainer>
 					<OctaveControls>

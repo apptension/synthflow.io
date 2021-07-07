@@ -1,15 +1,22 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Container, Indicator } from "./beatIndicator.style";
 import { TransportProvider } from "../../../providers";
+import { AvailableBeats } from "../../../providers/transportProvider/transportProvider.types";
 
-const BEATS = Array.from(new Array(8), () => "");
+const createBeatsArray = (beats: AvailableBeats) => {
+	return Array.from(new Array(beats), () => "");
+}
 
 export const BeatIndicator = () => {
-	const { currentBeat } = useContext(TransportProvider.Context);
+	const { currentBeat, beats } = useContext(TransportProvider.Context);
+
+	const beatsArray = useMemo(() => {
+		return createBeatsArray(beats);
+	}, [beats])
 
 	return (
 		<Container>
-			{BEATS.map((beat, index) => (
+			{beatsArray.map((beat, index) => (
 				<Indicator isActive={index === currentBeat} key={index} />
 			))}
 		</Container>

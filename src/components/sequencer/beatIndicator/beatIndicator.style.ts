@@ -11,6 +11,7 @@ type IndicatorProps = {
 
 export const Indicator = styled.div<IndicatorProps>`
   width: 3rem;
+	min-width: 3rem;
   height: 2rem;
   margin-right: .5rem;
   position: relative;

@@ -24,7 +24,7 @@ export const useEnvelope = () => {
 
 	useEffect(() => {
 		if (triggerTime) {
-			envelope?.current?.triggerAttackRelease("16n.", triggerTime)
+			envelope?.current?.triggerAttackRelease("16n", triggerTime)
 		}
 	}, [triggerTime]);
 

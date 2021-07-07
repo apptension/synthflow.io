@@ -25,10 +25,13 @@ export const TransportContext = createContext<TransportContextType>({
 	bpm: 90,
 	setBpm: () => undefined,
 	currentBeat: 0,
+	setCurrentBeat: () => undefined,
 	currentBeatNotes: [null, null, null],
 	setCurrentBeatNotes: () => undefined,
 	envelopeRef: undefined,
 	setEnvelopeRef: () => undefined,
 	config: INITIAL_TRANSPORT_CONFIG,
-	setConfig: () => undefined
+	setConfig: () => undefined,
+	beats: 8,
+	setBeats: () => undefined
 })
