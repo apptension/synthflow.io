@@ -54,6 +54,8 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const sphereGeometry = new THREE.SphereBufferGeometry(1, 360, 360);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
 
+		renderer.setPixelRatio(2);
+
 		const uniforms = {
 			u_time: { value: 0 },
 			u_resolution: new THREE.Uniform(new THREE.Vector4()),
@@ -84,7 +86,6 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		camera.position.set(0, 0, 0);
 		camera.lookAt(0, 0, 0);
 
-		renderer.setPixelRatio(window.devicePixelRatio);
 		renderer.setSize(width, height)
 		scene.add(ambientLights);
 		scene.add(mesh);
