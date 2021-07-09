@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
 
 export const Container = styled.div`
+  z-index: 100;
   display: flex;
   width: 100%;
   justify-content: flex-end;

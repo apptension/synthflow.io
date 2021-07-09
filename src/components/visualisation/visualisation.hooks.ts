@@ -51,7 +51,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
-		const sphereGeometry = new THREE.SphereBufferGeometry(1, 360, 360);
+		const sphereGeometry = new THREE.SphereBufferGeometry(2, 230, 230);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
 
 		renderer.setPixelRatio(2);

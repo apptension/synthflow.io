@@ -7,8 +7,9 @@ type ContainerProps = {
 
 export const Container = styled.div<ContainerProps>`
   position: absolute;
-  width: 60%;
-  height: calc(100vh - 11rem);
+  height: 100vh;
+	width: 100%;
+	top: -5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,10 +17,6 @@ export const Container = styled.div<ContainerProps>`
   transition: all 300ms;
   transition-property: width, opacity;
   ${Transitions.Snappy};
-
-  ${({ inSoloView }) => inSoloView && css`
-    width: 100%;
-  `}
   
   @media screen and (max-width: ${Breakpoints.DESKTOP_SMALL}) {
     width: 100%;
