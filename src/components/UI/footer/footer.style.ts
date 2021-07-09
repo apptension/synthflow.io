@@ -11,8 +11,8 @@ export const Container = styled.div`
   font-family: ${FontFamily.FONT_PRIMARY};
   color: ${Color.WHITE};
   align-items: flex-start;
+  user-select: none;
 `;
-
 
 export const ItemContainer = styled.div`
 `;
@@ -35,18 +35,22 @@ export const Link = styled.a`
 
 export const CenteredContainer = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   left: 50%;
   transform: translate(-50%);
+  bottom: 0;
 `;
 
 export const Text = styled.span`
   opacity: 0.5;
 `;
 
-export const CopiedMessage = styled.span`
-  color: ${Color.PRIMARY};
-`;
-
 export const Button = styled.button`
   ${LinkStyle};
+`;
+
+export const CTAContainer = styled.div`
+  margin-bottom: 4rem;
 `;

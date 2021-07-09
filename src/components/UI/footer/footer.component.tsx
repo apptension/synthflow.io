@@ -1,8 +1,17 @@
-import { Button, CenteredContainer, Container, CopiedMessage, ItemContainer, Link, Text } from "./footer.style"
+import {
+	Button,
+	CenteredContainer,
+	Container,
+	CTAContainer,
+	ItemContainer,
+	Link,
+	Text
+} from "./footer.style"
 import { useCopyUrlToClipboard } from "../../../hooks/useCopyUrlToClipboard";
+import { PlayPauseCTA } from "../playPauseCTA";
 
 export const Footer = () => {
-	const { copyUrl, isUrlCopied } = useCopyUrlToClipboard();
+	const { copyUrl } = useCopyUrlToClipboard();
 
 	return (
 		<Container>
@@ -13,13 +22,12 @@ export const Footer = () => {
 				<Link href="https://www.apptension.com/" target="_blank">Apptension</Link>
 			</ItemContainer>
 			<CenteredContainer>
-				{isUrlCopied ? (
-					<CopiedMessage>Copied!</CopiedMessage>
-				) : (
-					<Button onClick={copyUrl}>
-						Copy link
-					</Button>
-				)}
+				<CTAContainer>
+					<PlayPauseCTA />
+				</CTAContainer>
+				<Button onClick={copyUrl}>
+					Copy link
+				</Button>
 			</CenteredContainer>
 			<ItemContainer>
 				<Link href="https://github.com/apptension/synth-flow" target="_blank">

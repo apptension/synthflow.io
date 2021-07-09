@@ -1,0 +1,1 @@
+export { PlayPauseCTA } from "./playPauseCTA.component";

@@ -1,1 +1,1 @@
-export const FONT_PRIMARY = "'Miriam Libre', sans-serif";
+export const FONT_PRIMARY = "'Roboto', sans-serif";
