@@ -14,17 +14,17 @@ export const GlobalStyle = createGlobalStyle`
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding: 5rem 4rem;
   }
 
   html, body {
-    font-size: 58% !important;
+    font-size: 62.5% !important;
     height: 100%;
+    overflow: hidden;
 
     @media screen and (max-width: ${Breakpoints.DESKTOP_LARGE}) {
       font-size: 50% !important;
     }
-
-    overflow-x: hidden;
   }
 
   ::selection {

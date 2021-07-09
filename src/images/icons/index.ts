@@ -5,6 +5,9 @@ import { ReactComponent as SlidersImg } from "./sliders.svg";
 import { ReactComponent as SinImg } from "./sin.svg";
 import { ReactComponent as SquareImg } from "./square.svg";
 import { ReactComponent as Triangle } from "./triangle.svg";
+import { ReactComponent as PauseImg} from "./pause.svg";
+import { ReactComponent as PlayImg} from "./play.svg";
+import { ReactComponent as ShareImg} from "./share.svg";
 
 export type IconComponentProps = {
 	color?: string;
@@ -30,3 +33,6 @@ export const SlidersIcon = makeIcon(SlidersImg);
 export const SinWaveIcon = makeIcon(SinImg);
 export const SquareWaveIcon = makeIcon(SquareImg);
 export const TriangleWaveIcon = makeIcon(Triangle);
+export const PlayIcon = makeIcon(PlayImg);
+export const PauseIcon = makeIcon(PauseImg);
+export const ShareIcon = makeIcon(ShareImg);

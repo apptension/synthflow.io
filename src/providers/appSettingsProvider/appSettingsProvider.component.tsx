@@ -7,9 +7,10 @@ type AppSettingsProviderProps = {
 
 export const AppSettingsProvider = ({ children }: AppSettingsProviderProps) => {
 	const [showControls, setShowControls] = useState(true);
+	const [isUrlCopied, setIsUrlCopied] = useState(false);
 
 	return (
-		<AppSettingsContext.Provider value={{ showControls, setShowControls }}>
+		<AppSettingsContext.Provider value={{ showControls, setShowControls, isUrlCopied, setIsUrlCopied }}>
 			{children}
 		</AppSettingsContext.Provider>
 	)

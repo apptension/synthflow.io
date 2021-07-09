@@ -16,7 +16,7 @@ export const Svg = styled.svg`
 `;
 
 export const SvgCircle = styled.circle`
-  stroke: ${ThemeColor.WHITE};
+  stroke: ${ThemeColor.PRIMARY};
   stroke-width: 3;
   fill: transparent;
 `;

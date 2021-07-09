@@ -5,7 +5,6 @@ export const Container = styled.div`
   width: 100%;
   justify-content: flex-end;
   position: relative;
-  padding: 1rem 4rem;
 `;
 
 type ShowControlsButtonProps = {
@@ -18,10 +17,9 @@ export const ShowControlsButton = styled.button<ShowControlsButtonProps>`
 `;
 
 export const Logo = styled.img`
-	pointer-events: none;
+  pointer-events: none;
   position: absolute;
-  height: 7rem;
-  left: 7rem;
-  top: 3rem;
-  margin: 1rem 0;
+  height: 3.1rem;
+  left: 0;
+  top: -1rem;
 `;

@@ -3,5 +3,7 @@ import { AppSettingsContextType } from "./appSettingsProvider.types";
 
 export const AppSettingsContext = createContext<AppSettingsContextType>({
 	showControls: false,
-	setShowControls: () => undefined
+	setShowControls: () => undefined,
+	isUrlCopied: false,
+	setIsUrlCopied: () => undefined
 })

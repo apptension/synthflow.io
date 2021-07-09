@@ -1,18 +1,31 @@
 import { useContext } from "react";
-import { not } from "ramda";
-import { Container, ShowControlsButton, Logo } from "./header.style"
-import { SlidersIcon } from "../../../images/icons";
+import { Container, Logo } from "./header.style"
+import { SlidersIcon, ShareIcon } from "../../../images/icons";
 import LogoSrc from "../../../images/logo.svg";
-import { AppSettingsProvider } from "../../../providers";
+import { AppSettingsProvider, TransportProvider } from "../../../providers";
+import { PlayPauseButton } from "../playPauseButton";
+import { ControlsButton } from "./controlsButton";
+import { not } from "ramda";
+import { useCopyUrlToClipboard } from "../../../hooks/useCopyUrlToClipboard";
 
 export const Header = () => {
 	const { showControls, setShowControls } = useContext(AppSettingsProvider.Context);
+	const { isPlaying, toggleIsPlaying } = useContext(TransportProvider.Context);
+
+	const { copyUrl } = useCopyUrlToClipboard();
+
 	return (
 		<Container>
 			<Logo src={LogoSrc} />
-			<ShowControlsButton onClick={() => setShowControls(not)} isActive={showControls}>
+			<ControlsButton onClick={toggleIsPlaying} isActive={!isPlaying}>
+				<PlayPauseButton isPlaying={isPlaying} />
+			</ControlsButton>
+			<ControlsButton onClick={() => setShowControls(not)} isActive={showControls} >
 				<SlidersIcon />
-			</ShowControlsButton>
+			</ControlsButton>
+			<ControlsButton onClick={copyUrl} isActive={false}>
+				<ShareIcon />
+			</ControlsButton>
 		</Container>
 	)
 }
