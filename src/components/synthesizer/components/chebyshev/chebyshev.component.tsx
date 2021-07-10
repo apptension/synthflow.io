@@ -31,7 +31,7 @@ export const Chebyshev = ({ register }: RegisteredComponent<any>) => {
 	}, [order])
 
 	return useMemo(() => (
-		<ControlsSection title="Chebyshev">
+		<ControlsSection title="Chebyshev" isShort>
 			<Knob label="Order" onChange={setOrder} value={order} normalRange={false} min={1} max={54} />
 		</ControlsSection>
 	),[order])

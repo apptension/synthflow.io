@@ -68,8 +68,8 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				{label}
 			</Label>
 			<Svg onMouseDown={(event) => handleDragChange(event, true)}>
-				<SvgCircle r={`${RADIUS / 10}rem`} cx="1.3rem" cy="1.3rem" strokeDasharray={CIRCUMFERENCE} strokeDashoffset={strokeOffset} />
-				<SvgBackgroundCircle r={`${RADIUS / 10}rem`} cx="1.3rem" cy="1.3rem" />
+				<SvgCircle r={`${RADIUS / 10}rem`} cx="2.55rem" cy="2.55rem" strokeDasharray={CIRCUMFERENCE} strokeDashoffset={strokeOffset} />
+				<SvgBackgroundCircle r={`${RADIUS / 10}rem`} cx="2.55rem" cy="2.55rem" />
 			</Svg>
 			<Input
 				value={value}

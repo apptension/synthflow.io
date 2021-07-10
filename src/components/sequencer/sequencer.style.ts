@@ -5,6 +5,9 @@ import * as SelectStyles from "../UI/select/select.style";
 import { Breakpoints, Color, FontFamily } from "../../theme";
 
 export const Container = styled.div`
+  opacity: 0;
+  display: none;
+  pointer-events: none;
   grid-area: sequencer;
 
   ${ControlsSectionStyles.ControlsContainer} {

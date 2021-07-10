@@ -1,21 +1,28 @@
-import styled from "styled-components/macro";
-import Color from "color";
-import { Color as ThemeColor, Transitions } from "../../../theme";
+import styled, { css } from "styled-components/macro";
+import { Color as ThemeColor } from "../../../theme";
+import { SharedStyles } from "../../../theme";
+
 
 export const SelectorContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
-  background-color: ${Color(ThemeColor.BLACK).alpha(0.2).toString()};
   border-radius: 4px;
-  width: 14rem;
   position: relative;
   user-select: none;
+  margin-top: 4rem;
 `;
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 1rem;
   align-items: center;
+  width: 30rem;
+  min-width: 30rem;
+
+  ${SharedStyles.LabelStyle} {
+    margin: 0;
+  }
 `;
 
 export const Input = styled.input`
@@ -25,36 +32,44 @@ export const Input = styled.input`
   }
 
   width: calc(14rem / 3);
-
   height: 100%;
 `;
 
 export const InputContainer = styled.div`
   position: relative;
   z-index: 100;
+
+  :not(:first-child) {
+    margin-left: 4rem;
+  }
 `;
 
-export const Label = styled.label`
+type LabelProps = {
+	isChecked: boolean;
+}
+
+export const Label = styled.label<LabelProps>`
   cursor: pointer;
-  width: calc(14rem / 3);
+  pointer-events: all;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
 
-type IndicatorProps = {
-	indexPosition: number;
-}
+  svg {
+    width: 6rem;
+    height: 4rem;
 
-export const Indicator = styled.div<IndicatorProps>`
-  transition: transform 300ms;
-  ${Transitions.Snappy};
-  position: absolute;
-  background-color: ${Color(ThemeColor.BLACK).alpha(0.3).toString()};
-  border-radius: 4px;
-  height: 100%;
-  width: calc(14rem / 3);
-  left: 0;
-  transform: translateX(${({ indexPosition }) => `calc(14rem / 3 * ${indexPosition})`});
-  z-index: 0;
+    path {
+      stroke: #95969C;
+    }
+  }
+
+  ${({ isChecked }) => isChecked && css`
+    svg {
+      path {
+        stroke: ${ThemeColor.PRIMARY};
+      }
+    }
+  `}
 `;

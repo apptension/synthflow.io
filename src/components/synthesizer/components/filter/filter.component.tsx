@@ -32,7 +32,7 @@ export const Filter = ({ register }: RegisteredComponent<FilterClass>) => {
 	}, [frequency, filter])
 
 	return useMemo(() => (
-		<ControlsSection title="Filter">
+		<ControlsSection title="Filter" isShort>
 			<Knob
 				label="Frequency"
 				onChange={setFrequency}

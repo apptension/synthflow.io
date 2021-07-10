@@ -42,8 +42,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     height: 100%;
-    //background: linear-gradient(233.07deg,rgb(17 14 32 / 61%) -5.07%, rgb(87 90 112 / 63%) 71.46%) no-repeat fixed rgb(0, 0, 0);
-    background: linear-gradient(233.07deg,rgb(32 26 61 / 61%) -5.07%, rgb(87 90 112 / 63%) 71.46%) no-repeat fixed rgb(0, 0, 0);;
+    background: linear-gradient(233.07deg,rgb(17 14 32 / 61%) -5.07%, rgb(87 90 112 / 63%) 71.46%) no-repeat fixed rgb(0, 0, 0);
   }
 
   button {

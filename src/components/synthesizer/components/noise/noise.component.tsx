@@ -35,7 +35,7 @@ export const Noise = ({ register }: RegisteredComponent<Gain>) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [gain])
 	return useMemo(() => (
-		<ControlsSection title="Noise">
+		<ControlsSection title="Noise" isShort>
 			<Knob label="Gain" onChange={setGain} value={gain} />
 		</ControlsSection>
 	), [gain])

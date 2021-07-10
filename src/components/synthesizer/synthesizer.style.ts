@@ -6,19 +6,19 @@ type ContainerProps = {
 }
 export const Container = styled.div<ContainerProps>`
   position: absolute;
-	display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-	grid-template-areas: "synth-controls-left synth-controls-right" "sequencer sequencer";
+  pointer-events: none;
+  grid-template-areas: "synth-controls-left synth-controls-right" "sequencer sequencer";
   right: 0;
   top: 6vh;
-  margin-right: 10rem;
   transition: opacity 300ms;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
   ${Transitions.Snappy};
 
   @media screen and (max-width: ${Breakpoints.MOBILE}) {
     grid-template-areas: "synth-controls-left" "synth-controls-right" "sequencer";
-		top: 10rem;
+    top: 10rem;
     margin-right: 0;
   }
 
@@ -29,10 +29,15 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const ControlsPaneLeft = styled.div`
-	grid-area: synth-controls-left;
-	width: 30rem;
+  pointer-events: all;
+	display: flex;
+	flex-direction: column;
 `;
 
 export const ControlsPaneRight = styled(ControlsPaneLeft)`
-	grid-area: synth-controls-right;
+`;
+
+export const PanelsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { v4 as uuidV4 } from 'uuid';
-import { Container, Indicator, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
+import { v4 as uuidV4 } from "uuid";
+import { Container, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
 import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../../images/icons";
 import { SharedStyles } from "../../../theme";
 import { WaveTypes } from "./waveTypeSelect.types";
@@ -48,13 +48,12 @@ export const WaveTypeSelect = ({ onChange, label, value }: WaveTypeSelectProps) 
 								type="radio"
 								checked={positionIndex === index}
 								onChange={() => {
-								onChange(type);
-							}} />
-							<Label htmlFor={`${id}-${type}`}>{mappedIcons[type]}</Label>
+									onChange(type);
+								}} />
+							<Label htmlFor={`${id}-${type}`} isChecked={positionIndex === index}>{mappedIcons[type]}</Label>
 						</InputContainer>
 					)
 				})}
-				<Indicator indexPosition={positionIndex} />
 			</SelectorContainer>
 		</Container>
 	)

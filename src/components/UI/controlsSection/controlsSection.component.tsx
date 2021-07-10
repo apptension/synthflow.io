@@ -3,13 +3,14 @@ import { ReactNode } from "react";
 
 type ControlsSectionProps = {
 	children: ReactNode;
-	title: string;
+	title?: string;
+	isShort?: boolean;
 }
-export const ControlsSection = ({ children, title }: ControlsSectionProps) => {
+export const ControlsSection = ({ children, title, isShort = false }: ControlsSectionProps) => {
 	return (
-		<Container>
-			<SectionName>{title}</SectionName>
-			<ControlsContainer>
+		<Container isShort={isShort}>
+			{title && <SectionName>{title}</SectionName>}
+			<ControlsContainer noTitle={!title}>
 				{children}
 			</ControlsContainer>
 		</Container>

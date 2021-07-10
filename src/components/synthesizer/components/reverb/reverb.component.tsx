@@ -35,7 +35,7 @@ export const Reverb = ({ register }: RegisteredComponent<Freeverb>) => {
 	}, [room]);
 
 	return useMemo(() => (
-		<ControlsSection title="Reverb">
+		<ControlsSection title="Reverb" isShort>
 			<Knob label="Room" onChange={setRoom} value={room} />
 		</ControlsSection>
 	), [room])

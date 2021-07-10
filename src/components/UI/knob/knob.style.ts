@@ -4,41 +4,44 @@ import { Color as ThemeColor, FontFamily } from "../../../theme";
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem;
 `;
 
 export const Svg = styled.svg`
-  width: 2.6rem;
-  height: 2.6rem;
+  width: 5.1rem;
+  height: 5.1rem;
   transform: rotate(90deg);
   cursor: ew-resize;
 `;
 
 export const SvgCircle = styled.circle`
   stroke: ${ThemeColor.PRIMARY};
-  stroke-width: 3;
+  stroke-width: 7;
   fill: transparent;
 `;
 
 export const SvgBackgroundCircle = styled(SvgCircle)`
-  opacity: 0.3;
+  stroke: ${ThemeColor.WHITE};
+  opacity: 0.1;
 `;
 
 export const Input = styled.input`
-  margin-left: 1.1rem;
-  padding-right: 0.4rem;
-  border-radius: 4px;
+  pointer-events: all;
+  border-radius: 10px;
   padding-bottom: 0;
   border: none;
   color: ${ThemeColor.WHITE};
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-family: ${FontFamily.FONT_PRIMARY};
-  background-color: ${Color(ThemeColor.BLACK).alpha(0.2).toString()};
-  text-align: right;
+  background-color: ${Color("#111120").alpha(0.5).toString()};
+  text-align: center;
   outline: none;
   width: 6rem;
-  height: 2.3rem;
+  height: 5rem;
+  z-index: 100;
 
   ::-webkit-inner-spin-button {
     display: none;

@@ -1,34 +1,63 @@
-import styled from "styled-components/macro";
-import Color from "color";
-import { Color as ThemeColor, SharedStyles } from "../../../theme";
+import styled, { css } from "styled-components/macro";
+import { SharedStyles } from "../../../theme";
 
 export const SectionName = styled.span`
   ${SharedStyles.LabelStyle};
 
+  font-size: 1.8rem;
   width: auto;
   display: inline-block;
   padding: 0.6rem;
-  font-size: 1.9rem;
   opacity: .5;
   transition: opacity 300ms ease-out;
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
 `;
 
-export const ControlsContainer = styled.div`
-  border: 1px solid ${Color(ThemeColor.WHITE).alpha(0.35).toString()};
-  border-radius: 8px;
-  padding: 1rem;
-  transition: border-color 300ms ease-out;
+type ControlsContainerProps = {
+	noTitle: boolean;
+}
+export const ControlsContainer = styled.div<ControlsContainerProps>`
+  padding: 2rem 3rem 2rem 5rem;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  ${({ noTitle }) => noTitle && css`
+    padding: 2rem 3rem;
+    justify-content: space-around;
+  `}
 `;
 
-export const Container = styled.section`
-  margin: 1rem;
+type ContainerProps = {
+	isShort: boolean;
+}
+export const Container = styled.section<ContainerProps>`
+  margin: .5rem;
+  height: 21.5rem;
+  width: 50.5rem;
+  position: relative;
 
-  :hover > ${SectionName} {
-    opacity: .75;
-  }
-
-  :hover > ${ControlsContainer} {
-    border-color: ${Color(ThemeColor.WHITE).alpha(0.7).toString()};
+  ${({ isShort }) => isShort && css`
+    width: 24rem;
+		
+		${ControlsContainer} {
+			justify-content: center;
+		}
+  `}
+	
+  ::before {
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #111120;
+    opacity: 0.5;
+    border-radius: 8px;
   }
 `;
 

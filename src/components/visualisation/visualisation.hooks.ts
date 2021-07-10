@@ -41,7 +41,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		let animationFrameId = 0;
 		let clock = new THREE.Clock();
 		let delta = 0;
-		const FPS = 25;
+		const FPS = 24;
 		let interval = 1 / FPS;
 
 		const mountElement = mount.current;
@@ -82,9 +82,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 
 		const mesh = new THREE.Mesh(sphereGeometry, materialRef.current);
 		mesh.position.set(0, 0, 10);
-
 		camera.position.set(0, 0, 0);
-		camera.lookAt(0, 0, 0);
 
 		renderer.setSize(width, height)
 		scene.add(ambientLights);
