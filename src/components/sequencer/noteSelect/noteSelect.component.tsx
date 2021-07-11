@@ -1,4 +1,4 @@
-import { Container, Select, Option } from "./noteSelect.style";
+import { Container, Select, Option, CurrentValue } from "./noteSelect.style";
 import { NoteInputValue } from "./noteSelect.types";
 import { NOTES } from "./noteSelect.constants";
 
@@ -13,7 +13,6 @@ export const NoteSelect = ({ value, onChange }: NoteInputProps) => {
 			<Select
 				onChange={(event) => onChange(event.target.value as NoteInputValue)}
 				value={value}
-				isNoteSelected={value !== "NULL"}
 			>
 				{NOTES.map((value) => {
 						return value === "NULL" ? (
@@ -24,6 +23,7 @@ export const NoteSelect = ({ value, onChange }: NoteInputProps) => {
 					}
 				)}
 			</Select>
+			<CurrentValue isNoteSelected={value !== "NULL"}>{value === "NULL" ? "" : value}</CurrentValue>
 		</Container>
 	)
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid";
 import { Container, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
 import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../../images/icons";
@@ -18,8 +18,6 @@ type WaveTypeSelectProps = {
 }
 
 export const WaveTypeSelect = ({ onChange, label, value }: WaveTypeSelectProps) => {
-	const [positionIndex, setPositionIndex] = useState(0);
-
 	const id = useMemo(() => {
 		return `${uuidV4()}-${label}`;
 
@@ -27,30 +25,30 @@ export const WaveTypeSelect = ({ onChange, label, value }: WaveTypeSelectProps) 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-	useEffect(() => {
-		const currentWaveIndex = Object.values(WaveTypes).findIndex((val) => val === value);
-		setPositionIndex(currentWaveIndex);
-
-	}, [value])
-
 	return (
 		<Container>
 			<SharedStyles.Label htmlFor={id}>
 				{label}
 			</SharedStyles.Label>
 			<SelectorContainer role="radiogroup" id={id}>
-				{Object.values(WaveTypes).map((type, index) => {
+				{Object.values(WaveTypes).map((type) => {
 					return (
 						<InputContainer key={type}>
 							<Input
-								name={type}
+								name={`wave-select-${id}`}
 								id={`${id}-${type}`}
+								value={value}
+								checked={type === value}
 								type="radio"
-								checked={positionIndex === index}
 								onChange={() => {
 									onChange(type);
+
 								}} />
-							<Label htmlFor={`${id}-${type}`} isChecked={positionIndex === index}>{mappedIcons[type]}</Label>
+							<Label
+								htmlFor={`${id}-${type}`}
+							>
+								{mappedIcons[type]}
+							</Label>
 						</InputContainer>
 					)
 				})}

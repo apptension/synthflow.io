@@ -76,6 +76,7 @@ export const Synthesizer = () => {
 				<Oscillator register={registerOscillators} />
 				<Envelope register={registerEnvelope} />
 			</ControlsPaneLeft>
+			<Sequencer />
 			<ControlsPaneRight>
 				<TransportControls register={registerMasterVolume} />
 				<PanelsRow>
@@ -87,7 +88,6 @@ export const Synthesizer = () => {
 					<Chebyshev register={registerChebyshev} />
 				</PanelsRow>
 			</ControlsPaneRight>
-			<Sequencer />
 		</Container>
 	)
 }

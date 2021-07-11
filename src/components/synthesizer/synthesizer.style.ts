@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components/macro";
-import { Breakpoints, Transitions } from "../../theme/";
+import { Breakpoints } from "../../theme/";
 
 type ContainerProps = {
 	isVisible: boolean;
@@ -10,11 +10,10 @@ export const Container = styled.div<ContainerProps>`
   grid-template-areas: "synth-controls-left synth-controls-right" "sequencer sequencer";
   right: 0;
   top: 6vh;
-  transition: opacity 300ms;
+  transition: opacity 300ms ease-in-out;
   display: flex;
   width: 100%;
-  justify-content: space-between;
-  ${Transitions.Snappy};
+  justify-content: center;
 
   @media screen and (max-width: ${Breakpoints.MOBILE}) {
     grid-template-areas: "synth-controls-left" "synth-controls-right" "sequencer";
@@ -24,14 +23,17 @@ export const Container = styled.div<ContainerProps>`
 
   ${({ isVisible }) => !isVisible && css`
     opacity: 0;
-    pointer-events: none;
+
+    * {
+      pointer-events: none !important;
+    }
   `}
 `;
 
 export const ControlsPaneLeft = styled.div`
   pointer-events: all;
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const ControlsPaneRight = styled(ControlsPaneLeft)`

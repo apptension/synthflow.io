@@ -3,6 +3,7 @@ import { TransportProvider } from "../../../../providers";
 import { ControlsSection } from "../../../UI/controlsSection";
 import { Knob } from "../../../UI/knob";
 import { useMasterVolume } from "./transportControls.hooks";
+import { Container } from "./transportControls.style";
 import { RegisteredComponent } from "../../synthesizer.types";
 import { Gain } from "tone";
 import { useRegister } from "../../synthesizer.hooks";
@@ -36,10 +37,12 @@ export const TransportControls = ({ register }: RegisteredComponent<Gain>) => {
 	}, [volume])
 
 	return useMemo(() => (
-		<ControlsSection>
-			<Knob label="Master volume" onChange={setVolume} value={volume} />
-			<Knob label="BPM" onChange={setBpm} value={bpm} normalRange={false} max={350} min={30} />
-		</ControlsSection>
+		<Container>
+			<ControlsSection>
+				<Knob label="Master volume" onChange={setVolume} value={volume} />
+				<Knob label="BPM" onChange={setBpm} value={bpm} normalRange={false} max={350} min={30} />
+			</ControlsSection>
+		</Container>
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	), [isPlaying, bpm, volume])

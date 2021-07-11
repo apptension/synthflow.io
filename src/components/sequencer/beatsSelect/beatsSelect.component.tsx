@@ -1,24 +1,38 @@
 import { useContext } from "react";
 import { TransportProvider } from "../../../providers";
-import { Select } from "../../UI/select";
 import { AvailableBeats } from "../../../providers/transportProvider/transportProvider.types";
-import { Container, Label } from "./beatsSelect.style";
+import { Container, Label, Input, InputContainer, SelectorContainer, LabelValue } from "./beatsSelect.style";
 
 const BEATS: AvailableBeats[] = [8, 16, 32];
 
 export const BeatsSelect = () => {
 	const { beats, setBeats, setCurrentBeat } = useContext(TransportProvider.Context);
+
 	return (
 		<Container>
-			<Label>Beats</Label>
-			<Select
-				value={String(beats)}
-				values={BEATS.map(beatsAmount => ({ value: String(beatsAmount), label: String(beatsAmount) }))}
-				onChange={(value) => {
-					setCurrentBeat(0);
-					setBeats(Number(value) as AvailableBeats)
-				}}
-			/>
+			<SelectorContainer role="radiogroup" id="beats">
+				{BEATS.map((type) => {
+					return (
+						<InputContainer key={type}>
+							<Input
+								name="beats"
+								id={`beats-${type}`}
+								type="radio"
+								value={type}
+								checked={type === beats}
+								onChange={() => {
+									setCurrentBeat(0);
+									setBeats(type)
+								}}
+							/>
+							<Label htmlFor={`beats-${type}`}>
+								<LabelValue>{type}</LabelValue>
+								<LabelValue>Beats</LabelValue>
+							</Label>
+						</InputContainer>
+					)
+				})}
+			</SelectorContainer>
 		</Container>
 	)
 }

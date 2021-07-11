@@ -1,14 +1,16 @@
 import styled from "styled-components/macro";
 import * as NoteSelectStyles from "./noteSelect/noteSelect.style";
 import * as ControlsSectionStyles from "../UI/controlsSection/controlsSection.style";
-import * as SelectStyles from "../UI/select/select.style";
-import { Breakpoints, Color, FontFamily } from "../../theme";
+import { Breakpoints, Color, FontFamily, FontWeight } from "../../theme";
 
 export const Container = styled.div`
-  opacity: 0;
-  display: none;
-  pointer-events: none;
-  grid-area: sequencer;
+  flex-grow: 1;
+  align-self: flex-end;
+  height: 44rem;
+  margin: 0 .5rem .5rem .5rem;
+  pointer-events: all;
+  z-index: 1000;
+  max-width: 81rem;
 
   ${ControlsSectionStyles.ControlsContainer} {
     padding: 2rem 4rem;
@@ -24,14 +26,14 @@ export const NotesGrid = styled.div`
 `;
 
 export const BeatContainer = styled.div`
-  margin-right: .5rem;
+  margin-right: .75rem;
 
   :last-child {
     margin-right: 0;
   }
 
   ${NoteSelectStyles.Container} {
-    margin-bottom: .5rem;
+    margin-bottom: .75rem;
 
     :last-child {
       margin-bottom: 0;
@@ -43,22 +45,24 @@ export const GridContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: auto;
-  width: 33rem;
+  width: calc(32.6vw - 2.5rem);
+  max-width: 60rem;
+  padding: 0 4px 2rem 4px;
 
   ::-webkit-scrollbar {
     width: 1em;
     border-radius: 8px;
-    height: 4px;
+    height: 5px;
     cursor: pointer;
   }
 
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(94, 93, 101, 0.6);
     border-radius: 8px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(256, 256, 256, 0.2);
+    background-color: ${Color.PRIMARY};
     border-radius: 8px;
     height: 4px;
   }
@@ -73,17 +77,18 @@ export const LabelsContainer = styled.div`
 `;
 
 export const Label = styled.span`
+  height: 6.7rem;
   display: flex;
   align-items: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-family: ${FontFamily.FONT_PRIMARY};
   color: ${Color.WHITE};
-  height: 2rem;
-  margin-right: 1.1rem;
+  margin-right: 3rem;
   user-select: none;
+  opacity: .5;
 
   :not(:last-child) {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 `;
 
@@ -94,34 +99,7 @@ export const SequencerContainer = styled.div`
 
 export const OctaveControls = styled.div`
   margin-top: 2rem;
-  margin-left: 2rem;
-`;
-
-export const Octave = styled.div`
-  display: flex;
-
-  :last-child {
-    ${Label} {
-      margin-bottom: 0;
-    }
-  }
-
-  ${Label} {
-    width: 5rem;
-    font-size: 1.6rem;
-  }
-`;
-
-export const PresetsContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-
-  ${SelectStyles.Select} {
-    width: 20rem;
-    text-align: right;
-    text-align-last: right;
-    padding-right: 1rem;
-  }
+  margin-left: 1.5rem;
 `;
 
 export const Controls = styled.div`
@@ -139,18 +117,46 @@ export const BeatNumbersContainer = styled.div`
   margin: .4rem 0;
 `;
 
-export const BeatNumber = styled(Label)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  min-width: 3rem;
-  opacity: .7;
-  margin: 0 .5rem 0 0 !important;
-`;
-
 export const UpperContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+`;
+
+export const ControlsSection = styled.section`
+  position: relative;
+  height: 100%;
+  background-color: rgba(44, 46, 58, 0.8);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+`
+
+export const SectionTitle = styled.span`
+  font-family: ${FontFamily.FONT_PRIMARY};
+  font-size: 1.8rem;
+  color: ${Color.WHITE};
+  opacity: .5;
+  width: max-content;
+  margin: 2rem auto 0 auto;
+  text-transform: uppercase;
+`;
+
+export const ControlsWrapper = styled.div`
+  height: 24rem;
+`;
+
+export const BigTileButton = styled.button`
+  width: 9rem;
+  height: 9rem;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  font-family: ${FontFamily.FONT_PRIMARY};
+  font-weight: ${FontWeight.BOLD};
+  color: ${Color.WHITE};
+  display: flex;
+  align-items: center;
+  background-color: rgba(55, 57, 70, 0.5);
+  justify-content: center;
 `;

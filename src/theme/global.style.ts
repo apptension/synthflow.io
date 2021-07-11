@@ -22,11 +22,19 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     overflow: hidden;
 
+    @media screen and (max-width: 1600px) {
+      font-size: 55% !important;
+    }
+
+    @media screen and (max-width: 1400px) {
+      font-size: 49% !important;
+    }
+
     @media screen and (max-width: ${Breakpoints.DESKTOP_LARGE}) {
-      font-size: 50% !important;
+      font-size: 47% !important;
     }
   }
-
+ 
   ::selection {
     background: ${Color.HIGHLIGHT} /* WebKit/Blink Browsers */
   }
@@ -42,7 +50,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     height: 100%;
-    background: linear-gradient(233.07deg,rgb(17 14 32 / 61%) -5.07%, rgb(87 90 112 / 63%) 71.46%) no-repeat fixed rgb(0, 0, 0);
+    background-color: #373946;
   }
 
   button {

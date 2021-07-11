@@ -10,7 +10,8 @@ export const Button = styled.button`
   border-radius: 100px;
   display: flex;
   align-items: center;
-  padding: 0 2.7rem;
+  padding-right: 2.7rem;
+	padding-left: 3.2rem;
   justify-content: space-between;
 
   svg {

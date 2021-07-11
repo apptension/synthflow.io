@@ -3,6 +3,7 @@ import { Color } from "../../../theme";
 
 export const Container = styled.div`
   display: flex;
+	pointer-events: none;
 `;
 
 type IndicatorProps = {
@@ -10,10 +11,10 @@ type IndicatorProps = {
 }
 
 export const Indicator = styled.div<IndicatorProps>`
-  width: 3rem;
-	min-width: 3rem;
+  width: 6.7rem;
+	min-width: 6.7rem;
   height: 2rem;
-  margin-right: .5rem;
+  margin-right: .75rem;
   position: relative;
 
   :last-child {
@@ -23,13 +24,13 @@ export const Indicator = styled.div<IndicatorProps>`
   ::after {
     content: '';
     position: absolute;
-    top: 50%;
+    top: 12.8rem;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: ${Color.WHITE};
-    border-radius: 50%;
-    height: .5rem;
-    width: .5rem;
+    transform: translate(-50.5%, -50%);
+		border: 1px solid ${Color.PRIMARY};
+    border-radius: 13.6px;
+    height: 22.2rem;
+    width: 7.2rem;
     opacity: 0;
   }
 

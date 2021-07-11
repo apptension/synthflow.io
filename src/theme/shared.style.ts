@@ -9,6 +9,7 @@ export const LabelStyle = css`
   font-family: ${FontFamily.FONT_PRIMARY};
   color: ${ThemeColor.WHITE};
   font-size: 1.8rem;
+  opacity: 0.5;
 `;
 
 export const Label = styled.label`

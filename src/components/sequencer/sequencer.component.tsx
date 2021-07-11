@@ -9,22 +9,23 @@ import {
 	Label,
 	SequencerContainer,
 	OctaveControls,
-	Octave,
-	PresetsContainer,
 	Controls,
-	BeatNumbersContainer,
-	BeatNumber,
-	UpperContainer
+	SectionTitle,
+	UpperContainer,
+	ControlsSection,
+	ControlsWrapper,
+	BigTileButton
 } from "./sequencer.style"
 import { NoteSelect } from "./noteSelect";
-import { ControlsSection } from "../UI/controlsSection";
 import { BeatIndicator } from "./beatIndicator";
 import { TransportProvider } from "../../providers";
-import { OCTAVES, SEQUENCER_PATTERNS } from "./sequencer.constants";
-import { Select } from "../UI/select";
+import { SEQUENCER_PATTERNS } from "./sequencer.constants";
 import { useUrlParams } from "../../hooks";
 import { UrlConfigKeys } from "../../hooks/useUrlParams/useUrlParams.types";
 import { BeatsSelect } from "./beatsSelect";
+import { OctaveSelect } from "./octaveSelect";
+import { PresetsSelect } from "./presetsSelect";
+import { getRandomPreset } from "./sequencer.helpers";
 
 export const Sequencer = () => {
 	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
@@ -79,60 +80,50 @@ export const Sequencer = () => {
 
 	return useMemo(() => (
 		<Container>
-			<ControlsSection title="Sequencer">
+			<ControlsSection>
 				<UpperContainer>
-				<BeatsSelect />
-				<PresetsContainer>
-					<Label>Patterns</Label>
-					<Select
-						value={currentPreset}
-						values={Object.entries(SEQUENCER_PATTERNS).map(([key, value]) => ({ value: key, label: value.label }))}
-						onChange={(value) => setCurrentPreset(value)}
-					/>
-				</PresetsContainer>
+					<BeatsSelect />
+					<PresetsSelect value={currentPreset} onChange={setCurrentPreset} />
+					<BigTileButton onClick={() => {
+						setCurrentPreset(getRandomPreset);
+					}}>Random</BigTileButton>
 				</UpperContainer>
-				<Controls>
-					<SequencerContainer>
-						<LabelsContainer>
-							<Label>Voice 1</Label>
-							<Label>Voice 2</Label>
-							<Label>Voice 3</Label>
-						</LabelsContainer>
-						<GridContainer>
-							<BeatIndicator />
-							<NotesGrid>
-								{notesMatrix.map((beat, beatIndex) =>
-									<BeatContainer key={`beat-${beatIndex}`}>
-										{beat.map((note, noteIndex) => {
-											return <NoteSelect
-												value={isNil(note) ? "NULL" : note}
-												key={`note-${noteIndex}-${beatIndex}`}
-												onChange={(value) => {
-													setNotesMatrix(state => {
-														const newState = clone(state);
-														newState[beatIndex][noteIndex] = value === "NULL" ? null : value;
-														return newState;
-													})
-												}
-												} />
-										})}
-									</BeatContainer>
-								)}
-							</NotesGrid>
-							<BeatNumbersContainer>
-								{notesMatrix.map((_, index) => (
-									<BeatNumber key={index + 1}>{index + 1}</BeatNumber>
-								))}
-							</BeatNumbersContainer>
-						</GridContainer>
-					</SequencerContainer>
-					<OctaveControls>
-						{octaves.map((octave, index) => (
-							<Octave key={`octave-${octave}-${index}`}>
-								<Label>Octave</Label>
-								<Select
-									value={octaves[index]}
-									values={OCTAVES.map(octave => ({ value: String(octave), label: String(octave) }))}
+				<ControlsWrapper>
+
+					<Controls>
+						<SequencerContainer>
+							<LabelsContainer>
+								<Label>Voice 1</Label>
+								<Label>Voice 2</Label>
+								<Label>Voice 3</Label>
+							</LabelsContainer>
+							<GridContainer>
+								<BeatIndicator />
+								<NotesGrid>
+									{notesMatrix.map((beat, beatIndex) =>
+										<BeatContainer key={`beat-${beatIndex}`}>
+											{beat.map((note, noteIndex) => {
+												return <NoteSelect
+													value={isNil(note) ? "NULL" : note}
+													key={`note-${noteIndex}-${beatIndex}`}
+													onChange={(value) => {
+														setNotesMatrix(state => {
+															const newState = clone(state);
+															newState[beatIndex][noteIndex] = value === "NULL" ? null : value;
+															return newState;
+														})
+													}
+													} />
+											})}
+										</BeatContainer>
+									)}
+								</NotesGrid>
+							</GridContainer>
+						</SequencerContainer>
+						<OctaveControls>
+							{octaves.map((octave, index) => (
+								<OctaveSelect
+									key={`octave-${octave}-${index}`}
 									onChange={(value) => {
 										setOctaves(state => {
 											const newState = [...state];
@@ -140,11 +131,15 @@ export const Sequencer = () => {
 											return newState;
 										})
 									}}
+									value={octaves[index]}
 								/>
-							</Octave>
-						))}
-					</OctaveControls>
-				</Controls>
+							))}
+						</OctaveControls>
+					</Controls>
+				</ControlsWrapper>
+				<SectionTitle>
+					Sequencer
+				</SectionTitle>
 			</ControlsSection>
 		</Container>
 	), [notesMatrix, octaves, currentPreset])

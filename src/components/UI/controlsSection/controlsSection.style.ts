@@ -14,13 +14,14 @@ export const SectionName = styled.span`
   left: 2rem;
   top: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
+	text-transform: uppercase;
 `;
 
 type ControlsContainerProps = {
 	noTitle: boolean;
 }
 export const ControlsContainer = styled.div<ControlsContainerProps>`
-  padding: 2rem 3rem 2rem 5rem;
+  padding: 2rem 2rem 2rem 4rem;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -37,28 +38,18 @@ type ContainerProps = {
 export const Container = styled.section<ContainerProps>`
   margin: .5rem;
   height: 21.5rem;
-  width: 50.5rem;
+  width: 43rem;
   position: relative;
-
-  ${({ isShort }) => isShort && css`
-    width: 24rem;
-		
-		${ControlsContainer} {
-			justify-content: center;
-		}
-  `}
+  background-color: rgba(44, 46, 58, 0.8);
+  border-radius: 8px;
 	
-  ::before {
-    content: '';
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: #111120;
-    opacity: 0.5;
-    border-radius: 8px;
-  }
+  ${({ isShort }) => isShort && css`
+    width: 20.9rem;
+
+    ${ControlsContainer} {
+      justify-content: center;
+    }
+  `}
 `;
 
 
