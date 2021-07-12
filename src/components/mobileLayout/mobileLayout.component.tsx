@@ -8,7 +8,7 @@ export const MobileLayout = () => {
 		<Container>
 			<Header>
 				<Logo src={LogoSrc} />
-				<Link href="https://github.com/apptension/synth-flow" target="_blank">
+				<Link href="https://github.com/apptension/synthflow.io" target="_blank">
 					Github
 				</Link>
 			</Header>

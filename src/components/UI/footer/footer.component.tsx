@@ -7,7 +7,7 @@ import {
 	Link,
 	Text
 } from "./footer.style"
-import { useCopyUrlToClipboard } from "../../../hooks/useCopyUrlToClipboard";
+import { useCopyUrlToClipboard } from "../../../hooks";
 import { PlayPauseCTA } from "../playPauseCTA";
 
 export const Footer = () => {
@@ -30,7 +30,7 @@ export const Footer = () => {
 				</Button>
 			</CenteredContainer>
 			<ItemContainer>
-				<Link href="https://github.com/apptension/synth-flow" target="_blank">
+				<Link href="https://github.com/apptension/synthflow.io" target="_blank">
 					Github
 				</Link>
 			</ItemContainer>

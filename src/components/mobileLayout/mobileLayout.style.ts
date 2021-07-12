@@ -23,6 +23,7 @@ export const Header = styled.header`
 
 export const Footer = styled.footer`
   margin-right: auto;
+  
   @media screen and (max-width: ${Breakpoints.MOBILE_SMALL}) {
     font-size: 1.5rem;
   }
@@ -36,7 +37,7 @@ export const Message = styled.span`
   color: ${Color.WHITE};
   font-size: 11vw;
   line-height: 112%;
-  margin-bottom: 13vh;
+  margin-bottom: 7rem;
   margin-top: auto;
   z-index: 100;
 
@@ -49,13 +50,14 @@ export const Logo = styled.img``;
 
 export const Underlined = styled.span`
   position: relative;
+  display: inline-block;
 
   ::after {
     content: '';
     position: absolute;
     height: 1.75vw;
-    bottom: 3%;
-    left: 2px;
+    bottom: 0;
+    left: 0;
     right: 0;
     background: linear-gradient(270deg, #63EAB3 0%, #1C967D 100%);
 
