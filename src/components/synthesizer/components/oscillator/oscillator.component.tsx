@@ -73,11 +73,11 @@ export const Oscillator = ({ register }: RegisteredComponent<Gain>) => {
 		<>
 			<ControlsSection title="Oscillator 1">
 				<WaveTypeSelect label="Wave form" onChange={setOscWave1} value={oscWave1} />
-				<Knob label="Detune" max={2000} onChange={setDetune1} value={detune1} step={40} normalRange={false} />
+				<Knob label="Detune" max={2000} min={-2000} onChange={setDetune1} value={detune1} step={40} normalRange={false} />
 			</ControlsSection>
 			<ControlsSection title="Oscillator 2">
 				<WaveTypeSelect label="Wave form" value={oscWave2} onChange={setOscWave2} />
-				<Knob label="Detune" max={2000} onChange={setDetune2} value={detune2} step={40} normalRange={false} />
+				<Knob label="Detune" max={2000} min={-2000} onChange={setDetune2} value={detune2} step={40} normalRange={false} />
 			</ControlsSection>
 		</>
 	), [oscWave1, oscWave2, detune1, detune2])

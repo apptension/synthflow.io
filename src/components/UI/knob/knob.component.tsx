@@ -18,12 +18,12 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 	const [strokeOffset, setStrokeOffset] = useState(CIRCUMFERENCE);
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragOffset, setDragOffset] = useState<number>(0);
-	const [tempValue, setTempValue] = useState(0);
+	const [tempValue, setTempValue] = useState("0");
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		handleChange(value);
-		setTempValue(value);
+		setTempValue(String(value));
 
 		// should run only on value change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,18 +31,18 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 
 	useEffect(() => {
 		if (!isDragging) return;
-		setTempValue(value);
+		setTempValue(String(value));
 	}, [value, isDragging])
 
 	const handleEnter = () => {
-		if (tempValue > max) {
-			setTempValue(max);
+		if (Number(tempValue) > max) {
+			setTempValue(String(max));
 			handleChange(max);
-		} else if (tempValue < min) {
-			setTempValue(min);
+		} else if (Number(tempValue) < min) {
+			setTempValue(String(min));
 			handleChange(min);
 		} else {
-			handleChange(isNaN(tempValue) ? min : tempValue)
+			handleChange(isNaN(Number(tempValue)) ? min : Number(tempValue))
 		}
 	}
 
@@ -111,7 +111,7 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				min={min}
 				max={max}
 				onChange={(event) => {
-					const value = event.target.valueAsNumber;
+					const value = event.target.value;
 					setTempValue(value);
 				}}
 				onBlur={handleEnter}

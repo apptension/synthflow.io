@@ -9,15 +9,15 @@ type OctaveSelectProps = {
 export const OctaveSelect = ({ value, onChange }: OctaveSelectProps) => {
 	return (
 		<Container>
-			<CurrentValue>
-				<Text>Octave</Text>
-				<Text>{value}</Text>
-			</CurrentValue>
 			<Select
 				value={value}
 				values={OCTAVES.map(octave => ({ value: String(octave), label: String(octave) }))}
 				onChange={(value) => onChange(value)}
 			/>
+			<CurrentValue>
+				<Text>Octave</Text>
+				<Text>{value}</Text>
+			</CurrentValue>
 		</Container>
 	)
 }
