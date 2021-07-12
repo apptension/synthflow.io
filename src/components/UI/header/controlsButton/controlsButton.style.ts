@@ -46,7 +46,12 @@ export const Button = styled.button<ButtonProps>`
   svg {
     height: 32px;
     width: 32px;
-
+    
+    @media screen and (max-width: 1600px) {
+      height: 28px;
+      width: 28px;
+    }
+    
     @media screen and (max-width: ${Breakpoints.DESKTOP_LARGE}) {
       height: 24px;
       width: 24px;

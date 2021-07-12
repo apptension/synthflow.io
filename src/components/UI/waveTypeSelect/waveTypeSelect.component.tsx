@@ -1,14 +1,14 @@
 import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid";
 import { Container, Input, InputContainer, Label, SelectorContainer } from "./waveTypeSelect.style";
-import { SinWaveIcon, SquareWaveIcon, TriangleWaveIcon } from "../../../images/icons";
+import { SawtoothWaveIcon, SinWaveIcon, SquareWaveIcon } from "../../../images/icons";
 import { SharedStyles } from "../../../theme";
 import { WaveTypes } from "./waveTypeSelect.types";
 
 const mappedIcons = {
 	[WaveTypes.SIN]: <SinWaveIcon size={3} />,
 	[WaveTypes.SQUARE]: <SquareWaveIcon size={3} />,
-	[WaveTypes.SAWTOOTH]: <TriangleWaveIcon size={3} />
+	[WaveTypes.SAWTOOTH]: <SawtoothWaveIcon size={3} />
 }
 
 type WaveTypeSelectProps = {

@@ -6,7 +6,7 @@ import { AppSettingsProvider, TransportProvider } from "../../../providers";
 import { PlayPauseButton } from "../playPauseButton";
 import { ControlsButton } from "./controlsButton";
 import { not } from "ramda";
-import { useCopyUrlToClipboard } from "../../../hooks/useCopyUrlToClipboard";
+import { useCopyUrlToClipboard } from "../../../hooks";
 
 export const Header = () => {
 	const { showControls, setShowControls } = useContext(AppSettingsProvider.Context);

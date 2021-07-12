@@ -16,7 +16,7 @@ export const Container = styled.div<ContainerProps>`
   cursor: grab;
   transition: all 500ms ease-in-out;
   transition-property: width, opacity, transform;
-	transition-delay: 200ms;
+	transition-delay: 150ms;
 
   ${({ theme }) => theme.isSynthVisible && css`
     transform: translateY(-30rem) scale(0.75);

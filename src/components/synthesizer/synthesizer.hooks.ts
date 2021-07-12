@@ -36,7 +36,7 @@ export const useVolume = () => {
 	const volume = useRef<Volume>();
 
 	useEffect(() => {
-		volume.current = new Volume(-12);
+		volume.current = new Volume(-18);
 	})
 
 	return volume.current;
