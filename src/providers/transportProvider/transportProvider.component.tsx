@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { not } from "ramda";
 import { AmplitudeEnvelope, Draw, Loop, start, Transport } from "tone";
 import { AvailableBeats } from "./transportProvider.types";
+import { useShowMobileLayout } from "../../hooks";
 
 type TransportProviderProps = {
 	children: ReactNode;
@@ -17,6 +18,16 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 	const [currentBeatNotes, setCurrentBeatNotes] = useState<Array<string | null>>([null, null, null])
 	const [envelopeRef, setEnvelopeRef] = useState<AmplitudeEnvelope | undefined>();
 	const [beats, setBeats] = useState<AvailableBeats>(8);
+	const showMobileLayout = useShowMobileLayout();
+
+	useEffect(() => {
+		// prevent from crash when synth instance is changing for mobile view
+
+		if (!showMobileLayout) {
+			setCurrentBeat(0);
+			setBeats(8);
+		}
+	}, [showMobileLayout])
 
 	useEffect(() => {
 		let loop: Loop | undefined;
@@ -53,6 +64,20 @@ export const TransportProvider = ({ children }: TransportProviderProps) => {
 			Transport.stop();
 		}
 	}, [isPlaying])
+
+	useEffect(() => {
+		// prevent from playing lagged sounds when leaving browser tab
+
+		window.addEventListener("blur", () => {
+			setIsPlaying(false)
+		});
+
+		return () => {
+			window.removeEventListener("blur", () => {
+				setIsPlaying(false)
+			})
+		}
+	}, [])
 
 	const toggleIsPlaying = () => {
 		setIsPlaying(not);

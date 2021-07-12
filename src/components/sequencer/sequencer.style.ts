@@ -1,9 +1,10 @@
-import styled from "styled-components/macro";
+import styled, { css } from "styled-components/macro";
 import * as NoteSelectStyles from "./noteSelect/noteSelect.style";
 import * as ControlsSectionStyles from "../UI/controlsSection/controlsSection.style";
 import { Breakpoints, Color, FontFamily, FontWeight } from "../../theme";
+import { SynthThemeProps } from "../synthesizer/synthesizer.types";
 
-export const Container = styled.div`
+export const Container = styled.div<SynthThemeProps>`
   flex-grow: 1;
   align-self: flex-end;
   height: 44rem;
@@ -11,7 +12,15 @@ export const Container = styled.div`
   pointer-events: all;
   z-index: 1000;
   max-width: 81rem;
+  transition: all 150ms ease-in-out;
+  transition-property: filter, transform, opacity;
 
+  ${({ theme }) => !theme.isSynthVisible && css`
+    filter: blur(1.6rem);
+    transform: scale(0.8);
+    opacity: 0;
+  `}
+  
   ${ControlsSectionStyles.ControlsContainer} {
     padding: 2rem 4rem;
 

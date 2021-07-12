@@ -92,7 +92,7 @@ export const Sequencer = () => {
 		} else if (beats === 32) {
 			setNotesMatrix([...times(() => SEQUENCER_PATTERNS["CUSTOM"].pattern, 4).flat()])
 		}
-	}, [beats])
+	}, [beats]);
 
 	return useMemo(() => (
 		<Container>

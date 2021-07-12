@@ -9,7 +9,7 @@ export const PlayPauseCTA = () => {
 	return (
 		<Container>
 			<Button onClick={toggleIsPlaying}>
-				<PlayPauseButton isPlaying={!isPlaying} />
+				<PlayPauseButton isPlaying={isPlaying} />
 				<Text>{isPlaying ? 'Pause' : 'Play'} this synth</Text>
 			</Button>
 		</Container>

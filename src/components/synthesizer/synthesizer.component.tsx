@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	AmplitudeEnvelope,
 	connect,
 	Destination,
 	Filter as FilterType, Freeverb,
 	Gain,
-	Chebyshev as ChebyshevType
+	Chebyshev as ChebyshevType,
 } from "tone";
-import { Container, ControlsPaneLeft, ControlsPaneRight, PanelsRow } from "./synthesizer.style"
-import { AppSettingsProvider } from "../../providers";
+import { Container, ControlsPanelLeft, ControlsPanelRight, PanelsRow } from "./synthesizer.style"
 import { Envelope, Filter, Oscillator } from "./components";
 import { Noise } from "./components/noise";
 import { Reverb } from "./components/reverb";
@@ -16,11 +15,8 @@ import { Chebyshev } from "./components/chebyshev";
 import { TransportControls } from "./components/transportControls"
 import { Sequencer } from "../sequencer";
 import { useCompressor, useVolume } from "./synthesizer.hooks";
-import { useShowMobileLayout } from "../../hooks";
 
 export const Synthesizer = () => {
-	const showMobileLayout = useShowMobileLayout();
-	const { showControls } = useContext(AppSettingsProvider.Context);
 	const [oscillators, registerOscillators] = useState<Gain>();
 	const [chebyshev, registerChebyshev] = useState<ChebyshevType>();
 	const [envelope, registerEnvelope] = useState<AmplitudeEnvelope>();
@@ -73,23 +69,23 @@ export const Synthesizer = () => {
 	]);
 
 	return (
-		<Container isVisible={showControls && !showMobileLayout}>
-			<ControlsPaneLeft>
+		<Container>
+			<ControlsPanelLeft>
 				<Oscillator register={registerOscillators} />
 				<Envelope register={registerEnvelope} />
-			</ControlsPaneLeft>
+			</ControlsPanelLeft>
 			<Sequencer />
-			<ControlsPaneRight>
+			<ControlsPanelRight>
 				<TransportControls register={registerMasterVolume} />
 				<PanelsRow>
 					<Filter register={registerFilter} />
 					<Noise register={registerNoise} />
 				</PanelsRow>
 				<PanelsRow>
-				<Reverb register={registerReverb} />
+					<Reverb register={registerReverb} />
 					<Chebyshev register={registerChebyshev} />
 				</PanelsRow>
-			</ControlsPaneRight>
+			</ControlsPanelRight>
 		</Container>
 	)
 }

@@ -9,9 +9,9 @@ export const PlayPauseButton = ({ isPlaying }: PlayPauseButtonProps) => {
 	return (
 		<Container>
 			{isPlaying ? (
-				<PlayIcon />
-			) : (
 				<PauseIcon />
+			) : (
+				<PlayIcon />
 			)}
 		</Container>
 	)

@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import * as SynthesiserStyles from '../synthesizer/synthesizer.style';
-import { Color, FontFamily, FontWeight } from "../../theme";
+import { Breakpoints, Color, FontFamily } from "../../theme";
 
 export const Container = styled.div`
 	display: flex;
@@ -28,13 +28,18 @@ export const Footer = styled.footer`
 export const Message = styled.span`
 	user-select: none;
 	pointer-events: none;
-  font-family: ${FontFamily.FONT_PRIMARY};
-  font-weight: ${FontWeight.BOLD};
+  font-family: ${FontFamily.FONT_SECONDARY};
+  font-weight: 600;
   color: ${Color.WHITE};
   font-size: 13vw;
+	line-height: 112%;
 	margin-bottom: 13vh;
 	margin-top: auto;
 	z-index: 100;
+
+  @media screen and (min-width: ${Breakpoints.MOBILE}) {
+    font-size: 10rem;
+  }
 `;
 
 export const Logo = styled.img``;
@@ -46,9 +51,13 @@ export const Underlined = styled.span`
     content: '';
     position: absolute;
     height: 1.75vw;
-    bottom: 8px;
+    bottom: 2px;
     left: 3px;
     right: 0;
     background: linear-gradient(270deg, #63EAB3 0%, #1C967D 100%);
+
+    @media screen and (min-width: ${Breakpoints.MOBILE}) {
+      height: 1.3rem;
+    }
   }
 `;

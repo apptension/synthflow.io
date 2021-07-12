@@ -10,7 +10,7 @@ export const useCopyUrlToClipboard = () => {
 				setIsUrlCopied(false);
 			}, 3000)
 		}
-	}, [isUrlCopied]);
+	}, [isUrlCopied, setIsUrlCopied]);
 
 	const copyUrl = () => {
 		const el = document.createElement("input");

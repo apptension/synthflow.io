@@ -1,9 +1,9 @@
 import styled, { css } from "styled-components/macro";
-import { Breakpoints } from "../../theme/";
+import { SynthThemeProps } from "../synthesizer/synthesizer.types";
 
 type ContainerProps = {
 	inSoloView: boolean;
-}
+} & SynthThemeProps;
 
 export const Container = styled.div<ContainerProps>`
   position: absolute;
@@ -14,14 +14,15 @@ export const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   cursor: grab;
-  transition: all 300ms;
+  transition: all 500ms ease-in-out;
   transition-property: width, opacity, transform;
+	transition-delay: 200ms;
 
-  ${({ inSoloView }) => !inSoloView && css`
-    transform: translateY(-30rem) scale(0.9);
+  ${({ theme }) => theme.isSynthVisible && css`
+    transform: translateY(-30rem) scale(0.75);
   `};
 
-  @media screen and (max-width: ${Breakpoints.DESKTOP_SMALL}) {
+  @media screen and (max-width: 1150px) {
     width: 250vw;
     height: 140vh;
     top: -7vh;

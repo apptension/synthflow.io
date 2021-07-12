@@ -96,7 +96,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		controls.minZoom = 0;
 		controls.enablePan = false;
 		controls.maxDistance = 20;
-		controls.minDistance = 7.5;
+		controls.minDistance = 9.5;
 		controls.enableDamping = true;
 		controls.target.copy(mesh.position);
 		controls.update()
@@ -193,7 +193,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			}
 		}
 
-		// animationFrameId = requestAnimationFrame(render)
+		animationFrameId = requestAnimationFrame(render)
 
 		return () => {
 			if (!mountElement) return;
