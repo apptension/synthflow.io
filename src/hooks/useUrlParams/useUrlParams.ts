@@ -95,4 +95,6 @@ export const useUrlParams = (handlers: Partial<UrlHandlersType>) => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [preparedConfig])
+
+	return preparedConfig;
 }

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { clone, isNil, take, times } from "ramda";
+import { clone, isEmpty, isNil, take, times } from "ramda";
 import {
 	BeatContainer,
 	Container,
@@ -28,12 +28,13 @@ import { PresetsSelect } from "./presetsSelect";
 import { getRandomPreset } from "./sequencer.helpers";
 
 export const Sequencer = () => {
-	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
 	const { currentBeat, setCurrentBeatNotes, beats, setBeats, setCurrentBeat } = useContext(TransportProvider.Context);
-	const [octaves, setOctaves] = useState(["1", "1", "1"]);
+
+	const [notesMatrix, setNotesMatrix] = useState(SEQUENCER_PATTERNS["CUSTOM"].pattern);
+	const [octaves, setOctaves] = useState(SEQUENCER_PATTERNS["CUSTOM"].octaves);
 	const [currentPreset, setCurrentPreset] = useState<string>("CUSTOM");
 
-	useUrlParams({
+	const urlConfig = useUrlParams({
 		[UrlConfigKeys.SEQUENCER_PATTERN]: {
 			value: notesMatrix,
 			setter: setNotesMatrix
@@ -54,19 +55,34 @@ export const Sequencer = () => {
 
 		// should not trigger on notesMatrix change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setCurrentBeatNotes, currentBeat])
+	}, [setCurrentBeatNotes, currentBeat]);
+
+	const handlePresetChange = (preset: string) => {
+		const { pattern, octaves, beats } = SEQUENCER_PATTERNS[preset];
+		setNotesMatrix(pattern);
+		setOctaves(octaves);
+		setBeats(beats);
+		setCurrentBeat(0);
+	}
 
 	useEffect(() => {
 			if (!currentPreset) return;
-			const { pattern, octaves, beats } = SEQUENCER_PATTERNS[currentPreset];
-			setNotesMatrix(pattern);
-			setOctaves(octaves);
-			setBeats(beats);
-			setCurrentBeat(0);
+			handlePresetChange(currentPreset);
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [currentPreset]
 	)
+
+	useEffect(() => {
+		if (!isEmpty(urlConfig)) return;
+
+		setTimeout(() => {
+			handlePresetChange(getRandomPreset("CUSTOM"));
+		}, 1000);
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 
 	useEffect(() => {
 		if (beats === 8) {
