@@ -7,6 +7,12 @@ export const Container = styled.div`
   position: relative;
   margin-right: 1.5rem;
 
+  :hover {
+    button {
+      background-color: rgba(55, 57, 70, 1);
+    }
+  }
+
   ${SelectStyles.Select} {
     height: 100%;
     width: 100%;

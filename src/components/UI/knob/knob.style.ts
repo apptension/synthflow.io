@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled, { css } from "styled-components/macro";
 import Color from "color";
 import { Color as ThemeColor, FontFamily } from "../../../theme";
 
@@ -14,7 +14,7 @@ export const Svg = styled.svg`
   width: 5.1rem;
   height: 5.1rem;
   transform: rotate(90deg);
-  cursor: ew-resize;
+  cursor: ns-resize;
 `;
 
 export const SvgCircle = styled.circle`
@@ -28,7 +28,11 @@ export const SvgBackgroundCircle = styled(SvgCircle)`
   opacity: 0.1;
 `;
 
-export const Input = styled.input`
+type InputProps = {
+	isDragging: boolean;
+}
+
+export const Input = styled.input<InputProps>`
   pointer-events: all;
   border-radius: 10px;
   padding-bottom: 0;
@@ -42,11 +46,27 @@ export const Input = styled.input`
   width: 6rem;
   height: 5rem;
   z-index: 100;
+	transition: all 150ms ease-in-out;
+
+  :focus {
+    background-color: ${ThemeColor.PRIMARY};
+    color: ${ThemeColor.BLACK};
+  }
 
   ::-webkit-inner-spin-button {
     display: none;
   }
 
   -moz-appearance: textfield;
+
+  ${({ isDragging }) => isDragging && css`
+    color: transparent !important;
+		pointer-events: none;
+    text-shadow: 0 0 0 ${ThemeColor.BLACK};
+
+    ::selection {
+      background-color: transparent;
+    }
+  `}
 }
 `;

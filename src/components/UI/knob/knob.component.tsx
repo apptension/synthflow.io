@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Container, Svg, SvgBackgroundCircle, SvgCircle, Input } from "./knob.style";
 import { CIRCUMFERENCE, RADIUS } from "./knob.constants";
 import { Label } from "../../../theme/shared.style";
@@ -18,15 +18,45 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 	const [strokeOffset, setStrokeOffset] = useState(CIRCUMFERENCE);
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragOffset, setDragOffset] = useState<number>(0);
+	const [tempValue, setTempValue] = useState(0);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		handleChange(value);
-		// should run only on mount
+		setTempValue(value);
+
+		// should run only on value change
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value])
 
+	useEffect(() => {
+		if (!isDragging) return;
+		setTempValue(value);
+	}, [value, isDragging])
+
+	const handleEnter = () => {
+		if (tempValue > max) {
+			setTempValue(max);
+			handleChange(max);
+		} else if (tempValue < min) {
+			setTempValue(min);
+			handleChange(min);
+		} else {
+			handleChange(isNaN(tempValue) ? min : tempValue)
+		}
+	}
+
+	useEffect(() => {
+		if (isDragging) {
+			inputRef.current?.focus();
+		} else {
+			inputRef.current?.blur();
+		}
+	}, [isDragging])
+
 	const handleChange = useCallback((value: number) => {
 		if (value > max || value < min) return;
+
 		onChange(normalRange ? roundTo2Decimal(value) : value);
 
 		const offset = CIRCUMFERENCE - ((value - min) * 100) / (max - min) / 100 * CIRCUMFERENCE;
@@ -36,8 +66,8 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 	const onDrag = useCallback((event: MouseEvent) => {
 		if (!isDragging) return;
 
-		const diff = dragOffset - (event.clientX);
-		setDragOffset(event.clientX)
+		const diff = dragOffset - (window.innerHeight - event.clientY);
+		setDragOffset(window.innerHeight - event.clientY)
 
 		if (Math.abs(diff) > 10) return;
 
@@ -46,7 +76,7 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 	}, [isDragging, dragOffset, handleChange, value, normalRange])
 
 	const handleDragChange = useCallback((event: MouseEvent | any, value: boolean) => {
-		document.body.style.cursor = value ? "ew-resize" : "default";
+		document.body.style.cursor = value ? "ns-resize" : "default";
 
 		setDragOffset(0);
 		setIsDragging(value);
@@ -68,11 +98,13 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				{label}
 			</Label>
 			<Svg onMouseDown={(event) => handleDragChange(event, true)}>
-				<SvgCircle r={`${RADIUS / 10}rem`} cx="2.55rem" cy="2.55rem" strokeDasharray={CIRCUMFERENCE} strokeDashoffset={strokeOffset} />
+				<SvgCircle r={`${RADIUS / 10}rem`} cx="2.55rem" cy="2.55rem" strokeDasharray={CIRCUMFERENCE}
+									 strokeDashoffset={strokeOffset} />
 				<SvgBackgroundCircle r={`${RADIUS / 10}rem`} cx="2.55rem" cy="2.55rem" />
 			</Svg>
 			<Input
-				value={value}
+				ref={inputRef}
+				value={tempValue}
 				name={label}
 				type="number"
 				step={normalRange ? 0.1 : step}
@@ -80,9 +112,16 @@ export const Knob = ({ max = 1, min = 0, label, onChange, step = 1, value, norma
 				max={max}
 				onChange={(event) => {
 					const value = event.target.valueAsNumber;
-					handleChange(isNaN(value) ? min : value)
-				}
-				}
+					setTempValue(value);
+				}}
+				onBlur={handleEnter}
+				onKeyUp={(event) => {
+					if (event.code !== "Enter") return;
+
+					handleEnter();
+					inputRef.current?.blur();
+				}}
+				isDragging={isDragging}
 			/>
 		</Container>
 	)

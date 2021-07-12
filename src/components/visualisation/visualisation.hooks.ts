@@ -193,7 +193,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			}
 		}
 
-		animationFrameId = requestAnimationFrame(render)
+		// animationFrameId = requestAnimationFrame(render)
 
 		return () => {
 			if (!mountElement) return;

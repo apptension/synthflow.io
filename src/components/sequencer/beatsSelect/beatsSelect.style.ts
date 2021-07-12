@@ -51,6 +51,12 @@ export const Label = styled.label`
   width: 9rem;
   background: rgba(55, 57, 70, 0.5);
   border-radius: 10px;
+	transition: all 150ms ease-in-out;
+	transition-property: background-color, border-color, color;	
+	
+	:hover {
+		background-color: rgba(55, 57, 70, 1);
+	}
 `
 
 export const LabelValue = styled.div``;

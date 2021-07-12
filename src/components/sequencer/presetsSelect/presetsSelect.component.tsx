@@ -17,7 +17,7 @@ export const PresetsSelect = ({ value, onChange }: PresetsSelectProps) => {
 				onChange={onChange}
 			/>
 			<BigTileButton>
-				Patterns
+				Presets
 			</BigTileButton>
 		</Container>
 	)

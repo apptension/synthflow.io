@@ -159,4 +159,9 @@ export const BigTileButton = styled.button`
   align-items: center;
   background-color: rgba(55, 57, 70, 0.5);
   justify-content: center;
+  transition: background-color 150ms ease-in-out;
+
+  :hover {
+    background-color: rgba(55, 57, 70, 1);
+  }
 `;

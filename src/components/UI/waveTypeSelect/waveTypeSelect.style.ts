@@ -25,6 +25,7 @@ export const Label = styled.label`
     height: 4rem;
 
     path {
+      transition: all 150ms ease-in-out;
       stroke: #95969C;
     }
   }
