@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components/macro";
-import { Breakpoints, Transitions } from "../../theme/";
+import { Breakpoints } from "../../theme/";
 
 type ContainerProps = {
 	inSoloView: boolean;
@@ -16,18 +16,16 @@ export const Container = styled.div<ContainerProps>`
   cursor: grab;
   transition: all 300ms;
   transition-property: width, opacity, transform;
-  ${Transitions.Snappy};
 
   ${({ inSoloView }) => !inSoloView && css`
     transform: translateY(-30rem) scale(0.9);
   `};
-  
-  @media screen and(max-width: ${Breakpoints.DESKTOP_SMALL}) {
-  width: 100%;
 
-  ${({ inSoloView }) => !inSoloView && css`
-    width: 100%;
-    opacity: 0.1;
-  `}
-};
+  @media screen and (max-width: ${Breakpoints.DESKTOP_SMALL}) {
+    width: 250vw;
+    height: 140vh;
+    top: -7vh;
+    right: -62vw;
+    transform: translateY(0) scale(0.7);
+  };
 `;

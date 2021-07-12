@@ -9,6 +9,7 @@ import { fragmentShader, vertexShader } from "./shaders";
 import { VisualisationConfig } from "./visualisation.types";
 import { createOscRgb } from "./visualisation.helpers";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { useShowMobileLayout } from "../../hooks";
 
 export const useRenderer = (mount: RefObject<HTMLElement>) => {
 	const {
@@ -18,9 +19,11 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		config: synthConfig,
 		currentBeatNotes
 	} = useContext(TransportProvider.Context);
+	const showMobileLayout = useShowMobileLayout();
 
 	const envelope = useRef<AmplitudeEnvelope>();
 	const config = useRef<VisualisationConfig>({
+		showMobileLayout,
 		isPlaying: Number(isPlaying),
 		bpm,
 		zoom: 5,
@@ -51,7 +54,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
-		const sphereGeometry = new THREE.SphereBufferGeometry(2, 230, 230);
+		const sphereGeometry = new THREE.SphereBufferGeometry(2, 300, 300);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
 
 		renderer.setPixelRatio(2);
@@ -124,6 +127,18 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (!material) return;
 				material.uniforms.u_time.value += 0.05;
 
+				if (config.current.showMobileLayout) {
+					material.uniforms.u_isPlaying.value = 1;
+					material.uniforms.u_masterVolume.value = 1;
+					material.uniforms.u_reverb.value = 0;
+					controls.enableZoom = !showMobileLayout;
+
+					renderer.render(scene, camera);
+
+					delta = delta % interval;
+					return;
+				}
+
 				if (material.uniforms.u_chebyshev.value !== config.current.chebyshev) {
 					material.uniforms.u_chebyshev.value = config.current.chebyshev;
 				}
@@ -149,7 +164,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				}
 
 				if (material.uniforms.u_isPlaying.value !== config.current.isPlaying) {
-					material.uniforms.u_isPlaying.value = config.current.isPlaying
+					material.uniforms.u_isPlaying.value = config.current.isPlaying;
 				}
 
 				if (material.uniforms.u_envelope.value !== envelope.current?.value) {
@@ -178,7 +193,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			}
 		}
 
-		// animationFrameId = requestAnimationFrame(render)
+		animationFrameId = requestAnimationFrame(render)
 
 		return () => {
 			if (!mountElement) return;
@@ -194,6 +209,9 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
+	useEffect(() => {
+		config.current.showMobileLayout = showMobileLayout;
+	}, [showMobileLayout])
 
 	useEffect(() => {
 		config.current.bpm = bpm;
@@ -206,6 +224,7 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			ease: "power3.out"
 		});
 	}, [currentBeatNotes, isPlaying])
+
 
 	useEffect(() => {
 		config.current.masterVolume = synthConfig.masterVolume;

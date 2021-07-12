@@ -42,6 +42,10 @@ export const GlobalStyle = createGlobalStyle`
   ::-moz-selection {
     background: ${Color.HIGHLIGHT} /* Gecko Browsers */
   }
+  
+  #root, #root > div {
+    height: 100%;
+  }
 
   * {
     font-family: ${FontFamily.FONT_PRIMARY};

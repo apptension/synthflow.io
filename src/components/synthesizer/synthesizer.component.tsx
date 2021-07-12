@@ -16,8 +16,10 @@ import { Chebyshev } from "./components/chebyshev";
 import { TransportControls } from "./components/transportControls"
 import { Sequencer } from "../sequencer";
 import { useCompressor, useVolume } from "./synthesizer.hooks";
+import { useShowMobileLayout } from "../../hooks";
 
 export const Synthesizer = () => {
+	const showMobileLayout = useShowMobileLayout();
 	const { showControls } = useContext(AppSettingsProvider.Context);
 	const [oscillators, registerOscillators] = useState<Gain>();
 	const [chebyshev, registerChebyshev] = useState<ChebyshevType>();
@@ -71,7 +73,7 @@ export const Synthesizer = () => {
 	]);
 
 	return (
-		<Container isVisible={showControls}>
+		<Container isVisible={showControls && !showMobileLayout}>
 			<ControlsPaneLeft>
 				<Oscillator register={registerOscillators} />
 				<Envelope register={registerEnvelope} />

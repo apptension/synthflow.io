@@ -7,6 +7,7 @@ export type Rgb = {
 }
 
 export type VisualisationConfig = {
+	showMobileLayout: boolean;
 	isPlaying: number;
 	bpm: number;
 	zoom: number;
