@@ -9,6 +9,21 @@ export const Container = styled.div<SynthThemeProps>`
   display: flex;
   width: 100%;
   justify-content: center;
+  transform-origin: bottom;
+  transition: transform 300ms ease-in-out;
+  transform: scale(0.95);
+
+  @media screen and ( min-aspect-ratio: 33/16) {
+    transform: scale(0.8);
+  }
+
+  @media screen and ( min-aspect-ratio: 9/4) {
+    transform: scale(0.7);
+  }
+
+  @media screen and (max-height: 700px) {
+    transform: scale(0.7);
+  }
 
   ${({ theme }) => !theme.isSynthVisible && css`
     * {
@@ -32,7 +47,7 @@ export const ControlsPanelLeft = styled.div<SynthThemeProps>`
     transform: translateX(20rem);
     filter: blur(1.6rem);
     opacity: 0;
-  `} 
+  `}
 `;
 
 export const ControlsPanelRight = styled.div<SynthThemeProps>`
