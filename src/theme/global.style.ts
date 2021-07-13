@@ -4,12 +4,13 @@ import normalize from "styled-normalize";
 import { Breakpoints, Color, FontFamily } from "./index";
 
 export const GlobalStyle = createGlobalStyle`
-  ${reset}
-
-  ;
-  ${normalize}
-
-  ;
+  ${reset};
+  ${normalize};
+  
+  :root {
+    --themeColorLight: rgb(100%,100%,100%);
+    --themeColorHighlight: rgb(100%,100%,100%);
+  }
 
   body {
     -webkit-font-smoothing: antialiased;

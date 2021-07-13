@@ -9,7 +9,7 @@ uniform vec3 u_osc1Rgb;
 uniform vec3 u_osc2Rgb;
 
 void main(void) {
-    vec3 light = vec3(0.) * 2.;
+    vec3 light = vec3(0.) ;
     vec3 skyColor = vec3(1., 1., 0.7) * cos(u_osc1Rgb * 10.);
     vec3 groundColor = vec3(0.5, 0.3, 0.7) * sin((u_osc2Rgb * 10.)) + vec3(0.5);
     vec3 color1 =  vec3(cos(v_displacement * 2.), cos(v_qnoise  * 2.), sin(v_displacement * 2.));

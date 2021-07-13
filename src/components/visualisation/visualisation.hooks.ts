@@ -7,7 +7,7 @@ import { complement, isNil, omit } from "ramda";
 import { TransportProvider } from "../../providers";
 import { fragmentShader, vertexShader } from "./shaders";
 import { VisualisationConfig } from "./visualisation.types";
-import { createOscRgb } from "./visualisation.helpers";
+import { createOscRgb, setBlobThemeColors } from "./visualisation.helpers";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { useShowMobileLayout } from "../../hooks";
 
@@ -53,11 +53,13 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+
 		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
+		renderer.setPixelRatio(2);
+		const externalTarget = new THREE.WebGLRenderTarget(1, 1);
+
 		const sphereGeometry = new THREE.SphereBufferGeometry(2, 300, 300);
 		const ambientLights = new THREE.HemisphereLight(0xFFFFFF, 0x000000, 1);
-
-		renderer.setPixelRatio(2);
 
 		const uniforms = {
 			u_time: { value: 0 },
@@ -116,6 +118,20 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 			}
 		}
 
+		const readPixelColor = () => {
+			camera.setViewOffset(renderer.domElement.width, renderer.domElement.height, window.innerWidth - 100 * window.devicePixelRatio | 0, window.innerHeight - 100 * window.devicePixelRatio | 0, 1, 1);
+			renderer.setRenderTarget(externalTarget);
+
+			renderer.render(scene, camera);
+
+			camera.clearViewOffset();
+			const pixelBuffer = new Uint8Array(4);
+
+			renderer.readRenderTargetPixels(externalTarget, 0, 0, 1, 1, pixelBuffer);
+
+			setBlobThemeColors(pixelBuffer)
+		}
+
 		const render = () => {
 			animationFrameId = requestAnimationFrame(render);
 			delta += clock.getDelta();
@@ -127,69 +143,38 @@ export const useRenderer = (mount: RefObject<HTMLElement>) => {
 				if (!material) return;
 				material.uniforms.u_time.value += 0.05;
 
+				if (
+					material.uniforms.u_osc1Rgb.value.x !== config.current.oscillator1.r ||
+					material.uniforms.u_osc1Rgb.value.y !== config.current.oscillator1.g ||
+					material.uniforms.u_osc1Rgb.value.z !== config.current.oscillator1.b ||
+					material.uniforms.u_osc2Rgb.value.x !== config.current.oscillator2.r ||
+					material.uniforms.u_osc2Rgb.value.y !== config.current.oscillator2.g ||
+					material.uniforms.u_osc2Rgb.value.z !== config.current.oscillator2.b
+				) {
+					readPixelColor();
+				}
+
 				if (config.current.showMobileLayout) {
 					material.uniforms.u_isPlaying.value = 1;
 					material.uniforms.u_masterVolume.value = 1;
 					material.uniforms.u_reverb.value = 0;
 					controls.enableZoom = !showMobileLayout;
-
-					renderer.render(scene, camera);
-
-					delta = delta % interval;
-					return;
-				}
-
-				if (material.uniforms.u_chebyshev.value !== config.current.chebyshev) {
+				} else {
 					material.uniforms.u_chebyshev.value = config.current.chebyshev;
-				}
-
-				if (material.uniforms.u_masterVolume.value !== config.current.masterVolume) {
 					material.uniforms.u_masterVolume.value = config.current.masterVolume;
-				}
-
-				if (material.uniforms.u_bpm.value !== config.current.bpm) {
 					material.uniforms.u_bpm.value = config.current.bpm;
-				}
-
-				if (material.uniforms.u_noise.value !== config.current.noise) {
 					material.uniforms.u_noise.value = config.current.noise;
-				}
-
-				if (material.uniforms.u_filter.value !== config.current.filter) {
 					material.uniforms.u_filter.value = config.current.filter;
-				}
-
-				if (material.uniforms.u_reverb.value !== config.current.reverb) {
 					material.uniforms.u_reverb.value = config.current.reverb;
-				}
-
-				if (material.uniforms.u_isPlaying.value !== config.current.isPlaying) {
 					material.uniforms.u_isPlaying.value = config.current.isPlaying;
-				}
-
-				if (material.uniforms.u_envelope.value !== envelope.current?.value) {
 					material.uniforms.u_envelope.value = envelope.current?.value ?? 0;
-				}
-
-				if (
-					material.uniforms.u_osc1Rgb.value.x !== config.current.oscillator1.r ||
-					material.uniforms.u_osc1Rgb.value.y !== config.current.oscillator1.g ||
-					material.uniforms.u_osc1Rgb.value.z !== config.current.oscillator1.b
-				) {
 					material.uniforms.u_osc1Rgb.value = new THREE.Vector3(config.current.oscillator1.r, config.current.oscillator1.g, config.current.oscillator1.b);
-				}
-
-				if (
-					material.uniforms.u_osc2Rgb.value.x !== config.current.oscillator2.r ||
-					material.uniforms.u_osc2Rgb.value.y !== config.current.oscillator2.g ||
-					material.uniforms.u_osc2Rgb.value.z !== config.current.oscillator2.b
-				) {
 					material.uniforms.u_osc2Rgb.value = new THREE.Vector3(config.current.oscillator2.r, config.current.oscillator2.g, config.current.oscillator2.b);
 				}
 
-				renderer.render(scene, camera);
-
 				delta = delta % interval;
+				renderer.setRenderTarget(null);
+				renderer.render(scene, camera);
 			}
 		}
 

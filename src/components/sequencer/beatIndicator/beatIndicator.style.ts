@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components/macro";
-import { Color } from "../../../theme";
 
 export const Container = styled.div`
   display: flex;
@@ -27,7 +26,7 @@ export const Indicator = styled.div<IndicatorProps>`
     top: 12.8rem;
     left: 50%;
     transform: translate(-50.5%, -50%);
-		border: 1px solid ${Color.PRIMARY};
+		border: 1px solid var(--themeColorLight);
     border-radius: 13.6px;
     height: 22.2rem;
     width: 7.2rem;

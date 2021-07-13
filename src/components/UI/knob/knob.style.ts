@@ -18,7 +18,7 @@ export const Svg = styled.svg`
 `;
 
 export const SvgCircle = styled.circle`
-  stroke: ${ThemeColor.PRIMARY};
+  stroke: var(--themeColorLight);
   stroke-width: 7;
   fill: transparent;
 `;
@@ -49,7 +49,7 @@ export const Input = styled.input<InputProps>`
 	transition: all 150ms ease-in-out;
 
   :focus {
-    background-color: ${ThemeColor.PRIMARY};
+    background-color: var(--themeColorLight);
     color: ${ThemeColor.BLACK};
   }
 

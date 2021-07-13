@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components/macro";
-import { Breakpoints, Color } from "../../../../theme";
+import { Breakpoints } from "../../../../theme";
 
 export const Container = styled.div`
   padding: 0 1.6rem;
@@ -10,14 +10,13 @@ type ButtonProps = {
 }
 
 const ButtonActiveStyles = css`
-
   :after {
     opacity: 1;
   }
 
   svg {
     path {
-      fill: ${Color.PRIMARY};
+      fill: var(--themeColorLight);
     }
   }
 `
@@ -40,7 +39,7 @@ export const Button = styled.button<ButtonProps>`
     border-radius: 50%;
     height: 5.5rem;
     width: 5.5rem;
-    border: 2px solid ${Color.PRIMARY};
+    border: 2px solid var(--themeColorLight);
   }
 
   svg {
@@ -74,6 +73,4 @@ export const Button = styled.button<ButtonProps>`
       }
     }
   `}
-
-
 `;

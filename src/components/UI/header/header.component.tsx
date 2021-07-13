@@ -17,7 +17,7 @@ export const Header = () => {
 	return (
 		<Container>
 			<Logo src={LogoSrc} />
-			<ControlsButton onClick={toggleIsPlaying} isActive={!isPlaying}>
+			<ControlsButton onClick={toggleIsPlaying} isActive={isPlaying}>
 				<PlayPauseButton isPlaying={isPlaying} />
 			</ControlsButton>
 			<ControlsButton onClick={() => setShowControls(not)} isActive={showControls} >

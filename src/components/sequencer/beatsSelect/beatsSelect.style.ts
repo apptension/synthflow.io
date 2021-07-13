@@ -21,8 +21,8 @@ export const Input = styled.input`
   }
 
   &:checked + label {
-    border-color: ${Color.PRIMARY};
-    color: ${Color.PRIMARY};
+    border-color: var(--themeColorLight);
+    color: var(--themeColorLight);
   }
 
 `;

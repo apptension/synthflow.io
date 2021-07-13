@@ -1,7 +1,5 @@
 import styled from "styled-components/macro";
-import { Color as ThemeColor } from "../../../theme";
 import { SharedStyles } from "../../../theme";
-
 
 export const SelectorContainer = styled.div`
   display: flex;
@@ -54,7 +52,7 @@ export const Input = styled.input`
   &:checked + ${Label} {
     svg {
       path {
-        stroke: ${ThemeColor.PRIMARY};
+        stroke: var(--themeColorLight);
       }
     }
   }

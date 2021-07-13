@@ -71,7 +71,7 @@ export const GridContainer = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${Color.PRIMARY};
+    background-color: var(--themeColorLight);
     border-radius: 8px;
     height: 4px;
   }
